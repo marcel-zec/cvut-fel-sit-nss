@@ -1,7 +1,7 @@
-//package cz.cvut.fel.rsp.travelandwork.service;
+//package cz.cvut.fel.nss.parttimejobportal.service;
 //
-//import cz.cvut.fel.rsp.travelandwork.environment.util.Generator;
-//import cz.cvut.fel.rsp.travelandwork.model.Achievement;
+//import cz.cvut.fel.nss.parttimejobportal.environment.util.Generator;
+//import cz.cvut.fel.nss.parttimejobportal.model.Achievement;
 //import org.junit.Before;
 //import org.junit.Test;
 //import org.junit.runner.RunWith;

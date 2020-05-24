@@ -1,7 +1,7 @@
 package cz.cvut.fel.nss.parttimejobportal.environment.util;
 
 import cz.cvut.fel.nss.parttimejobportal.model.*;
-import cz.cvut.fel.rsp.travelandwork.model.*;
+import cz.cvut.fel.nss.parttimejobportal.model.*;
 
 import java.sql.Date;
 import java.sql.Time;

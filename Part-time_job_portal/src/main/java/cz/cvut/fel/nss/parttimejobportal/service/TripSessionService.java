@@ -5,7 +5,7 @@ import cz.cvut.fel.nss.parttimejobportal.model.Enrollment;
 import cz.cvut.fel.nss.parttimejobportal.model.TripSession;
 import cz.cvut.fel.nss.parttimejobportal.dao.TripDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.TripSessionDao;
-import cz.cvut.fel.rsp.travelandwork.dto.*;
+import cz.cvut.fel.nss.parttimejobportal.dto.*;
 import cz.cvut.fel.nss.parttimejobportal.exception.MissingVariableException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

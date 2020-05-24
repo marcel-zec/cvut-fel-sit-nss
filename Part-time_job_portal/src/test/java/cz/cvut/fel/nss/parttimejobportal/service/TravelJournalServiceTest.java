@@ -6,7 +6,7 @@ import cz.cvut.fel.nss.parttimejobportal.exception.BadPassword;
 import cz.cvut.fel.nss.parttimejobportal.exception.MissingVariableException;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.environment.util.Generator;
-import cz.cvut.fel.rsp.travelandwork.model.*;
+import cz.cvut.fel.nss.parttimejobportal.model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

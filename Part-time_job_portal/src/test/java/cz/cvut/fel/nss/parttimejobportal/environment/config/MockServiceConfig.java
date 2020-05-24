@@ -1,7 +1,7 @@
 package cz.cvut.fel.nss.parttimejobportal.environment.config;
 
 import cz.cvut.fel.nss.parttimejobportal.service.*;
-import cz.cvut.fel.rsp.travelandwork.service.*;
+import cz.cvut.fel.nss.parttimejobportal.service.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

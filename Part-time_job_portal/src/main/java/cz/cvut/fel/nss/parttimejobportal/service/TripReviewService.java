@@ -4,7 +4,7 @@ import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.model.Enrollment;
 import cz.cvut.fel.nss.parttimejobportal.model.Trip;
 import cz.cvut.fel.nss.parttimejobportal.model.TripReview;
-import cz.cvut.fel.rsp.travelandwork.dao.*;
+import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.exception.AlreadyExistsException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.exception.UnauthorizedException;

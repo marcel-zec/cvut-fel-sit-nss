@@ -1,7 +1,7 @@
 package cz.cvut.fel.nss.parttimejobportal.rest.handler;
 
 import cz.cvut.fel.nss.parttimejobportal.exception.*;
-import cz.cvut.fel.rsp.travelandwork.exception.*;
+import cz.cvut.fel.nss.parttimejobportal.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

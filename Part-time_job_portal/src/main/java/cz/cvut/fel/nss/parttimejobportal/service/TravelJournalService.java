@@ -4,7 +4,7 @@ import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.dao.CategoryDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.TravelJournalDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.TripDao;
-import cz.cvut.fel.rsp.travelandwork.model.*;
+import cz.cvut.fel.nss.parttimejobportal.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

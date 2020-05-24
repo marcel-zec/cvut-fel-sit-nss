@@ -6,7 +6,7 @@ import cz.cvut.fel.nss.parttimejobportal.model.TripReview;
 import cz.cvut.fel.nss.parttimejobportal.model.TripSession;
 import cz.cvut.fel.nss.parttimejobportal.model.User;
 import cz.cvut.fel.nss.parttimejobportal.environment.util.Generator;
-import cz.cvut.fel.rsp.travelandwork.exception.*;
+import cz.cvut.fel.nss.parttimejobportal.exception.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

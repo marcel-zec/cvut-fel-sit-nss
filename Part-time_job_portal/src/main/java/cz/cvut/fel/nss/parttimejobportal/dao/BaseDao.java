@@ -1,7 +1,7 @@
 package cz.cvut.fel.nss.parttimejobportal.dao;
 
 import cz.cvut.fel.nss.parttimejobportal.model.AbstractEntity;
-import cz.cvut.fel.rsp.travelandwork.model.*;
+import cz.cvut.fel.nss.parttimejobportal.model.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
