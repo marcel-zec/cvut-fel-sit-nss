@@ -1,6 +1,7 @@
 package cz.cvut.fel.nss.parttimejobportal.rest;
 
 import cz.cvut.fel.nss.parttimejobportal.model.AchievementCategorized;
+import cz.cvut.fel.nss.parttimejobportal.security.SecurityConstants;
 import cz.cvut.fel.nss.parttimejobportal.service.AchievementCategorizedService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = SecurityConstants.ORIGIN_URI)
 @RequestMapping("/achievement/categorized")
 public class AchievementCategorizedController {
     private static final Logger LOG = LoggerFactory.getLogger(AchievementCertificateController.class);

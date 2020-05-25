@@ -3,6 +3,7 @@ package cz.cvut.fel.nss.parttimejobportal.rest;
 import cz.cvut.fel.nss.parttimejobportal.dto.UserReviewDto;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.exception.UnauthorizedException;
+import cz.cvut.fel.nss.parttimejobportal.security.SecurityConstants;
 import cz.cvut.fel.nss.parttimejobportal.service.UserReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user_review")
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials="true")
+@CrossOrigin(origins = SecurityConstants.ORIGIN_URI, allowCredentials="true")
 public class UserReviewController {
 
     private final UserReviewService userReviewService;

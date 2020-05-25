@@ -26,4 +26,9 @@ public class SecurityConstants {
      * Session timeout in seconds.
      */
     public static final int SESSION_TIMEOUT = 30 * 60;
+
+    /**
+     * Cross origin URI.
+     */
+    public static final String ORIGIN_URI = "http://localhost:3000";
 }

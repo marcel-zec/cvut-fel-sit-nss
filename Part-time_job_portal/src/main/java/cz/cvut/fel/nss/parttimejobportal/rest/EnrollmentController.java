@@ -5,6 +5,7 @@ import cz.cvut.fel.nss.parttimejobportal.dto.RequestWrapperEnrollment;
 import cz.cvut.fel.nss.parttimejobportal.dto.RequestWrapperEnrollmentGet;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
+import cz.cvut.fel.nss.parttimejobportal.security.SecurityConstants;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
 import cz.cvut.fel.nss.parttimejobportal.service.EnrollmentService;
 import cz.cvut.fel.nss.parttimejobportal.service.UserReviewService;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = SecurityConstants.ORIGIN_URI)
 @RequestMapping("/enrollment")
 public class EnrollmentController {
 
