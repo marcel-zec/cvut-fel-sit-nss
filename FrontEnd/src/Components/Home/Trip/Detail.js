@@ -30,7 +30,7 @@ class Detail extends React.Component {
 
     async componentDidMount() {
         const response = await fetch(
-            BASE_API_URL + "trip/" + this.props.match.params.id,
+            BASE_API_URL + "/trip/" + this.props.match.params.id,
             {
                 method: "GET",
                 mode: "cors",
@@ -301,7 +301,7 @@ class Detail extends React.Component {
                         <div className="trip_price">
                             <span id="tripPrice">
                                 {" "}
-                                {this.state.selectedSession.price}
+                                {this.state.trip.salary}
                             </span>
                             Kč
                         </div>
@@ -328,7 +328,7 @@ class Detail extends React.Component {
                         <div className="trip_price">
                             <span id="tripPrice">
                                 {" "}
-                                {this.state.selectedSession.price}
+                                {this.state.trip.salary}
                             </span>
                             Kč
                         </div>
@@ -448,10 +448,10 @@ class Detail extends React.Component {
                                     </Card.Title>
                                     <Card.Subtitle className="mb-2 text-muted">
                                         <FontAwesomeIcon icon="money-bill" />{" "}
-                                        Deposit
+                                        Salary
                                     </Card.Subtitle>
                                     <Card.Text>
-                                        {this.state.trip.deposit} Kč
+                                        {this.state.trip.salary} Kč / hod
                                     </Card.Text>
                                     <Card.Subtitle className="mb-2 text-muted">
                                         {this.validLevel()}
@@ -583,9 +583,9 @@ class Detail extends React.Component {
                                     </Card.Body>
                                 </Col>
                                 <Col>
-                                    <Card.Title>Deposit</Card.Title>
+                                    <Card.Title>Salary</Card.Title>
                                     <Card.Body>
-                                        {this.state.trip.deposit} Kč
+                                        {this.state.trip.salary} Kč / hod
                                     </Card.Body>
                                 </Col>
                             </Row>
