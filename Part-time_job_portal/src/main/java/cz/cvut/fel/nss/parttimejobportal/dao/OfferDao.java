@@ -10,8 +10,8 @@ import java.util.List;
 
 
 @Repository
-public class TripDao extends BaseDao<Offer> {
-    public TripDao() {
+public class OfferDao extends BaseDao<Offer> {
+    public OfferDao() {
         super(Offer.class);
     }
 

@@ -25,10 +25,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class TripService {
+public class OfferService {
 
-    private final TripDao tripDao;
-    private final TripSessionDao tripSessionDao;
+    private final OfferDao offerDao;
+    private final JobSessionDao jobSessionDao;
     private final TripReviewDao tripReviewDao;
     private final TranslateService translateService;
     private final AccessService accessService;
@@ -37,9 +37,9 @@ public class TripService {
     private final TravelJournalDao travelJournalDao;
 
     @Autowired
-    public TripService(TripDao tripDao, TripSessionDao tripSessionDao, TripReviewDao tripReviewDao, TranslateService translateService, AccessService accessService, UserDao userDao, EnrollmentDao enrollmentDao, TravelJournalDao travelJournalDao) {
-        this.tripDao = tripDao;
-        this.tripSessionDao = tripSessionDao;
+    public OfferService(OfferDao offerDao, JobSessionDao jobSessionDao, TripReviewDao tripReviewDao, TranslateService translateService, AccessService accessService, UserDao userDao, EnrollmentDao enrollmentDao, TravelJournalDao travelJournalDao) {
+        this.offerDao = offerDao;
+        this.jobSessionDao = jobSessionDao;
         this.tripReviewDao = tripReviewDao;
         this.translateService = translateService;
         this.accessService = accessService;
@@ -50,14 +50,14 @@ public class TripService {
 
     @Transactional
     public List<Offer> findAll() {
-        return tripDao.findAll();
+        return offerDao.findAll();
     }
 
     @Transactional
     public List<OfferDto> findAllDto() {
         List<OfferDto> tripDtos = new ArrayList<>();
 
-        for (Offer trip:tripDao.findAll()) {
+        for (Offer trip:offerDao.findAll()) {
             tripDtos.add(translateService.translateTrip(trip));
         }
         return tripDtos;
@@ -67,7 +67,7 @@ public class TripService {
     public List<OfferDto> findAllDtoFiltered() {
         List<OfferDto> tripDtos = new ArrayList<>();
 
-        for (Offer trip:tripDao.findAll()) {
+        for (Offer trip:offerDao.findAll()) {
             if(isTripActive(trip)) {
                 tripDtos.add(translateService.translateTrip(trip));
             }
@@ -77,7 +77,7 @@ public class TripService {
 
     @Transactional
     public OfferDto find(Long id) {
-        Offer trip = tripDao.find(id);
+        Offer trip = offerDao.find(id);
         UserDetails userDetails = SecurityUtils.getCurrentUserDetails();
         //do not werk and we propably do not use this so whatever
         if(userDetails != null){
@@ -101,14 +101,14 @@ public class TripService {
 
     @Transactional
     public OfferDto findByString(String stringId) {
-        Offer trip = tripDao.find(stringId);
+        Offer trip = offerDao.find(stringId);
 
         return translateService.translateTrip(trip);
     }
 
     @Transactional
     public OfferDto findByStringFiltered(String stringId) {
-        Offer trip = tripDao.find(stringId);
+        Offer trip = offerDao.find(stringId);
         OfferDto tripDto = translateService.translateTrip(trip);
 
         List<JobSessionDto> sessions = new ArrayList<>();
@@ -129,21 +129,21 @@ public class TripService {
 
         Objects.requireNonNull(trip);
         if (trip.getSessions().size()<=0) throw new MissingVariableException();
-        tripDao.persist(trip);
+        offerDao.persist(trip);
         for (JobSession session: trip.getSessions()) {
             if (session.getTo_date().isBefore(session.getFrom_date())) {
-                tripDao.remove(trip);
+                offerDao.remove(trip);
                 throw new BadDateException();
             }
             session.setTrip(trip);
-            tripSessionDao.persist(session);
+            jobSessionDao.persist(session);
         }
-        tripDao.update(trip);
+        offerDao.update(trip);
     }
 
     @Transactional
     public void signUpToTrip(JobSessionDto tripSessionDto, User current_user) throws NotAllowedException {
-        JobSession tripSession = tripSessionDao.find(tripSessionDto.getId());
+        JobSession tripSession = jobSessionDao.find(tripSessionDto.getId());
 //      TODO odkomentovat ked bude otestovane ukoncovanie tripov
 //       if (tripSession.getFrom_date().isBefore(ChronoLocalDate.from(LocalDateTime.now()))) throw new NotAllowedException();
         User user = userDao.find(current_user.getId());
@@ -175,19 +175,19 @@ public class TripService {
         if (current_user == null) throw new NotAllowedException();
         User user = accessService.getUser(current_user);
         int level = translateService.countLevel(translateService.translateTravelJournal(user.getTravel_journal()).getXp_count());
-        return  tripDao.find(level);
+        return  offerDao.find(level);
     }
 
     @Transactional
     public List<Offer> findNotAfford(User current_user) throws NotAllowedException {
-        List<Offer> trips = tripDao.findAll();
+        List<Offer> trips = offerDao.findAll();
         trips.removeAll(findAfford(current_user));
         return trips;
     }
 
     @Transactional
     public void update(String stringId, Offer newTrip) throws BadDateException, NotFoundException, MissingVariableException {
-        Offer trip = tripDao.find(stringId);
+        Offer trip = offerDao.find(stringId);
 
         if (trip == null) throw new NotFoundException();
         //todo pridat vynimku na rolu
@@ -200,7 +200,7 @@ public class TripService {
         //less new sessions
         if (newTrip.getSessions().size() < trip.getSessions().size()){
             for ( int i = newTrip.getSessions().size() ; i < trip.getSessions().size(); i++) {
-                tripSessionDao.remove(trip.getSessions().get(i));
+                jobSessionDao.remove(trip.getSessions().get(i));
             }
         }
 
@@ -214,30 +214,30 @@ public class TripService {
                 newTrip.getSessions().get(i).setId(oldSession.getId());
                 oldSession = newSession;
                 oldSession.setTrip(trip);
-                tripSessionDao.update(oldSession);
+                jobSessionDao.update(oldSession);
             } else {
                 newSession.setTrip(trip);
-                tripSessionDao.persist(newSession);
+                jobSessionDao.persist(newSession);
             }
         }
 
         trip=newTrip;
-        tripDao.update(trip);
+        offerDao.update(trip);
     }
 
     @Transactional
     public void delete(String stringId) throws NotFoundException {
 
-        Offer trip = tripDao.find(stringId);
+        Offer trip = offerDao.find(stringId);
         if (trip == null) throw new NotFoundException();
 
         for (JobSession session :trip.getSessions()) {
             session.softDelete();
-            tripSessionDao.update(session);
+            jobSessionDao.update(session);
         }
 
         trip.softDelete();
-        tripDao.update(trip);
+        offerDao.update(trip);
     }
 
 
@@ -253,7 +253,7 @@ public class TripService {
         LocalDate local_from_date = LocalDate.parse("1999-01-01", formatter);
         if(from_date != null){ local_from_date = LocalDate.parse(from_date, formatter); }
 
-        for (Offer trip : tripDao.findByFilter(location,  local_from_date, local_to_date, maxPrice, search)) {
+        for (Offer trip : offerDao.findByFilter(location,  local_from_date, local_to_date, maxPrice, search)) {
             tripDtos.add(translateService.translateTrip(trip));
         }
 

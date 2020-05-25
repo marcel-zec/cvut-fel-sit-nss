@@ -40,7 +40,7 @@ public class TravelJournalServiceTest {
     @Autowired
     private UserService userService;
     @Autowired
-    private TripService tripService;
+    private OfferService offerService;
     @Autowired
     private CategoryService categoryService;
 
@@ -57,7 +57,7 @@ public class TravelJournalServiceTest {
 
         trip.setSessions(s);
         categoryService.create(category);
-        tripService.create(trip);
+        offerService.create(trip);
 
         travelJournal = new TravelJournal(user);
         travelJournal.addTrip(trip.getCategory().getId());

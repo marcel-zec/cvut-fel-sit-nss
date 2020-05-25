@@ -7,7 +7,7 @@ import cz.cvut.fel.nss.parttimejobportal.model.JobSession;
 import cz.cvut.fel.nss.parttimejobportal.model.User;
 import cz.cvut.fel.nss.parttimejobportal.model.UserReview;
 import cz.cvut.fel.nss.parttimejobportal.dao.EnrollmentDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.TripSessionDao;
+import cz.cvut.fel.nss.parttimejobportal.dao.JobSessionDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.UserDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.UserReviewDao;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
@@ -27,17 +27,17 @@ public class UserReviewService {
     private final TranslateService translateService;
     private final UserReviewDao userReviewDao;
     private final UserDao userDao;
-    private final TripSessionDao tripSessionDao;
+    private final JobSessionDao jobSessionDao;
     private final EnrollmentDao enrollmentDao;
 
 
     @Autowired
-    public UserReviewService(TranslateService translateService, UserReviewDao userReviewDao, UserDao userDao, TripSessionDao tripSessionDao, EnrollmentDao enrollmentDao) {
+    public UserReviewService(TranslateService translateService, UserReviewDao userReviewDao, UserDao userDao, JobSessionDao jobSessionDao, EnrollmentDao enrollmentDao) {
 
         this.translateService = translateService;
         this.userReviewDao = userReviewDao;
         this.userDao = userDao;
-        this.tripSessionDao = tripSessionDao;
+        this.jobSessionDao = jobSessionDao;
         this.enrollmentDao = enrollmentDao;
     }
 
@@ -92,7 +92,7 @@ public class UserReviewService {
         Enrollment enrollment = enrollmentDao.find(enrollmentId);
         User user = enrollment.getTravelJournal().getUser();
         User current_user = userDao.find(currentUser.getId());
-        JobSession tripSession = tripSessionDao.find(tripSessionId);
+        JobSession tripSession = jobSessionDao.find(tripSessionId);
 
         if (user == null || tripSession==null) throw new NotFoundException();
 
@@ -110,7 +110,7 @@ public class UserReviewService {
 
         User user = enrollment.getTravelJournal().getUser();
         User current_user = userDao.find(currentUser.getId());
-        JobSession tripSession = tripSessionDao.find(enrollment.getTripSession().getId());
+        JobSession tripSession = jobSessionDao.find(enrollment.getTripSession().getId());
         UserReview userReview = new UserReview();
 
         if (user == null || tripSession == null) throw new NotFoundException();

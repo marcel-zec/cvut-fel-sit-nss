@@ -18,8 +18,8 @@ public class MockServiceConfig {
     }
 
     @Bean
-    public TripService tripService() {
-        return mock(TripService.class);
+    public OfferService offerService() {
+        return mock(OfferService.class);
     }
 /*
     @Bean
@@ -59,8 +59,8 @@ public class MockServiceConfig {
     }
 
     @Bean
-    public TripSessionService tripSessionService() {
-        return mock(TripSessionService.class);
+    public JobSessionService jobSessionService() {
+        return mock(JobSessionService.class);
     }
 
 }

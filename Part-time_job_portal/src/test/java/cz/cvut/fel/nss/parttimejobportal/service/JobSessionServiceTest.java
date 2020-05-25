@@ -25,14 +25,14 @@ import static org.junit.Assert.*;
 @SpringBootTest
 @Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
-public class TripSessionServiceTest {
+public class JobSessionServiceTest {
 
     private JobSession tripSession;
     private Offer trip;
 
     @Autowired
-    private TripSessionService tripSessionService;
-    private TripService tripService;
+    private JobSessionService jobSessionService;
+    private OfferService offerService;
 //    @Autowired
 //    private AchievementService achievementService;
 
@@ -45,15 +45,15 @@ public class TripSessionServiceTest {
         ArrayList<JobSession> s = new ArrayList<JobSession>() {{add(tripSession);}};
         trip.setSessions(s);
 
-        tripService.create(trip);
+        offerService.create(trip);
     }
 
     @Test
     @Transactional
     @Rollback
     public void create_CreatesTripSession() throws Exception {
-        tripSessionService.create(trip.getShort_name(),tripSession);
-        assertTrue(tripService.find(trip.getId()).getSessions().stream().anyMatch(tripSession1 -> tripSession1.equals(tripSession)));
+        jobSessionService.create(trip.getShort_name(),tripSession);
+        assertTrue(offerService.find(trip.getId()).getSessions().stream().anyMatch(tripSession1 -> tripSession1.equals(tripSession)));
     }
 
     @Test
@@ -62,9 +62,9 @@ public class TripSessionServiceTest {
     public void update_UpdatesTripSession() throws Exception {
         JobSession tripSession1 = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(6),1500);
 
-        tripSessionService.update(tripSession,tripSession1);
-        assertEquals(tripSession1.getFrom_date(), tripService.find(trip.getId()).getSessions().get(0).getFrom_date());
-        assertEquals(1500,tripService.find(trip.getId()).getSessions().get(0).getCapacity(),0.001);
+        jobSessionService.update(tripSession,tripSession1);
+        assertEquals(tripSession1.getFrom_date(), offerService.find(trip.getId()).getSessions().get(0).getFrom_date());
+        assertEquals(1500,offerService.find(trip.getId()).getSessions().get(0).getCapacity(),0.001);
     }
 
     @Test
@@ -78,7 +78,7 @@ public class TripSessionServiceTest {
         ArrayList<JobSession> exp = new ArrayList<JobSession>(){{add(tripSession1);add(tripSession2);add(tripSession3);}};
         trip.setSessions(exp);
 
-        tripService.update(trip.getShort_name(),trip);
-        assertEquals(exp,tripSessionService.findAllInTrip(trip.getShort_name()));
+        offerService.update(trip.getShort_name(),trip);
+        assertEquals(exp,jobSessionService.findAllInTrip(trip.getShort_name()));
     }
 }

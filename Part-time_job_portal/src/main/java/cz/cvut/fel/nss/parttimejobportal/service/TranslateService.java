@@ -4,7 +4,7 @@ import cz.cvut.fel.nss.parttimejobportal.dto.*;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.dao.CategoryDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.TravelJournalDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.TripDao;
+import cz.cvut.fel.nss.parttimejobportal.dao.OfferDao;
 import cz.cvut.fel.nss.parttimejobportal.dto.*;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,12 @@ import java.util.*;
 @Service
 public class TranslateService {
     private final TravelJournalDao travelJournalDao;
-    private final TripDao tripDao;
+    private final OfferDao offerDao;
     private final CategoryDao categoryDao;
 
-    public TranslateService(TravelJournalDao travelJournalDao, TripDao tripDao, CategoryDao categoryDao) {
+    public TranslateService(TravelJournalDao travelJournalDao, OfferDao offerDao, CategoryDao categoryDao) {
         this.travelJournalDao = travelJournalDao;
-        this.tripDao = tripDao;
+        this.offerDao = offerDao;
         this.categoryDao = categoryDao;
     }
 
@@ -69,7 +69,7 @@ public class TranslateService {
         List<AchievementSpecialDto> required_achievements_special = new ArrayList<>();
         List<AchievementSpecialDto> gain_achievements = new ArrayList<>();
         List<TripReviewDto> tripReviews = new ArrayList<>();
-        Offer trip1 = tripDao.find(trip.getId());
+        Offer trip1 = offerDao.find(trip.getId());
 
         trip1.getRequired_achievements_certificate().forEach(achievementCertificate -> required_certificates.add(translateAchievementCertificate(achievementCertificate)));
         trip1.getRequired_achievements_categorized().forEach(achievementCategorized -> required_achievements_categorized.add(translateAchievementCategorized(achievementCategorized)));

@@ -20,15 +20,15 @@ public class TripReviewService {
 
     private final TripReviewDao tripReviewDao;
     private final UserDao userDao;
-    private final TripDao tripDao;
-    private final TripSessionDao tripSessionDao;
+    private final OfferDao offerDao;
+    private final JobSessionDao jobSessionDao;
     private final EnrollmentDao enrollmentDao;
 
-    public TripReviewService(TripReviewDao tripReviewDao, UserDao userDao, TripDao tripDao, TripSessionDao tripSessionDao, EnrollmentDao enrollmentDao) {
+    public TripReviewService(TripReviewDao tripReviewDao, UserDao userDao, OfferDao offerDao, JobSessionDao jobSessionDao, EnrollmentDao enrollmentDao) {
         this.tripReviewDao = tripReviewDao;
         this.userDao = userDao;
-        this.tripDao = tripDao;
-        this.tripSessionDao = tripSessionDao;
+        this.offerDao = offerDao;
+        this.jobSessionDao = jobSessionDao;
         this.enrollmentDao = enrollmentDao;
     }
 
@@ -60,7 +60,7 @@ public class TripReviewService {
         long noReviews = trip.getTripReviews().size();
         double currentRating = trip.getRating();
         trip.setRating((currentRating*(noReviews-1) + tripReview.getRating())/noReviews);
-        tripDao.update(trip);
+        offerDao.update(trip);
     }
 
     @Transactional
@@ -77,7 +77,7 @@ public class TripReviewService {
 
         trip.setRating((currentRating*(noReviews) + newRating - oldRating)/noReviews);
 
-        tripDao.update(trip);
+        offerDao.update(trip);
         tripReviewDao.update(tripReview);
     }
 }

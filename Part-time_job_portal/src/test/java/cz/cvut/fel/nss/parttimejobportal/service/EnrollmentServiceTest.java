@@ -43,7 +43,7 @@ public class EnrollmentServiceTest {
     private UserService userService;
 
     @Autowired
-    private TripService tripService;
+    private OfferService offerService;
 
     @Autowired
     private TranslateService translateService;
@@ -52,7 +52,7 @@ public class EnrollmentServiceTest {
     private CategoryService categoryService;
 
     @Autowired
-    private TripSessionService tripSessionService;
+    private JobSessionService jobSessionService;
 
     @Before
     public void prepare() throws Exception {
@@ -65,9 +65,9 @@ public class EnrollmentServiceTest {
 
         ArrayList<JobSession> sessions = new ArrayList<JobSession>(Arrays.asList(tripSession, tripSession2, tripSession3));
         trip.setSessions(sessions);
-        tripService.create(trip);
+        offerService.create(trip);
 
-        tripSessionService.create(trip.getShort_name(),tripSession);
+        jobSessionService.create(trip.getShort_name(),tripSession);
 
         Category category = new Category("test");
         trip.setCategory(category);
@@ -78,9 +78,9 @@ public class EnrollmentServiceTest {
         tripSessionDto2 = translateService.translateSession(tripSession2);
         tripSessionDto3 = translateService.translateSession(tripSession3);
 
-        tripService.signUpToTrip(tripSessionDto,user);
-        tripService.signUpToTrip(tripSessionDto2,user);
-        tripService.signUpToTrip(tripSessionDto3,user);
+        offerService.signUpToTrip(tripSessionDto,user);
+        offerService.signUpToTrip(tripSessionDto2,user);
+        offerService.signUpToTrip(tripSessionDto3,user);
     }
 
     @Test

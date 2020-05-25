@@ -3,7 +3,7 @@ package cz.cvut.fel.nss.parttimejobportal.service;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.dao.CategoryDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.TravelJournalDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.TripDao;
+import cz.cvut.fel.nss.parttimejobportal.dao.OfferDao;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,14 +15,14 @@ import java.util.Objects;
 @Service
 public class TravelJournalService {
     private final TravelJournalDao dao;
-    private final TripDao tripDao;
+    private final OfferDao offerDao;
     private final CategoryDao categoryDao;
     private final AchievementCategorizedService achievementCategorizedService;
 
     @Autowired
-    public TravelJournalService(TravelJournalDao dao, TripDao tripDao, CategoryDao categoryDao, AchievementCategorizedService achievementCategorizedService) {
+    public TravelJournalService(TravelJournalDao dao, OfferDao offerDao, CategoryDao categoryDao, AchievementCategorizedService achievementCategorizedService) {
         this.dao = dao;
-        this.tripDao = tripDao;
+        this.offerDao = offerDao;
         this.categoryDao = categoryDao;
         this.achievementCategorizedService = achievementCategorizedService;
     }
@@ -33,7 +33,7 @@ public class TravelJournalService {
         Objects.requireNonNull(tripId);
 
         TravelJournal travelJournal = dao.find(travelJournalId);
-        Offer trip = tripDao.find(tripId);
+        Offer trip = offerDao.find(tripId);
         Category category = categoryDao.find(trip.getCategory().getId());
 
         System.out.println("ADDING TRIP" + category.getName());

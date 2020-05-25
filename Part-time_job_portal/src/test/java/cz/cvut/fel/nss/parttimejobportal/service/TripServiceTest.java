@@ -40,7 +40,7 @@ public class TripServiceTest {
     private EntityManager em;
 
     @Autowired
-    private TripService tripService;
+    private OfferService offerService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -54,7 +54,7 @@ public class TripServiceTest {
         s.add(new JobSession(trip,LocalDate.now(), LocalDate.now().plusDays(7),2000));
 
         trip.setSessions(s);
-        tripService.create(trip);
+        offerService.create(trip);
     }
 
     @Test
@@ -66,22 +66,22 @@ public class TripServiceTest {
         s.add(new JobSession(tr,LocalDate.now(), LocalDate.now().plusDays(7),2000));
         tr.setSessions(s);
 
-        tripService.create(tr);
-        Assert.assertEquals(tr,tripService.find(tr.getId()));
+        offerService.create(tr);
+        Assert.assertEquals(tr,offerService.find(tr.getId()));
     }
 
     @Test
     @Transactional
     @Rollback
     public void find_FindsExistingUserById(){
-        Assert.assertEquals(trip,tripService.find(trip.getId()));
+        Assert.assertEquals(trip,offerService.find(trip.getId()));
     }
 
     @Test
     @Transactional
     @Rollback
     public void find_FindsExistingUserByString(){
-        Assert.assertEquals(trip,tripService.findByString(trip.getShort_name()));
+        Assert.assertEquals(trip,offerService.findByString(trip.getShort_name()));
     }
 
     @Test
@@ -89,8 +89,8 @@ public class TripServiceTest {
     @Rollback
     public void update_TripUpdated() throws NotFoundException, MissingVariableException, BadDateException {
         trip.setSalary(3000);
-        tripService.update(trip.getShort_name(),trip);
-        Assert.assertEquals(3000f,tripService.find(trip.getId()).getSalary(),0.001);
+        offerService.update(trip.getShort_name(),trip);
+        Assert.assertEquals(3000f,offerService.find(trip.getId()).getSalary(),0.001);
     }
 
     @Test
@@ -108,8 +108,8 @@ public class TripServiceTest {
         userService.createUser(user,user.getPassword());
         tripReviewService.create(tripReview,trip.getSessions().get(0).getId());
 
-        tripService.delete(trip.getShort_name());
-        assertThrows(NotFoundException.class, ()-> tripService.find(trip.getId()));
+        offerService.delete(trip.getShort_name());
+        assertThrows(NotFoundException.class, ()-> offerService.find(trip.getId()));
     }
 
 

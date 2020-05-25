@@ -3,8 +3,8 @@ package cz.cvut.fel.nss.parttimejobportal.service;
 import cz.cvut.fel.nss.parttimejobportal.dto.*;
 import cz.cvut.fel.nss.parttimejobportal.model.Enrollment;
 import cz.cvut.fel.nss.parttimejobportal.model.JobSession;
-import cz.cvut.fel.nss.parttimejobportal.dao.TripDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.TripSessionDao;
+import cz.cvut.fel.nss.parttimejobportal.dao.OfferDao;
+import cz.cvut.fel.nss.parttimejobportal.dao.JobSessionDao;
 import cz.cvut.fel.nss.parttimejobportal.dto.*;
 import cz.cvut.fel.nss.parttimejobportal.exception.MissingVariableException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +16,22 @@ import java.util.List;
 
 
 @Service
-public class TripSessionService {
+public class JobSessionService {
 
-    private TripSessionDao tripSessionDao;
-    private TripDao tripDao;
+    private JobSessionDao jobSessionDao;
+    private OfferDao offerDao;
     private final TranslateService translateService;
 
     @Autowired
-    public TripSessionService(TripSessionDao tripSessionDao, TripDao tripDao, TranslateService translateService) {
-        this.tripSessionDao = tripSessionDao;
-        this.tripDao = tripDao;
+    public JobSessionService(JobSessionDao jobSessionDao, OfferDao offerDao, TranslateService translateService) {
+        this.jobSessionDao = jobSessionDao;
+        this.offerDao = offerDao;
         this.translateService = translateService;
     }
 
     @Transactional
     public List<JobSessionDto> findAllInTrip(String trip_short_name) {
-        List<JobSession> tripSessions = tripSessionDao.find(trip_short_name);
+        List<JobSession> tripSessions = jobSessionDao.find(trip_short_name);
         List<JobSessionDto> tripSessionDtos = new ArrayList<>();
 
         for (JobSession ts: tripSessions) {
@@ -43,8 +43,8 @@ public class TripSessionService {
     @Transactional
     public void create(String tripId, JobSession tripSession) throws Exception {
         if (tripSession.getTo_date().isBefore(tripSession.getFrom_date())) throw new Exception();
-        tripSession.setTrip(tripDao.find(tripId));
-        tripSessionDao.persist(tripSession);
+        tripSession.setTrip(offerDao.find(tripId));
+        jobSessionDao.persist(tripSession);
     }
 
     @Transactional
@@ -55,13 +55,13 @@ public class TripSessionService {
         oldSession.setCapacity(newSession.getCapacity());
         oldSession.setTo_date(newSession.getTo_date());
         oldSession.setTrip(newSession.getTrip());
-        tripSessionDao.update(oldSession);
+        jobSessionDao.update(oldSession);
         return oldSession;
     }
 
     @Transactional
     public List<RequestWrapperTripSessionsParticipants> findAllParticipants(String trip_short_name){
-        List<JobSession> tripSessions = tripSessionDao.find(trip_short_name);
+        List<JobSession> tripSessions = jobSessionDao.find(trip_short_name);
         List<RequestWrapperTripSessionsParticipants> response = new ArrayList<RequestWrapperTripSessionsParticipants>();
         for (JobSession session:tripSessions) {
             List<RequestWrapperEnrollmentGet> enrollments = new ArrayList<RequestWrapperEnrollmentGet>();

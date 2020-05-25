@@ -7,8 +7,8 @@ import javax.persistence.NoResultException;
 import java.util.List;
 
 @Repository
-public class TripSessionDao extends BaseDao<JobSession> {
-    public TripSessionDao() {
+public class JobSessionDao extends BaseDao<JobSession> {
+    public JobSessionDao() {
         super(JobSession.class);
     }
 
