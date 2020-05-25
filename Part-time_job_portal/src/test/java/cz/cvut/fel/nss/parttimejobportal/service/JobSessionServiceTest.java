@@ -39,7 +39,7 @@ public class JobSessionServiceTest {
 
     @Before
     public void prepare() throws BadDateException, MissingVariableException {
-        trip = new Offer("test2",11,"Description","shortName1",1000,"Hawaii",2);
+        trip = new Offer("test2",11,"Description","shortName1",1000,"Hawaii",2,null);
         tripSession = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(7),2000);
 
         ArrayList<JobSession> s = new ArrayList<JobSession>() {{add(tripSession);}};

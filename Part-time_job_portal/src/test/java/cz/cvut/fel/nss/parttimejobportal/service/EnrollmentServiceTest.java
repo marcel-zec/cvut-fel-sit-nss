@@ -56,7 +56,7 @@ public class EnrollmentServiceTest {
     @Before
     public void prepare() throws Exception {
         user = Generator.generateUser();
-        trip = new Offer("test2",11,"Description","shortName1",1000,"Hawaii",2);
+        trip = new Offer("test2",11,"Description","shortName1",1000,"Hawaii",2,null);
 
         tripSession = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(7),2000);
         tripSession2 = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(10),2500);

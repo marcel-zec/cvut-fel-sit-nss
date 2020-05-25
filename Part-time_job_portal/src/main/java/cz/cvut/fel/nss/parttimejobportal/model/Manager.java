@@ -14,6 +14,9 @@ public class Manager extends AbstractUser {
     @OneToMany(mappedBy = "author")
     private List<UserReview> userReviewsAuthor;
 
+    @OneToMany(mappedBy = "author")
+    private List<Offer> offers;
+
 
     public Manager() {
         super(Role.ADMIN);
@@ -40,5 +43,17 @@ public class Manager extends AbstractUser {
 
     public void addUserReviewAuthor(UserReview userReview){
         userReviewsAuthor.add(userReview);
+    }
+
+
+    public List<Offer> getOffers() {
+
+        return offers;
+    }
+
+
+    public void setOffers(List<Offer> offers) {
+
+        this.offers = offers;
     }
 }
