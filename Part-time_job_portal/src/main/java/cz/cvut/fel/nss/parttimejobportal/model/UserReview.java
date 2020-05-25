@@ -32,7 +32,7 @@ public class UserReview extends AbstractEntity {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
-    private User author;
+    private Manager author;
 
     @ManyToOne
     @JoinColumn(name = "trip_session_id", nullable = false)
@@ -40,7 +40,7 @@ public class UserReview extends AbstractEntity {
 
     public UserReview(@Size(max = 255, min = 0, message = "Max 255 characters.") String note, LocalDateTime date,
                       @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating,
-                      User user, User author, JobSession tripSession) {
+                      User user, Manager author, JobSession tripSession) {
         this.note = note;
         this.date = date;
         this.rating = rating;
@@ -86,11 +86,11 @@ public class UserReview extends AbstractEntity {
         this.user = user;
     }
 
-    public User getAuthor() {
+    public Manager getAuthor() {
         return author;
     }
 //set author of review
-    public void setAuthor(User author) {
+    public void setAuthor(Manager author) {
         author.addUserReviewAuthor(this);
         this.author = author;
     }

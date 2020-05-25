@@ -5,8 +5,6 @@ import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.dao.CategoryDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.TravelJournalDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.OfferDao;
-import cz.cvut.fel.nss.parttimejobportal.dto.*;
-import cz.cvut.fel.nss.parttimejobportal.model.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +47,24 @@ public class TranslateService {
 
        return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getEmail(),
                 translateAddress(user.getAddress()),null,tripReviewDtos, user.getRole(),userReviewDtos);
+    }
+
+    @Transactional
+    public UserDto translateManager(Manager manager) {
+        System.out.println(manager.toString());
+        Objects.requireNonNull(manager);
+        List<TripReviewDto> tripReviewDtos = new ArrayList<>();
+        List<UserReviewDto> userReviewDtos = new ArrayList<>();
+        List<UserReview> userReviews =  manager.getUserReviewsAuthor();
+
+
+        if (userReviews.size() > 0){
+            userReviews.forEach(review-> userReviewDtos.add(translateUserReview(review)));
+        }
+
+
+        return new UserDto(manager.getId(),manager.getFirstName(),manager.getLastName(),manager.getEmail(),
+                translateAddress(manager.getAddress()),null,tripReviewDtos, manager.getRole(),userReviewDtos);
     }
 
 

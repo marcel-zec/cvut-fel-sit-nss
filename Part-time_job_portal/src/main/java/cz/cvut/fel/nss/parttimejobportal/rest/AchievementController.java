@@ -1,6 +1,7 @@
 package cz.cvut.fel.nss.parttimejobportal.rest;
 
 import cz.cvut.fel.nss.parttimejobportal.dto.AchievementDto;
+import cz.cvut.fel.nss.parttimejobportal.model.User;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityConstants;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
 import cz.cvut.fel.nss.parttimejobportal.service.AchievementService;
@@ -27,6 +28,6 @@ public class AchievementController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<AchievementDto> getAllOfUser() {
-        return achievementService.findAllOfUser(SecurityUtils.getCurrentUser());
+        return achievementService.findAllOfUser((User) SecurityUtils.getCurrentUser());
     }
 }

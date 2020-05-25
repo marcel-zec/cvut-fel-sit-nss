@@ -5,7 +5,8 @@ import cz.cvut.fel.nss.parttimejobportal.dto.RequestWrapper;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadPassword;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.exception.UnauthorizedException;
-import cz.cvut.fel.nss.parttimejobportal.model.User;
+import cz.cvut.fel.nss.parttimejobportal.model.AbstractUser;
+import cz.cvut.fel.nss.parttimejobportal.model.Manager;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityConstants;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
 import cz.cvut.fel.nss.parttimejobportal.service.AdminService;
@@ -33,7 +34,7 @@ public class AdminController {
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> registerAdmin(@RequestBody RequestWrapper requestWrapper) throws BadPassword {
-        adminService.create(requestWrapper.getUser(), requestWrapper.getPassword_control());
+        adminService.create((Manager) requestWrapper.getUser(), requestWrapper.getPassword_control());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -55,8 +56,8 @@ public class AdminController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPERUSER')")
     @PatchMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody User user) throws NotFoundException, UnauthorizedException {
-        adminService.update(user, SecurityUtils.getCurrentUser());
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody AbstractUser user) throws NotFoundException, UnauthorizedException {
+        adminService.update((Manager) user, SecurityUtils.getCurrentUser());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

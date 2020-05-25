@@ -6,15 +6,10 @@ import cz.cvut.fel.nss.parttimejobportal.dao.TravelJournalDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.UserDao;
 import cz.cvut.fel.nss.parttimejobportal.dto.AchievementSpecialDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.EnrollmentDto;
-import cz.cvut.fel.nss.parttimejobportal.model.AchievementSpecial;
-import cz.cvut.fel.nss.parttimejobportal.model.Enrollment;
-import cz.cvut.fel.nss.parttimejobportal.model.EnrollmentState;
-import cz.cvut.fel.nss.parttimejobportal.model.User;
-import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.dto.RequestWrapperEnrollmentGet;
+import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
-import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.service.security.AccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -115,9 +110,9 @@ public class EnrollmentService {
     }
 
     @Transactional
-    public List<EnrollmentDto> findAllOfUser(User current_user) throws NotAllowedException {
+    public List<EnrollmentDto> findAllOfUser(AbstractUser current_user) throws NotAllowedException {
 
-        User user = accessService.getUser(current_user);
+        User user = userDao.find(current_user.getId());
         if (user == null) throw new NotAllowedException();
 
         List<Enrollment> enrollments = user.getTravel_journal().getEnrollments();
@@ -132,7 +127,7 @@ public class EnrollmentService {
     }
 
     @Transactional
-    public List<EnrollmentDto> findAllOfUserFinished(User current_user) throws NotAllowedException {
+    public List<EnrollmentDto> findAllOfUserFinished(AbstractUser current_user) throws NotAllowedException {
         List<EnrollmentDto> userEnrollments = findAllOfUser(current_user);
         List<EnrollmentDto> finished = new ArrayList<EnrollmentDto>();
 
@@ -143,7 +138,7 @@ public class EnrollmentService {
     }
 
     @Transactional
-    public List<EnrollmentDto> findAllOfUserActive(User current_user) throws NotAllowedException {
+    public List<EnrollmentDto> findAllOfUserActive(AbstractUser current_user) throws NotAllowedException {
         List<EnrollmentDto> userEnrollments = findAllOfUser(current_user);
         List<EnrollmentDto> active_canceled = new ArrayList<EnrollmentDto>();
 
@@ -155,14 +150,14 @@ public class EnrollmentService {
 
     @Transactional
     public List<EnrollmentDto> findAllOfUserFinished(Long id) throws NotFoundException, NotAllowedException {
-        User user = userDao.find(id);
+        AbstractUser user = userDao.find(id);
         if (user == null) throw new NotFoundException();
         return findAllOfUserFinished(user);
     }
 
     @Transactional
     public List<EnrollmentDto> findAllOfUserActive(Long id) throws NotFoundException, NotAllowedException {
-        User user = userDao.find(id);
+        AbstractUser user = userDao.find(id);
         if (user == null) throw new NotFoundException();
         return findAllOfUserActive(user);
     }

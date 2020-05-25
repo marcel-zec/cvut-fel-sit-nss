@@ -1,7 +1,7 @@
 package cz.cvut.fel.nss.parttimejobportal.security.model;
 
 
-import cz.cvut.fel.nss.parttimejobportal.model.User;
+import cz.cvut.fel.nss.parttimejobportal.model.AbstractUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -9,18 +9,18 @@ import java.util.*;
 
 public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
 
-    private User user;
+    private AbstractUser user;
 
     private final Set<GrantedAuthority> authorities;
 
-    public UserDetails(User user) {
+    public UserDetails(AbstractUser user) {
         Objects.requireNonNull(user);
         this.user = user;
         this.authorities = new HashSet<>();
         addUserRole();
     }
 
-    public UserDetails(User user, Collection<GrantedAuthority> authorities) {
+    public UserDetails(AbstractUser user, Collection<GrantedAuthority> authorities) {
         Objects.requireNonNull(user);
         Objects.requireNonNull(authorities);
         this.user = user;
@@ -69,7 +69,7 @@ public class UserDetails implements org.springframework.security.core.userdetail
         return true;
     }
 
-    public User getUser() {
+    public AbstractUser getUser() {
         return user;
     }
 

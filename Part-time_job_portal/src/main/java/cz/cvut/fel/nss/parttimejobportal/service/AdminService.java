@@ -1,11 +1,13 @@
 package cz.cvut.fel.nss.parttimejobportal.service;
 
+import cz.cvut.fel.nss.parttimejobportal.dao.AbstractUserDao;
+import cz.cvut.fel.nss.parttimejobportal.dao.ManagerDao;
 import cz.cvut.fel.nss.parttimejobportal.dto.UserDto;
 import cz.cvut.fel.nss.parttimejobportal.model.Address;
+import cz.cvut.fel.nss.parttimejobportal.model.Manager;
 import cz.cvut.fel.nss.parttimejobportal.model.Role;
-import cz.cvut.fel.nss.parttimejobportal.model.User;
+import cz.cvut.fel.nss.parttimejobportal.model.AbstractUser;
 import cz.cvut.fel.nss.parttimejobportal.dao.AddressDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.UserDao;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadPassword;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.exception.UnauthorizedException;
@@ -19,56 +21,58 @@ import java.util.Objects;
 @Service
 public class AdminService {
 
-    private final UserDao userDao;
+    private final ManagerDao managerDao;
     private final AddressDao addressDao;
+    private final AbstractUserDao abstractUserDao;
     private final TranslateService translateService;
 
-    public AdminService(UserDao userDao, AddressDao addressDao, TranslateService translateService) {
-        this.userDao = userDao;
+    public AdminService(ManagerDao managerDao, AddressDao addressDao, AbstractUserDao abstractUserDao, TranslateService translateService) {
+        this.managerDao = managerDao;
         this.addressDao = addressDao;
+        this.abstractUserDao = abstractUserDao;
         this.translateService = translateService;
     }
 
 
     @Transactional
-    public void create(User user, String passwordAgain) throws BadPassword {
-        Objects.requireNonNull(user);
-        if (!user.getPassword().equals(passwordAgain)) throw new BadPassword();
-        user.encodePassword();
-        user.setRole(Role.ADMIN);
-        userDao.persist(user);
+    public void create(Manager manager, String passwordAgain) throws BadPassword {
+        Objects.requireNonNull(manager);
+        if (!manager.getPassword().equals(passwordAgain)) throw new BadPassword();
+        manager.encodePassword();
+        manager.setRole(Role.ADMIN);
+        managerDao.persist(manager);
 
-        if (user.getAddress() != null){
-            user.getAddress().setUser(user);
-            addressDao.persist(user.getAddress());
+        if (manager.getAddress() != null){
+            manager.getAddress().setUser(manager);
+            addressDao.persist(manager.getAddress());
         }
 
-        userDao.update(user);
+        managerDao.update(manager);
     }
 
     @Transactional
     public UserDto find(Long id) {
         Objects.requireNonNull(id);
-        User user = userDao.find(id);
-        if(user != null && user.getRole() == Role.ADMIN) return translateService.translateUser(user);
+        Manager user = managerDao.find(id);
+        if(user != null && user.getRole() == Role.ADMIN) return translateService.translateManager(user);
         else return null;
     }
 
     @Transactional
     public List<UserDto> findAll() {
         List<UserDto> adminDtos = new ArrayList<>();
-        for (User user:userDao.findAll()) {
-            if(user.getRole() == Role.ADMIN) adminDtos.add(translateService.translateUser(user));
+        for (Manager user:managerDao.findAll()) {
+            if(user.getRole() == Role.ADMIN) adminDtos.add(translateService.translateManager(user));
         }
         return adminDtos;
     }
 
     // predpokladam, ze admina muze upravovat samotny admin a superuser
     @Transactional
-    public void update(User newUser, User current_user) throws NotFoundException, UnauthorizedException {
+    public void update(Manager newUser, AbstractUser current_user) throws NotFoundException, UnauthorizedException {
         Objects.requireNonNull(newUser);
-        current_user = userDao.find(current_user.getId());
-        User user = userDao.findByEmail(newUser.getEmail());
+        current_user = managerDao.find(current_user.getId());
+        AbstractUser user = managerDao.findByEmail(newUser.getEmail());
 
         if (user == null) throw NotFoundException.create("Admin", newUser.getEmail());
 
@@ -86,6 +90,6 @@ public class AdminService {
         }
 
         user = newUser;
-        userDao.update(user);
+        abstractUserDao.update(user);
     }
 }
