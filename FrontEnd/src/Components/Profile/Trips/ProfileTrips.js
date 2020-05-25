@@ -7,6 +7,7 @@ import ActiveTrips from "./ActiveTrips";
 import Spinner from "react-bootstrap/Spinner";
 import { appContext } from "../../../appContext";
 import { withRouter } from "react-router-dom";
+import { BASE_API_URL } from "../../../App";
 
 class ProfileTrips extends Profile {
     state = {
@@ -24,7 +25,7 @@ class ProfileTrips extends Profile {
     }
 
     fetchData = async () => {
-        await fetch("http://localhost:8080/enrollment/complete", {
+        await fetch(BASE_API_URL + "/enrollment/complete", {
             method: "GET",
             mode: "cors",
             credentials: "include",
@@ -44,7 +45,7 @@ class ProfileTrips extends Profile {
                 console.error(error);
             });
 
-        await fetch("http://localhost:8080/enrollment/active", {
+        await fetch(BASE_API_URL + "/enrollment/active", {
             method: "GET",
             mode: "cors",
             credentials: "include",
@@ -92,17 +93,14 @@ class ProfileTrips extends Profile {
                 console.log(props);
                 this.closeValidateWindow();
                 //TODO:UPDATE BACKEND
-                fetch(
-                    "http://localhost:8080/enrollment/cancel/" + enrollment.id,
-                    {
-                        method: "POST",
-                        mode: "cors",
-                        credentials: "include",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                    }
-                ).then((response) => {
+                fetch(BASE_API_URL + "/enrollment/cancel/" + enrollment.id, {
+                    method: "POST",
+                    mode: "cors",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }).then((response) => {
                     if (response.ok) {
                         window.setTimeout(function () {
                             alert("Trip was cancelled");
@@ -134,18 +132,14 @@ class ProfileTrips extends Profile {
         setTimeout(function () {
             state.setState({ deposit_was_paid: true });
             //TODO:UPDATE BACKEND
-            fetch(
-                "http://localhost:8080/enrollment/changePayment/" +
-                    enrollment.id,
-                {
-                    method: "POST",
-                    mode: "cors",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
-            ).then((response) => {
+            fetch(BASE_API_URL + "/enrollment/changePayment/" + enrollment.id, {
+                method: "POST",
+                mode: "cors",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }).then((response) => {
                 if (response.ok) {
                     window.setTimeout(function () {
                         alert("Trip was sucessfuly paid");

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "react-bootstrap/Spinner";
 import { Link } from "react-router-dom";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
+import { BASE_API_URL } from "../../../App";
 
 class Index extends React.Component {
     state = {
@@ -12,7 +13,7 @@ class Index extends React.Component {
     };
 
     async componentDidMount() {
-        const response = await fetch(`http://localhost:8080/category`, {
+        const response = await fetch(BASE_API_URL + "/category", {
             method: "GET",
             mode: "cors",
             credentials: "include",

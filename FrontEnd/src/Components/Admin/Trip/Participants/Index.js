@@ -14,14 +14,14 @@ import Spinner from "react-bootstrap/Spinner";
 import { Link, withRouter } from "react-router-dom";
 import ButtonInRow from "../../../SmartGadgets/ButtonInRow";
 import { appContext } from "../../../../appContext";
+import { BASE_API_URL } from "../../../../App";
 
 class Index extends React.Component {
     static contextType = appContext;
     state = { sessions: null };
     async componentDidMount() {
         await fetch(
-            "http://localhost:8080/trip/participants/" +
-                this.props.match.params.id,
+            BASE_API_URL + "/trip/participants/" + this.props.match.params.id,
             {
                 method: "GET",
                 credentials: "include",

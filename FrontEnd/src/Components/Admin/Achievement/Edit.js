@@ -14,6 +14,7 @@ import {
     validationClassName,
 } from "../../../Validator";
 import MyAlert from "../../SmartGadgets/MyAlert";
+import { BASE_API_URL } from "../../../App";
 
 class Edit extends React.Component {
     state = {
@@ -69,7 +70,8 @@ class Edit extends React.Component {
         };
         if (type == "categorized") {
             const response = await fetch(
-                `http://localhost:8080/achievement/categorized/` +
+                BASE_API_URL +
+                    "/achievement/categorized/" +
                     this.props.match.params.id,
                 requestSettings
             );
@@ -79,14 +81,15 @@ class Edit extends React.Component {
             this.setState({ achievement: dataCopy });
 
             const response1 = await fetch(
-                `http://localhost:8080/category`,
+                BASE_API_URL + "/category",
                 requestSettings
             );
             const data1 = await response1.json();
             this.setState({ categories: data1 });
         } else if (type == "certificate") {
             const response = await fetch(
-                `http://localhost:8080/achievement/certificate/` +
+                BASE_API_URL +
+                    "/achievement/certificate/" +
                     this.props.match.params.id,
                 requestSettings
             );
@@ -94,19 +97,15 @@ class Edit extends React.Component {
             this.setState({ achievement: data });
         } else if (type == "special") {
             const response = await fetch(
-                `http://localhost:8080/achievement/special/` +
+                BASE_API_URL +
+                    "/achievement/special/" +
                     this.props.match.params.id,
                 requestSettings
             );
             const data = await response.json();
             this.setState({ achievement: data });
         }
-        /*const response = await fetch(
-            `http://localhost:8080/achievement/` + this.props.match.params.id
-        );
-        const data = await response.json();
-        console.log(data);
-        this.setState({ achievement: data });*/
+
         console.log(this.state.achievement);
         console.log(this.state.categories);
         await this.setState({ type: type });
@@ -153,7 +152,8 @@ class Edit extends React.Component {
 
     fetchToBackend = (type) => {
         fetch(
-            "http://localhost:8080/achievement/" +
+            BASE_API_URL +
+                "/achievement/" +
                 type +
                 "/" +
                 this.props.match.params.id,

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "react-bootstrap/Spinner";
 import { Link, withRouter } from "react-router-dom";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
+import { BASE_API_URL } from "../../../App";
 
 class Index extends React.Component {
     state = {
@@ -34,7 +35,7 @@ class Index extends React.Component {
         };
 
         const response = await fetch(
-            `http://localhost:8080/achievement/categorized`,
+            BASE_API_URL + "/achievement/categorized",
             requestSettings
         );
         const data = await response.json();
@@ -42,7 +43,7 @@ class Index extends React.Component {
         this.setState({ categorized: data });
 
         const response1 = await fetch(
-            `http://localhost:8080/achievement/certificate`,
+            BASE_API_URL + "/achievement/certificate",
             requestSettings
         );
         const data1 = await response1.json();
@@ -50,7 +51,7 @@ class Index extends React.Component {
         this.setState({ certificate: data1 });
 
         const response2 = await fetch(
-            `http://localhost:8080/achievement/special`,
+            BASE_API_URL + "/achievement/special",
             requestSettings
         );
         const data2 = await response2.json();

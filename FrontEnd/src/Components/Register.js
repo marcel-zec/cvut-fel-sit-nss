@@ -12,6 +12,7 @@ import {
 } from "../Validator";
 import { withRouter } from "react-router-dom";
 import MyAlert from "./SmartGadgets/MyAlert";
+import { BASE_API_URL } from "../App";
 
 class Register extends React.Component {
     state = {
@@ -139,7 +140,7 @@ class Register extends React.Component {
             password_control: this.state.user.password_control,
         };
         console.log(objectToSend);
-        fetch("http://localhost:8080/user", {
+        fetch(BASE_API_URL + "/user", {
             method: "POST",
             mode: "cors",
             headers: {

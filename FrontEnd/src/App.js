@@ -137,7 +137,7 @@ class App extends React.Component {
     tryLogin = async () => {
         console.log("try login");
 
-        await fetch(`http://localhost:8080/user/current`, {
+        await fetch(BASE_API_URL + "/user/current", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -193,3 +193,4 @@ class App extends React.Component {
 }
 
 export default App;
+export const BASE_API_URL = "http://localhost:8080";

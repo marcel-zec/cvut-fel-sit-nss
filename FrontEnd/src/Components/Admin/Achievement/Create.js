@@ -13,6 +13,7 @@ import {
     validationClassName,
 } from "../../../Validator";
 import MyAlert from "../../SmartGadgets/MyAlert";
+import { BASE_API_URL } from "../../../App";
 
 class Create extends React.Component {
     state = {
@@ -157,7 +158,7 @@ class Create extends React.Component {
     };
 
     fetchCategories = async () => {
-        fetch("http://localhost:8080/category", {
+        fetch(BASE_API_URL + "/category", {
             method: "GET",
             mode: "cors",
             credentials: "include",
@@ -190,7 +191,7 @@ class Create extends React.Component {
                     ];
                     await this.setState(newState);
                 }
-                fetch("http://localhost:8080/achievement/categorized", {
+                fetch(BASE_API_URL + "/achievement/categorized", {
                     method: "POST",
                     mode: "cors",
                     credentials: "include",
@@ -214,7 +215,7 @@ class Create extends React.Component {
                     else console.log("Error: somethhing goes wrong");
                 });
             } else if (this.state.typeButtons.certificate.selected) {
-                fetch("http://localhost:8080/achievement/certificate", {
+                fetch(BASE_API_URL + "/achievement/certificate", {
                     method: "POST",
                     mode: "cors",
                     credentials: "include",
@@ -238,7 +239,7 @@ class Create extends React.Component {
                     else console.log("Error: somethhing goes wrong");
                 });
             } else {
-                fetch("http://localhost:8080/achievement/special", {
+                fetch(BASE_API_URL + "/achievement/special", {
                     method: "POST",
                     mode: "cors",
                     credentials: "include",
@@ -262,18 +263,6 @@ class Create extends React.Component {
                     else console.log("Error: somethhing goes wrong");
                 });
             }
-            /*fetch("http://localhost:8080/achievement", {
-                method: "POST",
-                mode: "cors",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(this.state.achievement),
-            }).then((response) => {
-                if (response.ok) this.props.history.push("/achievement");
-                //TODO - osetrenie vynimiek
-                else console.log("Error: somethhing goes wrong");
-            });*/
         }
     };
 

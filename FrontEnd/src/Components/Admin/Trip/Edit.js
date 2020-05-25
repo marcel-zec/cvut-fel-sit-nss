@@ -13,6 +13,7 @@ import {
     validationClassName,
 } from "../../../Validator";
 import MyAlert from "../../SmartGadgets/MyAlert";
+import { BASE_API_URL } from "../../../App";
 
 class Edit extends React.Component {
     state = {
@@ -309,7 +310,7 @@ class Edit extends React.Component {
         if (this.state.form.isValid) {
             console.log("before patch");
             console.log(this.state.trip);
-            fetch("http://localhost:8080/trip/" + this.props.match.params.id, {
+            fetch(BASE_API_URL + "/trip/" + this.props.match.params.id, {
                 method: "PATCH",
                 credentials: "include",
                 headers: {
@@ -340,7 +341,7 @@ class Edit extends React.Component {
             },
         };
         await fetch(
-            `http://localhost:8080/trip/` + this.props.match.params.id,
+            BASE_API_URL + "/trip/" + this.props.match.params.id,
             requestSettings
         )
             .then((response) => {
@@ -354,7 +355,7 @@ class Edit extends React.Component {
                 console.error(error);
             });
 
-        await fetch(`http://localhost:8080/category`, requestSettings)
+        await fetch(BASE_API_URL + "/category", requestSettings)
             .then((response) => {
                 if (response.ok) return response.json();
                 else console.error(response.status);
@@ -366,10 +367,7 @@ class Edit extends React.Component {
                 console.error(error);
             });
 
-        await fetch(
-            `http://localhost:8080/achievement/categorized`,
-            requestSettings
-        )
+        await fetch(BASE_API_URL + "/achievement/categorized", requestSettings)
             .then((response) => {
                 if (response.ok) return response.json();
                 else console.error(response.status);
@@ -381,10 +379,7 @@ class Edit extends React.Component {
                 console.error(error);
             });
 
-        await fetch(
-            `http://localhost:8080/achievement/special`,
-            requestSettings
-        )
+        await fetch(BASE_API_URL + "/achievement/special", requestSettings)
             .then((response) => {
                 if (response.ok) return response.json();
                 else console.error(response.status);
@@ -396,10 +391,7 @@ class Edit extends React.Component {
                 console.error(error);
             });
 
-        await fetch(
-            `http://localhost:8080/achievement/certificate`,
-            requestSettings
-        )
+        await fetch(BASE_API_URL + "/achievement/certificate", requestSettings)
             .then((response) => {
                 if (response.ok) return response.json();
                 else console.error(response.status);

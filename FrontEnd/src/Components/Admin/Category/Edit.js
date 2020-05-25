@@ -10,6 +10,7 @@ import {
     validationFeedback,
     validationClassName,
 } from "../../../Validator";
+import { BASE_API_URL } from "../../../App";
 
 class Edit extends React.Component {
     state = {
@@ -28,7 +29,7 @@ class Edit extends React.Component {
 
     async componentDidMount() {
         const response = await fetch(
-            `http://localhost:8080/category/` + this.props.match.params.id,
+            BASE_API_URL + "/category/" + this.props.match.params.id,
             {
                 method: "GET",
                 mode: "cors",

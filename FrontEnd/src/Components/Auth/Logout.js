@@ -2,6 +2,7 @@ import React from "react";
 import { Container, Spinner } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 import { appContext } from "../../appContext";
+import { BASE_API_URL } from "../../App";
 
 class Logout extends React.Component {
     state = {
@@ -11,7 +12,7 @@ class Logout extends React.Component {
     static contextType = appContext;
 
     componentDidMount() {
-        fetch(`http://localhost:8080/logout`, {
+        fetch(BASE_API_URL + "/logout", {
             method: "GET",
             mode: "cors",
             credentials: "include",

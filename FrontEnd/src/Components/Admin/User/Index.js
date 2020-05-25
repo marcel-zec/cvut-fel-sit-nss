@@ -6,11 +6,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "react-bootstrap/Spinner";
 import { Link } from "react-router-dom";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
+import { BASE_API_URL } from "../../../App";
 
 class Index extends React.Component {
     state = { users: null };
     async componentDidMount() {
-        fetch("http://localhost:8080/user", {
+        fetch(BASE_API_URL + "/user", {
             method: "GET",
             mode: "cors",
             credentials: "include",

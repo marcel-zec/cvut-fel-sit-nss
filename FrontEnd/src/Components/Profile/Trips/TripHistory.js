@@ -9,6 +9,7 @@ import DatePicker from "react-datepicker";
 import RangeSlider from "react-bootstrap-range-slider";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import ModalCentered from "../../SmartGadgets/ModalCentered";
+import { BASE_API_URL } from "../../../App";
 
 class TripHistory extends React.Component {
     state = {
@@ -44,7 +45,7 @@ class TripHistory extends React.Component {
             note: this.state.note,
             rating: this.state.rating,
         };
-        fetch("http://localhost:8080/trip_review/" + this.state.enrollment.id, {
+        fetch(BASE_API_URL + "/trip_review/" + this.state.enrollment.id, {
             method: "POST",
             credentials: "include",
             headers: {

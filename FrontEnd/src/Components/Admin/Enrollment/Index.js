@@ -7,6 +7,7 @@ import { Link, withRouter } from "react-router-dom";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 import ModalCentered from "../../SmartGadgets/ModalCentered";
 import MyAlert from "../../SmartGadgets/MyAlert";
+import { BASE_API_URL } from "../../../App";
 
 class Index extends React.Component {
     state = {
@@ -23,7 +24,7 @@ class Index extends React.Component {
     };
 
     submitHandler = async (event, enrollment) => {
-        await fetch(`http://localhost:8080/enrollment/close/` + enrollment.id, {
+        await fetch(BASE_API_URL + "/enrollment/close/" + enrollment.id, {
             method: "POST",
             mode: "cors",
             credentials: "include",
@@ -46,7 +47,7 @@ class Index extends React.Component {
     };
 
     fetchData = async () => {
-        await fetch(`http://localhost:8080/enrollment/close`, {
+        await fetch(BASE_API_URL + "/enrollment/close", {
             method: "GET",
             mode: "cors",
             credentials: "include",

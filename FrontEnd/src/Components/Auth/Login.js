@@ -10,6 +10,7 @@ import {
 import MyAlert from "../SmartGadgets/MyAlert";
 import { withRouter } from "react-router-dom";
 import { appContext } from "../../appContext";
+import { BASE_API_URL } from "../../App";
 
 class Login extends React.Component {
     static contextType = appContext;
@@ -60,7 +61,7 @@ class Login extends React.Component {
         console.log(this.state.user);
         await this.validateForm();
         if (this.state.form.isValid) {
-            fetch("http://localhost:8080/login", {
+            fetch(BASE_API_URL + "/login", {
                 method: "POST",
                 mode: "cors",
                 credentials: "include",

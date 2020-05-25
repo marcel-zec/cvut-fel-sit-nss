@@ -14,12 +14,13 @@ import Spinner from "react-bootstrap/Spinner";
 import { Link } from "react-router-dom";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 import { appContext } from "../../../appContext";
+import { BASE_API_URL } from "../../../App";
 
 class Index extends React.Component {
     static contextType = appContext;
     state = { trips: null };
     async componentDidMount() {
-        await fetch(`http://localhost:8080/trip`, {
+        await fetch(BASE_API_URL + "/trip", {
             method: "GET",
             credentials: "include",
             headers: {

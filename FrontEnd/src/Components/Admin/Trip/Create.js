@@ -13,6 +13,7 @@ import {
     validationClassName,
 } from "../../../Validator";
 import MyAlert from "../../SmartGadgets/MyAlert";
+import { BASE_API_URL } from "../../../App";
 
 class Create extends React.Component {
     state = {
@@ -233,7 +234,7 @@ class Create extends React.Component {
         console.log("submit");
         console.log(this.state.trip);
         if (this.state.form.isValid) {
-            fetch("http://localhost:8080/trip", {
+            fetch(BASE_API_URL + "/trip", {
                 method: "POST",
                 mode: "cors",
                 credentials: "include",
@@ -341,7 +342,7 @@ class Create extends React.Component {
                 "Content-Type": "application/json",
             },
         };
-        await fetch(`http://localhost:8080/category`, requestSettings)
+        await fetch(BASE_API_URL + "/category", requestSettings)
             .then((response) => {
                 if (response.ok) return response.json();
                 else console.error(response.status);
@@ -353,10 +354,7 @@ class Create extends React.Component {
                 console.error(error);
             });
 
-        await fetch(
-            `http://localhost:8080/achievement/categorized`,
-            requestSettings
-        )
+        await fetch(BASE_API_URL + "/achievement/categorized", requestSettings)
             .then((response) => {
                 if (response.ok) return response.json();
                 else console.error(response.status);
@@ -368,10 +366,7 @@ class Create extends React.Component {
                 console.error(error);
             });
 
-        await fetch(
-            `http://localhost:8080/achievement/special`,
-            requestSettings
-        )
+        await fetch(BASE_API_URL + "/achievement/special", requestSettings)
             .then((response) => {
                 if (response.ok) return response.json();
                 else console.error(response.status);
@@ -383,10 +378,7 @@ class Create extends React.Component {
                 console.error(error);
             });
 
-        await fetch(
-            `http://localhost:8080/achievement/certificate`,
-            requestSettings
-        )
+        await fetch(BASE_API_URL + "/achievement/certificate", requestSettings)
             .then((response) => {
                 if (response.ok) return response.json();
                 else console.error(response.status);

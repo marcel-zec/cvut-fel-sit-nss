@@ -10,6 +10,7 @@ import AchievmentModal from "../../SmartGadgets/AchievementModal";
 import AchievementListInline from "../../SmartGadgets/AchievementListInline";
 import { appContext } from "../../../appContext";
 import MyAlert from "../../SmartGadgets/MyAlert";
+import { BASE_API_URL } from "../../../App";
 
 class Detail extends React.Component {
     state = {
@@ -29,7 +30,7 @@ class Detail extends React.Component {
 
     async componentDidMount() {
         const response = await fetch(
-            `http://localhost:8080/trip/` + this.props.match.params.id,
+            BASE_API_URL + "trip/" + this.props.match.params.id,
             {
                 method: "GET",
                 mode: "cors",
@@ -76,7 +77,7 @@ class Detail extends React.Component {
             .checked;
         if (checboxIsChecked && this.formIsValid) {
             console.log("READY K ODESLANI");
-            fetch("http://localhost:8080/trip/" + this.state.trip.short_name, {
+            fetch(BASE_API_URL + "/trip/" + this.state.trip.short_name, {
                 method: "POST",
                 mode: "cors",
                 credentials: "include",

@@ -4,10 +4,11 @@ import TripSmall from "./TripSmall";
 import CardColumns from "react-bootstrap/CardColumns";
 import Spinner from "react-bootstrap/Spinner";
 import Cookies from "universal-cookie";
+import { BASE_API_URL } from "../../../App";
 
 class Index extends React.Component {
     async componentDidMount() {
-        const response = await fetch(`http://localhost:8080/trip`, {
+        const response = await fetch(BASE_API_URL + "/trip", {
             method: "GET",
             mode: "cors",
             credentials: "include",

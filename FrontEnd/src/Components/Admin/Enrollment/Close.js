@@ -24,6 +24,7 @@ import Slider from "@material-ui/core/Slider";
 import NumericInput from "react-numeric-input";
 import RangeSlider from "react-bootstrap-range-slider";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
+import { BASE_API_URL } from "../../../App";
 
 class Close extends React.Component {
     state = {
@@ -141,7 +142,7 @@ class Close extends React.Component {
         console.log(request);
         ///*if (this.state.form.isValid) {
 
-        fetch("http://localhost:8080/enrollment/close", {
+        fetch(BASE_API_URL + "/enrollment/close", {
             method: "PATCH",
             credentials: "include",
             headers: {
@@ -158,8 +159,7 @@ class Close extends React.Component {
 
     async componentDidMount() {
         const response = await fetch(
-            `http://localhost:8080/enrollment/close/` +
-                this.props.match.params.id,
+            BASE_API_URL + "/enrollment/close/" + this.props.match.params.id,
             {
                 method: "GET",
                 mode: "cors",

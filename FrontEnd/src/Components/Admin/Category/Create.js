@@ -10,6 +10,7 @@ import {
     validationClassName,
 } from "../../../Validator";
 import { withRouter } from "react-router-dom";
+import { BASE_API_URL } from "../../../App";
 
 class Create extends React.Component {
     state = {
@@ -30,7 +31,7 @@ class Create extends React.Component {
         event.preventDefault();
         await this.validateForm();
         if (this.state.form.isValid) {
-            fetch("http://localhost:8080/category", {
+            fetch(BASE_API_URL + "/category", {
                 method: "POST",
                 mode: "cors",
                 credentials: "include",
