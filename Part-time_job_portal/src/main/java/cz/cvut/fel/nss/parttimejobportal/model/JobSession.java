@@ -13,10 +13,10 @@ import java.util.List;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "TripSession.findByTrip", query = "SELECT t FROM TripSession t WHERE t.trip.short_name = :trip_short_name AND t.deleted_at is null")
+        @NamedQuery(name = "JobSession.findByTrip", query = "SELECT t FROM JobSession t WHERE t.trip.short_name = :trip_short_name AND t.deleted_at is null")
 })
-@Table(name = "TRIP_SESSION")
-public class TripSession extends AbstractEntity {
+@Table(name = "JOB_SESSION")
+public class JobSession extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -31,9 +31,9 @@ public class TripSession extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
-    @Min(value = 0, message = "Min 0")
-    @Max(value = 99999, message = "Max 99999")
-    private double price;
+    @Min(value = 1, message = "Min 1")
+    @Max(value = 500, message = "Max 500")
+    private int capacity;
 
     @JsonIgnore
     @ManyToOne
@@ -43,15 +43,15 @@ public class TripSession extends AbstractEntity {
     @OneToMany(mappedBy = "tripSession")
     private List<Enrollment> enrollments;
 
-    public TripSession() {
+    public JobSession() {
         this.enrollments = new ArrayList<>();
     }
 
-    public TripSession(Offer trip, LocalDate from_date, LocalDate to_date, double price) {
+    public JobSession(Offer trip, LocalDate from_date, LocalDate to_date, int capacity) {
         this.trip = trip;
         this.from_date = from_date;
         this.to_date = to_date;
-        this.price = price;
+        this.capacity = capacity;
         this.enrollments = new ArrayList<>();
     }
 
@@ -71,12 +71,12 @@ public class TripSession extends AbstractEntity {
         this.to_date = to_date;
     }
 
-    public double getPrice() {
-        return price;
+    public int getCapacity() {
+        return capacity;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     public Offer getTrip() {

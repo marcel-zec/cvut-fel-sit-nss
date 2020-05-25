@@ -2,7 +2,7 @@ package cz.cvut.fel.nss.parttimejobportal.service;
 
 import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.dto.OfferDto;
-import cz.cvut.fel.nss.parttimejobportal.dto.TripSessionDto;
+import cz.cvut.fel.nss.parttimejobportal.dto.JobSessionDto;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadDateException;
@@ -88,8 +88,8 @@ public class TripService {
                 }
         }
 
-        List<TripSession> sessions = new ArrayList<>();
-        for(TripSession tripSession : trip.getSessions()) {
+        List<JobSession> sessions = new ArrayList<>();
+        for(JobSession tripSession : trip.getSessions()) {
             if(tripSession.isNotDeleted() && tripSession.getTo_date().isAfter(LocalDate.now())) {
                 sessions.add(tripSession);
             }
@@ -111,8 +111,8 @@ public class TripService {
         Offer trip = tripDao.find(stringId);
         OfferDto tripDto = translateService.translateTrip(trip);
 
-        List<TripSessionDto> sessions = new ArrayList<>();
-        for(TripSession tripSession : trip.getSessions()) {
+        List<JobSessionDto> sessions = new ArrayList<>();
+        for(JobSession tripSession : trip.getSessions()) {
             if(tripSession.isNotDeleted() &&
                     tripSession.getTo_date().isAfter(LocalDate.now()) &&
                     tripSession.getFrom_date().isAfter(LocalDate.now())) {
@@ -130,7 +130,7 @@ public class TripService {
         Objects.requireNonNull(trip);
         if (trip.getSessions().size()<=0) throw new MissingVariableException();
         tripDao.persist(trip);
-        for (TripSession session: trip.getSessions()) {
+        for (JobSession session: trip.getSessions()) {
             if (session.getTo_date().isBefore(session.getFrom_date())) {
                 tripDao.remove(trip);
                 throw new BadDateException();
@@ -142,8 +142,8 @@ public class TripService {
     }
 
     @Transactional
-    public void signUpToTrip(TripSessionDto tripSessionDto, User current_user) throws NotAllowedException {
-        TripSession tripSession = tripSessionDao.find(tripSessionDto.getId());
+    public void signUpToTrip(JobSessionDto tripSessionDto, User current_user) throws NotAllowedException {
+        JobSession tripSession = tripSessionDao.find(tripSessionDto.getId());
 //      TODO odkomentovat ked bude otestovane ukoncovanie tripov
 //       if (tripSession.getFrom_date().isBefore(ChronoLocalDate.from(LocalDateTime.now()))) throw new NotAllowedException();
         User user = userDao.find(current_user.getId());
@@ -205,11 +205,11 @@ public class TripService {
         }
 
         for (int i = 0; i < newTrip.getSessions().size() ; i++) {
-            TripSession newSession = newTrip.getSessions().get(i);
+            JobSession newSession = newTrip.getSessions().get(i);
             if (newSession.getTo_date().isBefore(newSession.getFrom_date())) throw new BadDateException();
 
             if (i <= trip.getSessions().size()-1 ){
-                TripSession oldSession = trip.getSessions().get(i);
+                JobSession oldSession = trip.getSessions().get(i);
 
                 newTrip.getSessions().get(i).setId(oldSession.getId());
                 oldSession = newSession;
@@ -231,7 +231,7 @@ public class TripService {
         Offer trip = tripDao.find(stringId);
         if (trip == null) throw new NotFoundException();
 
-        for (TripSession session :trip.getSessions()) {
+        for (JobSession session :trip.getSessions()) {
             session.softDelete();
             tripSessionDao.update(session);
         }
@@ -288,7 +288,7 @@ public class TripService {
     }
 
     private boolean isTripActive(Offer trip) {
-        for(TripSession tripSession : trip.getSessions()) {
+        for(JobSession tripSession : trip.getSessions()) {
             if(tripSession.isNotDeleted() && tripSession.getTo_date().isAfter(LocalDate.now()) && tripSession.getFrom_date().isAfter(LocalDate.now())) {
                 return true;
             }

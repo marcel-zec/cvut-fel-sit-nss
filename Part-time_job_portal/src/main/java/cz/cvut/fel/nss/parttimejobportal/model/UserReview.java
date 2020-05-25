@@ -36,11 +36,11 @@ public class UserReview extends AbstractEntity {
 
     @ManyToOne
     @JoinColumn(name = "trip_session_id", nullable = false)
-    private TripSession tripSession;
+    private JobSession tripSession;
 
     public UserReview(@Size(max = 255, min = 0, message = "Max 255 characters.") String note, LocalDateTime date,
                       @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating,
-                      User user, User author, TripSession tripSession) {
+                      User user, User author, JobSession tripSession) {
         this.note = note;
         this.date = date;
         this.rating = rating;
@@ -95,11 +95,11 @@ public class UserReview extends AbstractEntity {
         this.author = author;
     }
 
-    public TripSession getTripSession() {
+    public JobSession getTripSession() {
         return tripSession;
     }
 
-    public void setTripSession(TripSession tripSession) {
+    public void setTripSession(JobSession tripSession) {
         this.tripSession = tripSession;
     }
 }

@@ -1,9 +1,9 @@
 package cz.cvut.fel.nss.parttimejobportal.rest;
 
 import cz.cvut.fel.nss.parttimejobportal.dto.OfferDto;
-import cz.cvut.fel.nss.parttimejobportal.dto.TripSessionDto;
+import cz.cvut.fel.nss.parttimejobportal.dto.JobSessionDto;
 import cz.cvut.fel.nss.parttimejobportal.model.Offer;
-import cz.cvut.fel.nss.parttimejobportal.model.TripSession;
+import cz.cvut.fel.nss.parttimejobportal.model.JobSession;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,7 +72,7 @@ public class TripControllerTest extends AbstractTest {
     @WithMockUser(username = "admin@gmail.com",roles={"USER","ADMIN"})
     public void createTripTest()throws Exception{
         Offer trip = new Offer("test1",10,"Description","shortName",2000,"Hawaii",3);
-        trip.setSessions(Collections.singletonList(new TripSession(trip, LocalDate.now(), LocalDate.now().plusDays(7), 2000)));
+        trip.setSessions(Collections.singletonList(new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(7), 2000)));
         String uri = "/trip";
         String inputJson = super.mapToJson(trip);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
@@ -86,7 +86,7 @@ public class TripControllerTest extends AbstractTest {
     public void updateTest() throws Exception {
         String uri = "/trip/fuguvar";
         Offer trip = new Offer("test1",10,"Description","shortName",2000,"Hawaii",3);
-        trip.setSessions(Collections.singletonList(new TripSession(trip, LocalDate.now(), LocalDate.now().plusDays(7), 2000)));
+        trip.setSessions(Collections.singletonList(new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(7), 2000)));
         trip.setSalary(1945);
         String inputJson = super.mapToJson(trip);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.patch(uri).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
@@ -109,7 +109,7 @@ public class TripControllerTest extends AbstractTest {
     public void signUpToTripTest() throws Exception {
         String uri = "/trip/fuguvar";
 
-        TripSessionDto tripSessionDto = new TripSessionDto();
+        JobSessionDto tripSessionDto = new JobSessionDto();
 
         String inputJson = super.mapToJson(tripSessionDto);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri)

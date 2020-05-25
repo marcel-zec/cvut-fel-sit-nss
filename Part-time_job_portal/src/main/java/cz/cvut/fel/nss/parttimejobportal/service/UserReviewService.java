@@ -3,7 +3,7 @@ package cz.cvut.fel.nss.parttimejobportal.service;
 
 import cz.cvut.fel.nss.parttimejobportal.dto.UserReviewDto;
 import cz.cvut.fel.nss.parttimejobportal.model.Enrollment;
-import cz.cvut.fel.nss.parttimejobportal.model.TripSession;
+import cz.cvut.fel.nss.parttimejobportal.model.JobSession;
 import cz.cvut.fel.nss.parttimejobportal.model.User;
 import cz.cvut.fel.nss.parttimejobportal.model.UserReview;
 import cz.cvut.fel.nss.parttimejobportal.dao.EnrollmentDao;
@@ -92,7 +92,7 @@ public class UserReviewService {
         Enrollment enrollment = enrollmentDao.find(enrollmentId);
         User user = enrollment.getTravelJournal().getUser();
         User current_user = userDao.find(currentUser.getId());
-        TripSession tripSession = tripSessionDao.find(tripSessionId);
+        JobSession tripSession = tripSessionDao.find(tripSessionId);
 
         if (user == null || tripSession==null) throw new NotFoundException();
 
@@ -110,7 +110,7 @@ public class UserReviewService {
 
         User user = enrollment.getTravelJournal().getUser();
         User current_user = userDao.find(currentUser.getId());
-        TripSession tripSession = tripSessionDao.find(enrollment.getTripSession().getId());
+        JobSession tripSession = tripSessionDao.find(enrollment.getTripSession().getId());
         UserReview userReview = new UserReview();
 
         if (user == null || tripSession == null) throw new NotFoundException();

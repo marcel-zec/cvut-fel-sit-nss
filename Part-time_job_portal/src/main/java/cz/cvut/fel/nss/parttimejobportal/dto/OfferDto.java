@@ -52,7 +52,7 @@ public class OfferDto {
     private List<AchievementCategorizedDto> required_achievements_categorized;
     private List<AchievementSpecialDto> required_achievements_special;
     private List<AchievementSpecialDto> gain_achievements_special;
-    private List<TripSessionDto> sessions;
+    private List<JobSessionDto> sessions;
     private List<TripReviewDto> tripReviewDtos;
 
     public OfferDto() {
@@ -62,7 +62,7 @@ public class OfferDto {
                    @Min(value = 0, message = "Min 0") @Max(value = 20, message = "Max 20") int possible_xp_reward, @Size(max = 3000, min = 0, message = "Max 3000 characters.") String description, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating,
                    @Min(value = 0, message = "Min 0") @Max(value = 10000, message = "Max 10 000") double salary, @Size(max = 200, min = 0, message = "Max 200 characters.") String location, @Min(value = 0, message = "Min 0") int required_level, Long categoryId, List<AchievementCertificateDto> required_certificates,
                    List<AchievementCategorizedDto> required_achievements_categorized, List<AchievementSpecialDto> required_achievements_special,
-                   List<AchievementSpecialDto> gain_achievements, List<TripSessionDto> sessions, List<TripReviewDto> tripReviewDtos) {
+                   List<AchievementSpecialDto> gain_achievements, List<JobSessionDto> sessions, List<TripReviewDto> tripReviewDtos) {
         this.id = id;
         this.name = name;
         this.short_name = short_name;
@@ -185,11 +185,11 @@ public class OfferDto {
         this.gain_achievements_special = gain_achievements;
     }
 
-    public List<TripSessionDto> getSessions() {
+    public List<JobSessionDto> getSessions() {
         return sessions;
     }
 
-    public void setSessions(List<TripSessionDto> sessions) {
+    public void setSessions(List<JobSessionDto> sessions) {
         this.sessions = sessions;
     }
 

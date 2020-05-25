@@ -45,13 +45,6 @@ class TripSmall extends React.Component {
             dates = numberOfDates + " dates";
         }
         let sessions = this.props.trip.sessions;
-        let lowestPrice = sessions[0].price;
-
-        sessions.forEach((session) => {
-            if (session.price < lowestPrice) {
-                lowestPrice = session.price;
-            }
-        });
 
         return (
             <Link to={"/trips/" + this.props.trip.short_name}>
@@ -85,7 +78,7 @@ class TripSmall extends React.Component {
                             <Row>{reviewStars}</Row>
                         </Col>
                         <Col className="text price">
-                            <span>{lowestPrice} Kč</span>
+                            <span>{this.props.trip.salary} Kč</span>
                         </Col>
                     </Row>
                 </Card>

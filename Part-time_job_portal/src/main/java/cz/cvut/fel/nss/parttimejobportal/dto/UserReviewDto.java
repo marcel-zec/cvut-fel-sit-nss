@@ -25,12 +25,12 @@ public class UserReviewDto {
     private Long userId;
 
     private Long authorId;
-    private TripSessionDto tripSessionDto;
+    private JobSessionDto tripSessionDto;
 
 
     public UserReviewDto(@NotNull(message = "Id cannot be blank") Long id, @NotNull(message = "Note cannot be blank") @Size(max = 255, min = 0, message = "Max 255 characters.") String note,
                          @NotNull(message = "Date cannot be blank") LocalDateTime date, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating,
-                         @NotNull(message = "User id cannot be blank") Long userId, Long authorId, TripSessionDto tripSessionDto) {
+                         @NotNull(message = "User id cannot be blank") Long userId, Long authorId, JobSessionDto tripSessionDto) {
 
         this.id = id;
         this.note = note;
@@ -119,13 +119,13 @@ public class UserReviewDto {
     }
 
 
-    public TripSessionDto getTripSessionDto() {
+    public JobSessionDto getTripSessionDto() {
 
         return tripSessionDto;
     }
 
 
-    public void setTripSessionDto(TripSessionDto tripSessionDto) {
+    public void setTripSessionDto(JobSessionDto tripSessionDto) {
 
         this.tripSessionDto = tripSessionDto;
     }

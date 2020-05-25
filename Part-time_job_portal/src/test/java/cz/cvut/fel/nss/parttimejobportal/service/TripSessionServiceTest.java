@@ -5,7 +5,7 @@ import cz.cvut.fel.nss.parttimejobportal.exception.BadDateException;
 import cz.cvut.fel.nss.parttimejobportal.exception.MissingVariableException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.model.Offer;
-import cz.cvut.fel.nss.parttimejobportal.model.TripSession;
+import cz.cvut.fel.nss.parttimejobportal.model.JobSession;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +27,7 @@ import static org.junit.Assert.*;
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class TripSessionServiceTest {
 
-    private TripSession tripSession;
+    private JobSession tripSession;
     private Offer trip;
 
     @Autowired
@@ -40,9 +40,9 @@ public class TripSessionServiceTest {
     @Before
     public void prepare() throws BadDateException, MissingVariableException {
         trip = new Offer("test2",11,"Description","shortName1",1000,"Hawaii",2);
-        tripSession = new TripSession(trip, LocalDate.now(), LocalDate.now().plusDays(7),2000);
+        tripSession = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(7),2000);
 
-        ArrayList<TripSession> s = new ArrayList<TripSession>() {{add(tripSession);}};
+        ArrayList<JobSession> s = new ArrayList<JobSession>() {{add(tripSession);}};
         trip.setSessions(s);
 
         tripService.create(trip);
@@ -60,22 +60,22 @@ public class TripSessionServiceTest {
     @Transactional
     @Rollback
     public void update_UpdatesTripSession() throws Exception {
-        TripSession tripSession1 = new TripSession(trip, LocalDate.now(), LocalDate.now().plusDays(6),1500);
+        JobSession tripSession1 = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(6),1500);
 
         tripSessionService.update(tripSession,tripSession1);
         assertEquals(tripSession1.getFrom_date(), tripService.find(trip.getId()).getSessions().get(0).getFrom_date());
-        assertEquals(1500,tripService.find(trip.getId()).getSessions().get(0).getPrice(),0.001);
+        assertEquals(1500,tripService.find(trip.getId()).getSessions().get(0).getCapacity(),0.001);
     }
 
     @Test
     @Transactional
     @Rollback
     public void findAllInTrip_FindsAllTripSessions() throws NotFoundException, MissingVariableException, BadDateException {
-        TripSession tripSession1 = new TripSession(trip, LocalDate.now(), LocalDate.now().plusDays(6),1500);
-        TripSession tripSession2 = new TripSession(trip, LocalDate.now(), LocalDate.now().plusDays(6),1500);
-        TripSession tripSession3 = new TripSession(trip, LocalDate.now(), LocalDate.now().plusDays(6),1500);
+        JobSession tripSession1 = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(6),1500);
+        JobSession tripSession2 = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(6),1500);
+        JobSession tripSession3 = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(6),1500);
 
-        ArrayList<TripSession> exp = new ArrayList<TripSession>(){{add(tripSession1);add(tripSession2);add(tripSession3);}};
+        ArrayList<JobSession> exp = new ArrayList<JobSession>(){{add(tripSession1);add(tripSession2);add(tripSession3);}};
         trip.setSessions(exp);
 
         tripService.update(trip.getShort_name(),trip);

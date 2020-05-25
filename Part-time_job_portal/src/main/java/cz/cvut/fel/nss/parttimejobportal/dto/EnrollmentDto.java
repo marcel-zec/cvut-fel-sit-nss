@@ -31,12 +31,12 @@ public class EnrollmentDto {
     private List<AchievementSpecialDto> recieved_achievements_special;
     private Long travelJournalId;
     private OfferDto trip;
-    private TripSessionDto tripSession;
+    private JobSessionDto tripSession;
     private TripReviewDto tripReview;
 
 
     public EnrollmentDto(@NotNull(message = "Id cannot be blank") Long id, @PastOrPresent LocalDateTime enrollDate, boolean deposit_was_paid, int actual_xp_reward, EnrollmentState state, List<AchievementSpecialDto> recieved_achievements_special,
-                         Long travelJournalId, OfferDto trip, TripSessionDto tripSession, TripReviewDto tripReview) {
+                         Long travelJournalId, OfferDto trip, JobSessionDto tripSession, TripReviewDto tripReview) {
         this.id = id;
         this.enrollDate = enrollDate;
         this.deposit_was_paid = deposit_was_paid;
@@ -147,13 +147,13 @@ public class EnrollmentDto {
     }
 
 
-    public TripSessionDto getTripSession() {
+    public JobSessionDto getTripSession() {
 
         return tripSession;
     }
 
 
-    public void setTripSession(TripSessionDto tripSession) {
+    public void setTripSession(JobSessionDto tripSession) {
 
         this.tripSession = tripSession;
     }

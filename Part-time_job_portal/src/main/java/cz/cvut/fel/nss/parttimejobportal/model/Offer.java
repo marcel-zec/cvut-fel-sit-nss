@@ -13,7 +13,7 @@ import java.util.List;
 
         @NamedQuery(name = "Offer.findByFilter", query = "SELECT DISTINCT t FROM Offer t JOIN t.sessions s WHERE (" +
                 "(:location is null OR t.location = :location) AND " +
-                "(:maxPrice is null OR s.price <= :maxPrice) AND " +
+                "(:maxPrice is null OR t.salary <= :maxPrice) AND " +
                 "(s.from_date >= :from_date) AND " +
                 "(s.to_date <= :to_date))"),
 
@@ -104,7 +104,7 @@ public class Offer extends AbstractEntity {
 
     @OrderBy("from_date ASC")
     @OneToMany(mappedBy = "trip")
-    private List<TripSession> sessions;
+    private List<JobSession> sessions;
 
     @OneToMany(mappedBy = "trip")
     private List<TripReview> tripReviews;
@@ -179,11 +179,11 @@ public class Offer extends AbstractEntity {
         this.rating = rating;
     }
 
-    public List<TripSession> getSessions() {
+    public List<JobSession> getSessions() {
         return sessions;
     }
 
-    public void setSessions(List<TripSession> sessions) {
+    public void setSessions(List<JobSession> sessions) {
         this.sessions = sessions;
     }
 
@@ -271,7 +271,7 @@ public class Offer extends AbstractEntity {
         this.gain_achievements_special.add(achievementSpecial);
     }
 
-    public void addSession(TripSession tripSession) {
+    public void addSession(JobSession tripSession) {
         this.sessions.add(tripSession);
     }
 

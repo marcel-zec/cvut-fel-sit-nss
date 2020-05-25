@@ -52,8 +52,8 @@ public class TravelJournalServiceTest {
         category = new Category("TestCat");
         trip = new Offer("test1",10,"Description","shortName",2000,"Hawaii",3);
         trip.setCategory(category);
-        ArrayList<TripSession> s = new ArrayList<>();
-        s.add(new TripSession(trip, LocalDate.now(), LocalDate.now().plusDays(7),2000));
+        ArrayList<JobSession> s = new ArrayList<>();
+        s.add(new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(7),2000));
 
         trip.setSessions(s);
         categoryService.create(category);

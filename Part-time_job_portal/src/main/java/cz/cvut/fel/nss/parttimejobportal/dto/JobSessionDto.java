@@ -1,46 +1,38 @@
 package cz.cvut.fel.nss.parttimejobportal.dto;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
-public class TripSessionDto {
+public class JobSessionDto {
 
-    @NotNull(message = "Id cannot be blank")
     private Long id;
 
-    @Basic(optional = false)
-    @FutureOrPresent
     private LocalDate from_date;
 
-    @Basic(optional = false)
-    @FutureOrPresent
     private LocalDate to_date;
 
-    @Basic(optional = false)
-    @Min(value = 0, message = "Min 0")
-    @Max(value = 99999, message = "Max 99999")
-    private double price;
+    private int capacity;
 
-    @Basic(optional = false)
     private Long tripDtoId;
 
 
-    public TripSessionDto(@NotNull(message = "Id cannot be blank") Long id, @FutureOrPresent LocalDate from_date, @FutureOrPresent LocalDate to_date, @Min(value = 0, message = "Min 0") @Max(value = 99999, message = "Max 99999") double price,
+    public JobSessionDto(@NotNull(message = "Id cannot be blank") Long id, @FutureOrPresent LocalDate from_date, @FutureOrPresent LocalDate to_date, @Min(value = 1, message = "Min 1") @Max(value = 500, message = "Max 500") int capacity,
                           Long tripDtoId) {
 
         this.id = id;
         this.from_date = from_date;
         this.to_date = to_date;
-        this.price = price;
+        this.capacity = capacity;
         this.tripDtoId = tripDtoId;
     }
 
 
-    public TripSessionDto() {
+    public JobSessionDto() {
 
     }
 
@@ -68,17 +60,13 @@ public class TripSessionDto {
     }
 
 
-    public double getPrice() {
-
-        return price;
+    public int getCapacity() {
+        return capacity;
     }
 
-
-    public void setPrice(double price) {
-
-        this.price = price;
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
-
 
     public Long getTripDto() {
 

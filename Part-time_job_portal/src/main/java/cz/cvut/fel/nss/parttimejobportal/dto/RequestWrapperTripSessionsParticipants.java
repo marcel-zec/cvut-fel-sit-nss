@@ -4,20 +4,20 @@ import java.util.List;
 
 public class RequestWrapperTripSessionsParticipants {
 
-    private TripSessionDto session;
+    private JobSessionDto session;
     private List<RequestWrapperEnrollmentGet> enrollments;
 
 
-    public RequestWrapperTripSessionsParticipants(TripSessionDto session, List<RequestWrapperEnrollmentGet> enrollments) {
+    public RequestWrapperTripSessionsParticipants(JobSessionDto session, List<RequestWrapperEnrollmentGet> enrollments) {
         this.session = session;
         this.enrollments = enrollments;
     }
 
-    public TripSessionDto getSession() {
+    public JobSessionDto getSession() {
         return session;
     }
 
-    public void setSession(TripSessionDto session) {
+    public void setSession(JobSessionDto session) {
         this.session = session;
     }
 

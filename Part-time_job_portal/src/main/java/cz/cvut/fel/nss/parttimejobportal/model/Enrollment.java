@@ -42,7 +42,7 @@ public class Enrollment extends AbstractEntity {
 
     @ManyToOne( optional = false)
     @JoinColumn(name = "tripSession_id", nullable = false)
-    private TripSession tripSession;
+    private JobSession tripSession;
 
 
     @OneToOne(mappedBy = "enrollment")
@@ -68,7 +68,7 @@ public class Enrollment extends AbstractEntity {
         return trip;
     }
 
-    public TripSession getTripSession() {
+    public JobSession getTripSession() {
         return tripSession;
     }
 
@@ -92,7 +92,7 @@ public class Enrollment extends AbstractEntity {
         this.trip = trip;
     }
 
-    public void setTripSession(TripSession tripSession) {
+    public void setTripSession(JobSession tripSession) {
         this.tripSession = tripSession;
     }
 

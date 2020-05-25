@@ -1,7 +1,7 @@
 package cz.cvut.fel.nss.parttimejobportal.seeder;
 
 import cz.cvut.fel.nss.parttimejobportal.dao.*;
-import cz.cvut.fel.nss.parttimejobportal.dto.TripSessionDto;
+import cz.cvut.fel.nss.parttimejobportal.dto.JobSessionDto;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.service.EnrollmentService;
 import cz.cvut.fel.nss.parttimejobportal.service.TranslateService;
@@ -96,7 +96,7 @@ public class DatabaseSeeder implements
         //1.userReview from Milan to Jan
         User author = userDao.findByEmail("milan@gmail.com");
         User user = userDao.findByEmail("jan@gmail.com");
-        TripSession tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
+        JobSession tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
         UserReview userReview = new UserReview("It was a pleasure to work with you, Jane :) ", LocalDateTime.now(), 5, user, author, tripSession);
         userReviewDao.persist(userReview);
 
@@ -149,7 +149,7 @@ public class DatabaseSeeder implements
         String description;// = "Nullam gravida lectus tempus congue pretium. Nunc volutpat diam orci, a consectetur dui iaculis sollicitudin. Fusce varius nisi placerat turpis viverra pulvinar. Pellentesque vel commodo nibh, sed volutpat nunc. Duis congue enim malesuada sapien commodo egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum interdum, ante eu vehicula porttitor, libero purus consequat metus, quis aliquet lectus orci sit amet mi. Aenean libero sapien, tempus sit amet lorem in, cursus sodales erat. Vivamus suscipit felis et ex pulvinar, vitae rutrum diam tempus. ";
         Offer trip;/* = new Offer("Casablanca Me gusto",15,description,"casablanca_me_gusta",1000,"Casablan, Mexico",2);
         tripDao.persist(trip);
-        */TripSession tripSession;
+        */JobSession tripSession;
 
         //priklady tripov a user progressu medzi nimi 0
         description = "Tento zajezd bude mit cenu za dopravu a kurz, po absolvování se odemkne achievement ´kuchař ryb fugu´, pro absolvování je potřeba mít achievement ´Kuchtík´." ;
@@ -157,13 +157,13 @@ public class DatabaseSeeder implements
         //trip.addGainAchievement();
         //trip.addRequiredAchievement();
         tripDao.persist(trip);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3000);
+        tripSession = new JobSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 3000);
+        tripSession = new JobSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 3);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 3000);
+        tripSession = new JobSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 3);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
         tripDao.update(trip);
@@ -173,30 +173,30 @@ public class DatabaseSeeder implements
         trip = new Offer("Vaření ryb Fugu, Praha",10,description,"fuguvar",120,"Praha, Česká republika",1);
         tripDao.persist(trip);
 
-        tripSession = new TripSession(trip, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 0);
+        tripSession = new JobSession(trip, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 4);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
 
-        tripSession = new TripSession(trip, LocalDate.parse("2020-07-12"), LocalDate.parse("2020-07-18"), 0);
+        tripSession = new JobSession(trip, LocalDate.parse("2020-07-12"), LocalDate.parse("2020-07-18"), 3);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
 
-        tripSession = new TripSession(trip, LocalDate.parse("2020-07-18"), LocalDate.parse("2020-07-24"), 0);
+        tripSession = new JobSession(trip, LocalDate.parse("2020-07-18"), LocalDate.parse("2020-07-24"), 5);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
 
         //tripSession ma datum  ukonceni vcera
-        tripSession = new TripSession(trip, LocalDate.now().minusDays(16), LocalDate.now().minusDays(1), 0);
+        tripSession = new JobSession(trip, LocalDate.now().minusDays(16), LocalDate.now().minusDays(1), 4);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
 
         //tripSession ma datum  ukonceni predevcirem
-        tripSession = new TripSession(trip, LocalDate.now().minusDays(15), LocalDate.now().minusDays(2), 0);
+        tripSession = new JobSession(trip, LocalDate.now().minusDays(15), LocalDate.now().minusDays(2), 3);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
 
         //tripSession ma datum  ukonceni pred tydnem
-        tripSession = new TripSession(trip, LocalDate.now().minusDays(21), LocalDate.now().minusDays(7), 0);
+        tripSession = new JobSession(trip, LocalDate.now().minusDays(21), LocalDate.now().minusDays(7), 2);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
 
@@ -206,13 +206,13 @@ public class DatabaseSeeder implements
         description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař´." ;
         trip = new Offer("Kuchař na Pražském hradě",8,description,"prahradvar",110,"Praha, Česká republika",3);
         tripDao.persist(trip);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 0);
+        tripSession = new JobSession(trip, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 5);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-07-12"), LocalDate.parse("2020-07-18"), 0);
+        tripSession = new JobSession(trip, LocalDate.parse("2020-07-12"), LocalDate.parse("2020-07-18"), 4);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-07-18"), LocalDate.parse("2020-07-24"), 0);
+        tripSession = new JobSession(trip, LocalDate.parse("2020-07-18"), LocalDate.parse("2020-07-24"), 8);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
         tripDao.update(trip);
@@ -221,13 +221,13 @@ public class DatabaseSeeder implements
         description = "Tento zajezd nevyzaduje zadne achievementy a po nem se nedaji ziskat specialni achievementy ale daji se ziskat achievementy jako jsou např. ´Kuchtík´, ´Kuchař´ apod. Odměna Xp je dost nízká aby se nedalo jednoduše dostat za tuhle práci na prestižnější místa jako pražský hrad, ale zároveň je možno si dopomoct s touto lehčí a dostupnější práci nahnat achievement kuchař, jestliže xp grind mám za sebou z jiných zájezdů." ;
         trip = new Offer("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",140,"Praha, Česká republika",0);
         tripDao.persist(trip);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 0);
+        tripSession = new JobSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 2);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 0);
+        tripSession = new JobSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 3);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 0);
+        tripSession = new JobSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 2);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
         tripDao.update(trip);
@@ -236,16 +236,16 @@ public class DatabaseSeeder implements
         description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
         trip = new Offer("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0);
         tripDao.persist(trip);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 0);
+        tripSession = new JobSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
 
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 0);
+        tripSession = new JobSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 5);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-06-24"), LocalDate.parse("2020-06-30"), 0);
+        tripSession = new JobSession(trip, LocalDate.parse("2020-06-24"), LocalDate.parse("2020-06-30"), 3);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
         tripDao.update(trip);
@@ -255,7 +255,7 @@ public class DatabaseSeeder implements
         trip = new Offer("Retired trip", 12, description, "retrip", 135, "London, Great Britain", 5);
         tripDao.persist(trip);
         //tripSession ma datum  ukonceni vcera
-        tripSession = new TripSession(trip, LocalDate.now().minusDays(16), LocalDate.now().minusDays(1), 0);
+        tripSession = new JobSession(trip, LocalDate.now().minusDays(16), LocalDate.now().minusDays(1), 2);
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
         tripDao.update(trip);
@@ -264,31 +264,31 @@ public class DatabaseSeeder implements
         description = "Pojď animovat zábavní program pro účastníky zájezdů v Českém Krumlově! Zkušenosti nepotřebuješ jenom úsměv na rtech a odhodlání rozdávat radost." ;
         trip = new Offer("Animátor v Českém Krumlově",6,description,"czekrum",180,"Český Krumlov, Česká republika",1);
         tripDao.persist(trip);
-        tripSession = new TripSession(trip, LocalDate.parse("2018-08-06"), LocalDate.parse("2018-08-12"), 0); //0
+        tripSession = new JobSession(trip, LocalDate.parse("2018-08-06"), LocalDate.parse("2018-08-12"), 5); //0
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2018-08-12"), LocalDate.parse("2018-08-18"), 0);//1
+        tripSession = new JobSession(trip, LocalDate.parse("2018-08-12"), LocalDate.parse("2018-08-18"), 4);//1
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2018-08-18"), LocalDate.parse("2018-08-24"), 0);//2
+        tripSession = new JobSession(trip, LocalDate.parse("2018-08-18"), LocalDate.parse("2018-08-24"), 8);//2
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2019-08-06"), LocalDate.parse("2019-08-12"), 0);//3
+        tripSession = new JobSession(trip, LocalDate.parse("2019-08-06"), LocalDate.parse("2019-08-12"), 2);//3
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2019-08-12"), LocalDate.parse("2019-08-18"), 0);//4
+        tripSession = new JobSession(trip, LocalDate.parse("2019-08-12"), LocalDate.parse("2019-08-18"), 3);//4
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2019-08-18"), LocalDate.parse("2019-08-24"), 0);//5
+        tripSession = new JobSession(trip, LocalDate.parse("2019-08-18"), LocalDate.parse("2019-08-24"), 3);//5
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-08-06"), LocalDate.parse("2020-08-12"), 0);//6
+        tripSession = new JobSession(trip, LocalDate.parse("2020-08-06"), LocalDate.parse("2020-08-12"), 3);//6
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-08-12"), LocalDate.parse("2020-08-18"), 0);//7
+        tripSession = new JobSession(trip, LocalDate.parse("2020-08-12"), LocalDate.parse("2020-08-18"), 8);//7
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
-        tripSession = new TripSession(trip, LocalDate.parse("2020-08-18"), LocalDate.parse("2020-08-24"), 0);//8
+        tripSession = new JobSession(trip, LocalDate.parse("2020-08-18"), LocalDate.parse("2020-08-24"), 2);//8
         tripSessionDao.persist(tripSession);
         trip.addSession(tripSession);
         tripDao.update(trip);
@@ -533,7 +533,7 @@ public class DatabaseSeeder implements
         //JAN
         User user = userDao.findAll().get(0);
         Offer trip = tripDao.findAll().get(0);
-        TripSession tripSession = trip.getSessions().get(0);
+        JobSession tripSession = trip.getSessions().get(0);
         TravelJournal travelJournal;
 
         //test
@@ -584,8 +584,8 @@ public class DatabaseSeeder implements
         enrollmentDao.update(e);
     }
 
-    void signUserToTrip(User user, TripSession tripSession) throws NotAllowedException {
-        TripSessionDto tripSessionDto;
+    void signUserToTrip(User user, JobSession tripSession) throws NotAllowedException {
+        JobSessionDto tripSessionDto;
 
         tripSessionDto = translateService.translateSession(tripSession);
         tripService.signUpToTrip(tripSessionDto, user);
@@ -622,7 +622,7 @@ public class DatabaseSeeder implements
         TravelJournal travelJournal = user.getTravel_journal();
 
         List<Enrollment> enrollments = travelJournal.getEnrollments();
-        TripSession tripSession;
+        JobSession tripSession;
         Offer trip = tripDao.findAll().get(1);
         Enrollment e;
 
@@ -677,7 +677,7 @@ public class DatabaseSeeder implements
         }
     }
 
-    private Enrollment createEnrol(TripSession tripSession, User user) {
+    private Enrollment createEnrol(JobSession tripSession, User user) {
         Enrollment enrollment = new Enrollment();
 
         enrollment.setDeposit_was_paid(false);

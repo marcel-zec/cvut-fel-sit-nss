@@ -2,7 +2,7 @@ package cz.cvut.fel.nss.parttimejobportal.service;
 
 import cz.cvut.fel.nss.parttimejobportal.dto.*;
 import cz.cvut.fel.nss.parttimejobportal.model.Enrollment;
-import cz.cvut.fel.nss.parttimejobportal.model.TripSession;
+import cz.cvut.fel.nss.parttimejobportal.model.JobSession;
 import cz.cvut.fel.nss.parttimejobportal.dao.TripDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.TripSessionDao;
 import cz.cvut.fel.nss.parttimejobportal.dto.*;
@@ -30,29 +30,29 @@ public class TripSessionService {
     }
 
     @Transactional
-    public List<TripSessionDto> findAllInTrip(String trip_short_name) {
-        List<TripSession> tripSessions = tripSessionDao.find(trip_short_name);
-        List<TripSessionDto> tripSessionDtos = new ArrayList<>();
+    public List<JobSessionDto> findAllInTrip(String trip_short_name) {
+        List<JobSession> tripSessions = tripSessionDao.find(trip_short_name);
+        List<JobSessionDto> tripSessionDtos = new ArrayList<>();
 
-        for (TripSession ts: tripSessions) {
+        for (JobSession ts: tripSessions) {
             tripSessionDtos.add(translateService.translateSession(ts));
         }
         return tripSessionDtos;
     }
 
     @Transactional
-    public void create(String tripId, TripSession tripSession) throws Exception {
+    public void create(String tripId, JobSession tripSession) throws Exception {
         if (tripSession.getTo_date().isBefore(tripSession.getFrom_date())) throw new Exception();
         tripSession.setTrip(tripDao.find(tripId));
         tripSessionDao.persist(tripSession);
     }
 
     @Transactional
-    public TripSession update(TripSession oldSession, TripSession newSession) throws Exception {
+    public JobSession update(JobSession oldSession, JobSession newSession) throws Exception {
         if (oldSession == null || newSession==null) throw new MissingVariableException();
 
         oldSession.setFrom_date(newSession.getFrom_date());
-        oldSession.setPrice(newSession.getPrice());
+        oldSession.setCapacity(newSession.getCapacity());
         oldSession.setTo_date(newSession.getTo_date());
         oldSession.setTrip(newSession.getTrip());
         tripSessionDao.update(oldSession);
@@ -61,9 +61,9 @@ public class TripSessionService {
 
     @Transactional
     public List<RequestWrapperTripSessionsParticipants> findAllParticipants(String trip_short_name){
-        List<TripSession> tripSessions = tripSessionDao.find(trip_short_name);
+        List<JobSession> tripSessions = tripSessionDao.find(trip_short_name);
         List<RequestWrapperTripSessionsParticipants> response = new ArrayList<RequestWrapperTripSessionsParticipants>();
-        for (TripSession session:tripSessions) {
+        for (JobSession session:tripSessions) {
             List<RequestWrapperEnrollmentGet> enrollments = new ArrayList<RequestWrapperEnrollmentGet>();
             for (Enrollment enrollment :session.getEnrollments()) {
                 UserDto userDto = translateService.translateUser(enrollment.getTravelJournal().getUser());

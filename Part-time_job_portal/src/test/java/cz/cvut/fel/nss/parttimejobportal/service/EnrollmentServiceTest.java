@@ -1,7 +1,7 @@
 package cz.cvut.fel.nss.parttimejobportal.service;
 
 import cz.cvut.fel.nss.parttimejobportal.dto.EnrollmentDto;
-import cz.cvut.fel.nss.parttimejobportal.dto.TripSessionDto;
+import cz.cvut.fel.nss.parttimejobportal.dto.JobSessionDto;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.environment.util.Generator;
@@ -33,8 +33,8 @@ public class EnrollmentServiceTest {
     private Enrollment enrollment;
     private User user;
     private Offer trip;
-    private TripSession tripSession,tripSession2,tripSession3;
-    private TripSessionDto tripSessionDto,tripSessionDto2,tripSessionDto3;
+    private JobSession tripSession,tripSession2,tripSession3;
+    private JobSessionDto tripSessionDto,tripSessionDto2,tripSessionDto3;
 
     @Autowired
     private EnrollmentService enrollmentService;
@@ -59,11 +59,11 @@ public class EnrollmentServiceTest {
         user = Generator.generateUser();
         trip = new Offer("test2",11,"Description","shortName1",1000,"Hawaii",2);
 
-        tripSession = new TripSession(trip, LocalDate.now(), LocalDate.now().plusDays(7),2000);
-        tripSession2 = new TripSession(trip, LocalDate.now(), LocalDate.now().plusDays(10),2500);
-        tripSession3 = new TripSession(trip, LocalDate.now(), LocalDate.now().plusDays(4),1500);
+        tripSession = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(7),2000);
+        tripSession2 = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(10),2500);
+        tripSession3 = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(4),1500);
 
-        ArrayList<TripSession> sessions = new ArrayList<TripSession>(Arrays.asList(tripSession, tripSession2, tripSession3));
+        ArrayList<JobSession> sessions = new ArrayList<JobSession>(Arrays.asList(tripSession, tripSession2, tripSession3));
         trip.setSessions(sessions);
         tripService.create(trip);
 

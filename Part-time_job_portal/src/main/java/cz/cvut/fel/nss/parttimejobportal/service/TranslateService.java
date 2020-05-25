@@ -63,7 +63,7 @@ public class TranslateService {
     @Transactional
     public OfferDto translateTrip(Offer trip) {
         Objects.requireNonNull(trip);
-        List<TripSessionDto> sessions = new ArrayList<>();
+        List<JobSessionDto> sessions = new ArrayList<>();
         List<AchievementCertificateDto> required_certificates = new ArrayList<>();
         List<AchievementCategorizedDto> required_achievements_categorized = new ArrayList<>();
         List<AchievementSpecialDto> required_achievements_special = new ArrayList<>();
@@ -84,9 +84,9 @@ public class TranslateService {
     }
 
     @Transactional
-    public TripSessionDto translateSession(TripSession tripSession) {
+    public JobSessionDto translateSession(JobSession tripSession) {
         Objects.requireNonNull(tripSession);
-        return new TripSessionDto(tripSession.getId(),tripSession.getFrom_date(),tripSession.getTo_date(),tripSession.getPrice(),tripSession.getTrip().getId());
+        return new JobSessionDto(tripSession.getId(),tripSession.getFrom_date(),tripSession.getTo_date(),tripSession.getCapacity(),tripSession.getTrip().getId());
     }
 
     @Transactional

@@ -3,7 +3,7 @@ package cz.cvut.fel.nss.parttimejobportal.service;
 import cz.cvut.fel.nss.parttimejobportal.exception.*;
 import cz.cvut.fel.nss.parttimejobportal.model.Offer;
 import cz.cvut.fel.nss.parttimejobportal.model.TripReview;
-import cz.cvut.fel.nss.parttimejobportal.model.TripSession;
+import cz.cvut.fel.nss.parttimejobportal.model.JobSession;
 import cz.cvut.fel.nss.parttimejobportal.model.User;
 import cz.cvut.fel.nss.parttimejobportal.environment.util.Generator;
 import cz.cvut.fel.nss.parttimejobportal.exception.*;
@@ -50,8 +50,8 @@ public class TripServiceTest {
     public void init() throws BadDateException, MissingVariableException {
         trip = new Offer("test1",10,"Description","shortName",2000,"Hawaii",3);
 
-        ArrayList<TripSession> s = new ArrayList<>();
-        s.add(new TripSession(trip,LocalDate.now(), LocalDate.now().plusDays(7),2000));
+        ArrayList<JobSession> s = new ArrayList<>();
+        s.add(new JobSession(trip,LocalDate.now(), LocalDate.now().plusDays(7),2000));
 
         trip.setSessions(s);
         tripService.create(trip);
@@ -62,8 +62,8 @@ public class TripServiceTest {
     @Rollback
     public void create_CreatesNewTrip() throws BadDateException, MissingVariableException {
         Offer tr = new Offer("test2",11,"Description","shortName1",1000,"Hawaii",2);
-        ArrayList<TripSession> s = new ArrayList<>();
-        s.add(new TripSession(tr,LocalDate.now(), LocalDate.now().plusDays(7),2000));
+        ArrayList<JobSession> s = new ArrayList<>();
+        s.add(new JobSession(tr,LocalDate.now(), LocalDate.now().plusDays(7),2000));
         tr.setSessions(s);
 
         tripService.create(tr);

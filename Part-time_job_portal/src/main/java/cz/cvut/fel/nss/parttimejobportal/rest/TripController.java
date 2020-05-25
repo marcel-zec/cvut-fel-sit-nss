@@ -1,7 +1,7 @@
 package cz.cvut.fel.nss.parttimejobportal.rest;
 
 import cz.cvut.fel.nss.parttimejobportal.dto.OfferDto;
-import cz.cvut.fel.nss.parttimejobportal.dto.TripSessionDto;
+import cz.cvut.fel.nss.parttimejobportal.dto.JobSessionDto;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadDateException;
 import cz.cvut.fel.nss.parttimejobportal.exception.MissingVariableException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
@@ -94,7 +94,7 @@ public class TripController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void signUpToTrip(@RequestBody TripSessionDto tripSessionDto) throws NotAllowedException {
+    public void signUpToTrip(@RequestBody JobSessionDto tripSessionDto) throws NotAllowedException {
         //ResponseEntity<Void>
         //return new ResponseEntity<>(headers, HttpStatus.SUCCESS);
         tripService.signUpToTrip(tripSessionDto, SecurityUtils.getCurrentUser());
