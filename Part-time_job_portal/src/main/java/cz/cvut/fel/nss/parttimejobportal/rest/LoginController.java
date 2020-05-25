@@ -24,15 +24,10 @@ public class LoginController {
          this.service = service;
     }
 
-    @PostMapping(value = "/login_manager",produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDto loginManager(@RequestBody HashMap<String,String> request) throws AlreadyLoginException {
-
-        return service.loginManager(request.get("email"),request.get("password"));
-    }
 
     @PostMapping(value = "/login",produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDto loginUser(@RequestBody HashMap<String,String> request) throws AlreadyLoginException {
 
-        return service.loginUser(request.get("email"),request.get("password"));
+        return service.login(request.get("email"),request.get("password"));
     }
 }

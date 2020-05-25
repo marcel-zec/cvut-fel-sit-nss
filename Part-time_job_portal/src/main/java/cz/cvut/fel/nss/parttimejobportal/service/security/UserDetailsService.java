@@ -1,5 +1,6 @@
 package cz.cvut.fel.nss.parttimejobportal.service.security;
 
+import cz.cvut.fel.nss.parttimejobportal.dao.AbstractUserDao;
 import cz.cvut.fel.nss.parttimejobportal.model.AbstractUser;
 import cz.cvut.fel.nss.parttimejobportal.model.User;
 import cz.cvut.fel.nss.parttimejobportal.dao.UserDao;
@@ -11,10 +12,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    private final UserDao userDao;
+    private final AbstractUserDao userDao;
 
     @Autowired
-    public UserDetailsService(UserDao userDao) {
+    public UserDetailsService(AbstractUserDao userDao) {
         this.userDao = userDao;
     }
 

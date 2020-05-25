@@ -39,12 +39,6 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication, boolean manager) throws AuthenticationException {
         //loadUserByUsername is overloaded in userDetailService for finding user by email
         UserDetails ud = (UserDetails) userDetailsService.loadUserByUsername(authentication.getPrincipal().toString());
-        if (manager){
-            if (roleService.isUser(ud.getUser())) throw new BadCredentialsException("Not validated");
-        } else {
-            if (roleService.isManager(ud.getUser())) throw new BadCredentialsException("Not validated");
-        }
-
         if (!passwordEncoder.matches(authentication.getCredentials().toString(), ud.getPassword())) {
             throw new BadCredentialsException("Not validated");
         }
