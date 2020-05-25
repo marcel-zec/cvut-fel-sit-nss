@@ -1,7 +1,7 @@
 package cz.cvut.fel.nss.parttimejobportal.service;
 
 import cz.cvut.fel.nss.parttimejobportal.dao.*;
-import cz.cvut.fel.nss.parttimejobportal.dto.TripDto;
+import cz.cvut.fel.nss.parttimejobportal.dto.OfferDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.TripSessionDto;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.dao.*;
@@ -49,25 +49,25 @@ public class TripService {
     }
 
     @Transactional
-    public List<Trip> findAll() {
+    public List<Offer> findAll() {
         return tripDao.findAll();
     }
 
     @Transactional
-    public List<TripDto> findAllDto() {
-        List<TripDto> tripDtos = new ArrayList<>();
+    public List<OfferDto> findAllDto() {
+        List<OfferDto> tripDtos = new ArrayList<>();
 
-        for (Trip trip:tripDao.findAll()) {
+        for (Offer trip:tripDao.findAll()) {
             tripDtos.add(translateService.translateTrip(trip));
         }
         return tripDtos;
     }
 
     @Transactional
-    public List<TripDto> findAllDtoFiltered() {
-        List<TripDto> tripDtos = new ArrayList<>();
+    public List<OfferDto> findAllDtoFiltered() {
+        List<OfferDto> tripDtos = new ArrayList<>();
 
-        for (Trip trip:tripDao.findAll()) {
+        for (Offer trip:tripDao.findAll()) {
             if(isTripActive(trip)) {
                 tripDtos.add(translateService.translateTrip(trip));
             }
@@ -76,8 +76,8 @@ public class TripService {
     }
 
     @Transactional
-    public TripDto find(Long id) {
-        Trip trip = tripDao.find(id);
+    public OfferDto find(Long id) {
+        Offer trip = tripDao.find(id);
         UserDetails userDetails = SecurityUtils.getCurrentUserDetails();
         //do not werk and we propably do not use this so whatever
         if(userDetails != null){
@@ -100,16 +100,16 @@ public class TripService {
     }
 
     @Transactional
-    public TripDto findByString(String stringId) {
-        Trip trip = tripDao.find(stringId);
+    public OfferDto findByString(String stringId) {
+        Offer trip = tripDao.find(stringId);
 
         return translateService.translateTrip(trip);
     }
 
     @Transactional
-    public TripDto findByStringFiltered(String stringId) {
-        Trip trip = tripDao.find(stringId);
-        TripDto tripDto = translateService.translateTrip(trip);
+    public OfferDto findByStringFiltered(String stringId) {
+        Offer trip = tripDao.find(stringId);
+        OfferDto tripDto = translateService.translateTrip(trip);
 
         List<TripSessionDto> sessions = new ArrayList<>();
         for(TripSession tripSession : trip.getSessions()) {
@@ -125,7 +125,7 @@ public class TripService {
     }
 
     @Transactional
-    public void create(Trip trip) throws BadDateException, MissingVariableException {
+    public void create(Offer trip) throws BadDateException, MissingVariableException {
 
         Objects.requireNonNull(trip);
         if (trip.getSessions().size()<=0) throw new MissingVariableException();
@@ -171,7 +171,7 @@ public class TripService {
     }
 
     @Transactional
-    public List<Trip> findAfford(User current_user) throws NotAllowedException {
+    public List<Offer> findAfford(User current_user) throws NotAllowedException {
         if (current_user == null) throw new NotAllowedException();
         User user = accessService.getUser(current_user);
         int level = translateService.countLevel(translateService.translateTravelJournal(user.getTravel_journal()).getXp_count());
@@ -179,15 +179,15 @@ public class TripService {
     }
 
     @Transactional
-    public List<Trip> findNotAfford(User current_user) throws NotAllowedException {
-        List<Trip> trips = tripDao.findAll();
+    public List<Offer> findNotAfford(User current_user) throws NotAllowedException {
+        List<Offer> trips = tripDao.findAll();
         trips.removeAll(findAfford(current_user));
         return trips;
     }
 
     @Transactional
-    public void update(String stringId, Trip newTrip) throws BadDateException, NotFoundException, MissingVariableException {
-        Trip trip = tripDao.find(stringId);
+    public void update(String stringId, Offer newTrip) throws BadDateException, NotFoundException, MissingVariableException {
+        Offer trip = tripDao.find(stringId);
 
         if (trip == null) throw new NotFoundException();
         //todo pridat vynimku na rolu
@@ -228,7 +228,7 @@ public class TripService {
     @Transactional
     public void delete(String stringId) throws NotFoundException {
 
-        Trip trip = tripDao.find(stringId);
+        Offer trip = tripDao.find(stringId);
         if (trip == null) throw new NotFoundException();
 
         for (TripSession session :trip.getSessions()) {
@@ -241,10 +241,10 @@ public class TripService {
     }
 
 
-    public List<TripDto> getAllTripsByFilter(String location, String from_date, String to_date,
+    public List<OfferDto> getAllTripsByFilter(String location, String from_date, String to_date,
                                              Double maxPrice, String[] search) {
 
-        List<TripDto> tripDtos = new ArrayList<>();
+        List<OfferDto> tripDtos = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         LocalDate local_to_date = LocalDate.parse("2030-01-01", formatter);
@@ -253,14 +253,14 @@ public class TripService {
         LocalDate local_from_date = LocalDate.parse("1999-01-01", formatter);
         if(from_date != null){ local_from_date = LocalDate.parse(from_date, formatter); }
 
-        for (Trip trip : tripDao.findByFilter(location,  local_from_date, local_to_date, maxPrice, search)) {
+        for (Offer trip : tripDao.findByFilter(location,  local_from_date, local_to_date, maxPrice, search)) {
             tripDtos.add(translateService.translateTrip(trip));
         }
 
         return tripDtos;
     }
 
-    public boolean checkOwnedAchievements(TravelJournal usersJournal, Trip trip) {
+    public boolean checkOwnedAchievements(TravelJournal usersJournal, Offer trip) {
         List<AchievementCategorized> ownedCat = usersJournal.getEarnedAchievementsCategorized();
         List<AchievementCertificate> ownedCer = usersJournal.getCertificates();
         List<AchievementSpecial> ownedSpec = usersJournal.getEarnedAchievementsSpecial();
@@ -287,7 +287,7 @@ public class TripService {
         return true;
     }
 
-    private boolean isTripActive(Trip trip) {
+    private boolean isTripActive(Offer trip) {
         for(TripSession tripSession : trip.getSessions()) {
             if(tripSession.isNotDeleted() && tripSession.getTo_date().isAfter(LocalDate.now()) && tripSession.getFrom_date().isAfter(LocalDate.now())) {
                 return true;

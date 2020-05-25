@@ -38,7 +38,7 @@ public class Enrollment extends AbstractEntity {
 
     @ManyToOne( optional = false)
     @JoinColumn(name = "trip_id", nullable = false)
-    private Trip trip;
+    private Offer trip;
 
     @ManyToOne( optional = false)
     @JoinColumn(name = "tripSession_id", nullable = false)
@@ -64,7 +64,7 @@ public class Enrollment extends AbstractEntity {
         return travelJournal;
     }
 
-    public Trip getTrip() {
+    public Offer getTrip() {
         return trip;
     }
 
@@ -88,7 +88,7 @@ public class Enrollment extends AbstractEntity {
         this.travelJournal = travelJournal;
     }
 
-    public void setTrip(Trip trip) {
+    public void setTrip(Offer trip) {
         this.trip = trip;
     }
 

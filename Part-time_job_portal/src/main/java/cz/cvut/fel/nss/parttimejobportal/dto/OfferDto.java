@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.List;
 
-public class TripDto {
+public class OfferDto {
 
     @NotNull(message = "Id cannot be blank")
     private Long id;
@@ -36,7 +36,7 @@ public class TripDto {
     @Basic(optional = false)
     @Min(value = 0, message = "Min 0")
     @Max(value = 10000, message = "Max 10 000")
-    private double deposit;
+    private double salary;
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -55,12 +55,12 @@ public class TripDto {
     private List<TripSessionDto> sessions;
     private List<TripReviewDto> tripReviewDtos;
 
-    public TripDto() {
+    public OfferDto() {
     }
 
-    public TripDto(@NotNull(message = "Id cannot be blank") Long id, @Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.") @NotNull(message = "Name has to be from 3 to 255 characters.") String name, @Size(max = 100, min = 3, message = "Short name has to be from 3 to 100 characters.") @NotNull(message = "Short name has to be from 3 to 100 characters.") String short_name,
+    public OfferDto(@NotNull(message = "Id cannot be blank") Long id, @Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.") @NotNull(message = "Name has to be from 3 to 255 characters.") String name, @Size(max = 100, min = 3, message = "Short name has to be from 3 to 100 characters.") @NotNull(message = "Short name has to be from 3 to 100 characters.") String short_name,
                    @Min(value = 0, message = "Min 0") @Max(value = 20, message = "Max 20") int possible_xp_reward, @Size(max = 3000, min = 0, message = "Max 3000 characters.") String description, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating,
-                   @Min(value = 0, message = "Min 0") @Max(value = 10000, message = "Max 10 000") double deposit, @Size(max = 200, min = 0, message = "Max 200 characters.") String location, @Min(value = 0, message = "Min 0") int required_level, Long categoryId, List<AchievementCertificateDto> required_certificates,
+                   @Min(value = 0, message = "Min 0") @Max(value = 10000, message = "Max 10 000") double salary, @Size(max = 200, min = 0, message = "Max 200 characters.") String location, @Min(value = 0, message = "Min 0") int required_level, Long categoryId, List<AchievementCertificateDto> required_certificates,
                    List<AchievementCategorizedDto> required_achievements_categorized, List<AchievementSpecialDto> required_achievements_special,
                    List<AchievementSpecialDto> gain_achievements, List<TripSessionDto> sessions, List<TripReviewDto> tripReviewDtos) {
         this.id = id;
@@ -69,7 +69,7 @@ public class TripDto {
         this.possible_xp_reward = possible_xp_reward;
         this.description = description;
         this.rating = rating;
-        this.deposit = deposit;
+        this.salary = salary;
         this.location = location;
         this.required_level = required_level;
         this.categoryId = categoryId;
@@ -121,12 +121,12 @@ public class TripDto {
         this.rating = rating;
     }
 
-    public double getDeposit() {
-        return deposit;
+    public double getSalary() {
+        return salary;
     }
 
-    public void setDeposit(double deposit) {
-        this.deposit = deposit;
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 
     public String getLocation() {
@@ -211,14 +211,14 @@ public class TripDto {
 
     @Override
     public String toString() {
-        return "TripDto{" +
+        return "OfferDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", short_name='" + short_name + '\'' +
                 ", possible_xp_reward=" + possible_xp_reward +
                 ", description='" + description + '\'' +
                 ", rating=" + rating +
-                ", deposit=" + deposit +
+                ", salary=" + salary +
                 ", location='" + location + '\'' +
                 ", required_level=" + required_level +
                 ", categoryId=" + categoryId +

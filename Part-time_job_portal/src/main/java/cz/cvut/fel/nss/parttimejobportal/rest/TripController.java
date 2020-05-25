@@ -1,13 +1,13 @@
 package cz.cvut.fel.nss.parttimejobportal.rest;
 
-import cz.cvut.fel.nss.parttimejobportal.dto.TripDto;
+import cz.cvut.fel.nss.parttimejobportal.dto.OfferDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.TripSessionDto;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadDateException;
 import cz.cvut.fel.nss.parttimejobportal.exception.MissingVariableException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.model.Role;
-import cz.cvut.fel.nss.parttimejobportal.model.Trip;
+import cz.cvut.fel.nss.parttimejobportal.model.Offer;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
 import cz.cvut.fel.nss.parttimejobportal.service.TripService;
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ public class TripController {
     //endpoint looks like that:
     // localhost:8080/trip/filter?location=Tokyo, Japan&max_price=4000&from_date=2020-06-07&to_date=2020-06-18&search=fugu
     @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<TripDto> getAllTripsByFilter(@RequestParam(required = false) String location,
+    public List<OfferDto> getAllTripsByFilter(@RequestParam(required = false) String location,
                                              @RequestParam(required = false) String from_date,
                                              @RequestParam(required = false) String to_date,
                                              @RequestParam(value = "max_price", required = false) Double maxPrice,
@@ -44,7 +44,7 @@ public class TripController {
     }
 
     @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<TripDto> getAll() {
+    public List<OfferDto> getAll() {
 
         if(!SecurityUtils.isAuthenticatedAnonymously()) {
             if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.SUPERUSER)) {
@@ -56,7 +56,7 @@ public class TripController {
     }
 
     @GetMapping(value = "/{identificator}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public TripDto get(@PathVariable String identificator) {
+    public OfferDto get(@PathVariable String identificator) {
 
         if(!SecurityUtils.isAuthenticatedAnonymously()) {
             if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.SUPERUSER)) {
@@ -69,17 +69,17 @@ public class TripController {
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@RequestBody Trip trip) throws BadDateException, MissingVariableException {
+    public void create(@RequestBody Offer trip) throws BadDateException, MissingVariableException {
         tripService.create(trip);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
     @PatchMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable String identificator, @RequestBody Trip trip) throws BadDateException, NotFoundException, MissingVariableException {
+    public void update(@PathVariable String identificator, @RequestBody Offer trip) throws BadDateException, NotFoundException, MissingVariableException {
 
         tripService.update(identificator, trip);
-        LOG.info("Trip {} updated.", identificator);
+        LOG.info("Offer {} updated.", identificator);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
@@ -88,7 +88,7 @@ public class TripController {
     public void delete(@PathVariable String identificator) throws NotFoundException {
 
         tripService.delete(identificator);
-        LOG.info("Trip {} deleted.", identificator);
+        LOG.info("Offer {} deleted.", identificator);
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -102,13 +102,13 @@ public class TripController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/cannotAfford", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Trip> showAllTripsCantUserAfford() throws NotAllowedException {
+    public List<Offer> showAllTripsCantUserAfford() throws NotAllowedException {
         return tripService.findNotAfford(SecurityUtils.getCurrentUser());
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/canAfford", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Trip> showAllTripsCanUserAfford() throws NotAllowedException {
+    public List<Offer> showAllTripsCanUserAfford() throws NotAllowedException {
         return tripService.findAfford(SecurityUtils.getCurrentUser());
     }
 }

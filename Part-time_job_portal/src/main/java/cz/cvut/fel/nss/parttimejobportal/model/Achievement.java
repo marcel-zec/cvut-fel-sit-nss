@@ -23,7 +23,7 @@ public abstract class Achievement extends AbstractEntity{
 
     @JsonIgnore
     @ManyToMany
-    private List<Trip> trips;
+    private List<Offer> trips;
 
     public Achievement() {
     }
@@ -59,19 +59,19 @@ public abstract class Achievement extends AbstractEntity{
         this.icon = icon;
     }
 
-    public List<Trip> getTrips() {
+    public List<Offer> getTrips() {
         return trips;
     }
 
-    public void setTrips(List<Trip> trips) {
+    public void setTrips(List<Offer> trips) {
         this.trips = trips;
     }
 
-    public void addTrips(Trip trip) {
+    public void addTrips(Offer trip) {
         this.trips.add(trip);
     }
 
-    public void removeTrips(Trip trip) {
+    public void removeTrips(Offer trip) {
         this.trips.remove(trip);
     }
 }

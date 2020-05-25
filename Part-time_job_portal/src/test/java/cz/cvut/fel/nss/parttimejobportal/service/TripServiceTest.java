@@ -1,7 +1,7 @@
 package cz.cvut.fel.nss.parttimejobportal.service;
 
 import cz.cvut.fel.nss.parttimejobportal.exception.*;
-import cz.cvut.fel.nss.parttimejobportal.model.Trip;
+import cz.cvut.fel.nss.parttimejobportal.model.Offer;
 import cz.cvut.fel.nss.parttimejobportal.model.TripReview;
 import cz.cvut.fel.nss.parttimejobportal.model.TripSession;
 import cz.cvut.fel.nss.parttimejobportal.model.User;
@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class TripServiceTest {
 
-    private Trip trip;
+    private Offer trip;
 
     @Autowired
     private EntityManager em;
@@ -48,7 +48,7 @@ public class TripServiceTest {
 
     @Before
     public void init() throws BadDateException, MissingVariableException {
-        trip = new Trip("test1",10,"Description","shortName",2000,"Hawaii",3);
+        trip = new Offer("test1",10,"Description","shortName",2000,"Hawaii",3);
 
         ArrayList<TripSession> s = new ArrayList<>();
         s.add(new TripSession(trip,LocalDate.now(), LocalDate.now().plusDays(7),2000));
@@ -61,7 +61,7 @@ public class TripServiceTest {
     @Transactional
     @Rollback
     public void create_CreatesNewTrip() throws BadDateException, MissingVariableException {
-        Trip tr = new Trip("test2",11,"Description","shortName1",1000,"Hawaii",2);
+        Offer tr = new Offer("test2",11,"Description","shortName1",1000,"Hawaii",2);
         ArrayList<TripSession> s = new ArrayList<>();
         s.add(new TripSession(tr,LocalDate.now(), LocalDate.now().plusDays(7),2000));
         tr.setSessions(s);
@@ -88,9 +88,9 @@ public class TripServiceTest {
     @Transactional
     @Rollback
     public void update_TripUpdated() throws NotFoundException, MissingVariableException, BadDateException {
-        trip.setDeposit(3000);
+        trip.setSalary(3000);
         tripService.update(trip.getShort_name(),trip);
-        Assert.assertEquals(3000f,tripService.find(trip.getId()).getDeposit(),0.001);
+        Assert.assertEquals(3000f,tripService.find(trip.getId()).getSalary(),0.001);
     }
 
     @Test

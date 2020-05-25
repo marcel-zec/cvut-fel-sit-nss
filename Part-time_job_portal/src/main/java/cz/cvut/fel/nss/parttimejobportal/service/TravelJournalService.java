@@ -33,7 +33,7 @@ public class TravelJournalService {
         Objects.requireNonNull(tripId);
 
         TravelJournal travelJournal = dao.find(travelJournalId);
-        Trip trip = tripDao.find(tripId);
+        Offer trip = tripDao.find(tripId);
         Category category = categoryDao.find(trip.getCategory().getId());
 
         System.out.println("ADDING TRIP" + category.getName());

@@ -38,7 +38,7 @@ public class TripSession extends AbstractEntity {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "trip_id", nullable = false)
-    private Trip trip;
+    private Offer trip;
 
     @OneToMany(mappedBy = "tripSession")
     private List<Enrollment> enrollments;
@@ -47,7 +47,7 @@ public class TripSession extends AbstractEntity {
         this.enrollments = new ArrayList<>();
     }
 
-    public TripSession(Trip trip, LocalDate from_date, LocalDate to_date, double price) {
+    public TripSession(Offer trip, LocalDate from_date, LocalDate to_date, double price) {
         this.trip = trip;
         this.from_date = from_date;
         this.to_date = to_date;
@@ -79,11 +79,11 @@ public class TripSession extends AbstractEntity {
         this.price = price;
     }
 
-    public Trip getTrip() {
+    public Offer getTrip() {
         return trip;
     }
 
-    public void setTrip(Trip trip) {
+    public void setTrip(Offer trip) {
         this.trip = trip;
     }
 

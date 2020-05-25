@@ -32,7 +32,7 @@ public class TravelJournalServiceTest {
 
     private TravelJournal travelJournal;
     private User user;
-    private Trip trip;
+    private Offer trip;
     private Category category;
 
     @Autowired
@@ -50,7 +50,7 @@ public class TravelJournalServiceTest {
         userService.createUser(user,user.getPassword());
 
         category = new Category("TestCat");
-        trip = new Trip("test1",10,"Description","shortName",2000,"Hawaii",3);
+        trip = new Offer("test1",10,"Description","shortName",2000,"Hawaii",3);
         trip.setCategory(category);
         ArrayList<TripSession> s = new ArrayList<>();
         s.add(new TripSession(trip, LocalDate.now(), LocalDate.now().plusDays(7),2000));

@@ -18,7 +18,7 @@ public class Category extends AbstractEntity{
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "category")
-    private List<Trip> trips;
+    private List<Offer> trips;
 
     @JsonIgnore
     @OneToMany(mappedBy = "category")
@@ -32,7 +32,7 @@ public class Category extends AbstractEntity{
         this.trips = new ArrayList<>();
     }
 
-    public boolean add(Trip trip){
+    public boolean add(Offer trip){
         return trips.add(trip);
     }
 
@@ -44,18 +44,18 @@ public class Category extends AbstractEntity{
         this.name = name;
     }
 
-    public List<Trip> getTrips() {
+    public List<Offer> getTrips() {
         return trips;
     }
 
-    public void addTrips(Trip trip) {
-        if (this.trips == null) this.trips = new ArrayList<Trip>();
+    public void addTrips(Offer trip) {
+        if (this.trips == null) this.trips = new ArrayList<Offer>();
         if (!this.trips.contains(trip)){
             this.trips.add(trip);
         }
     }
 
-    public void setTrips(List<Trip> trips) {
+    public void setTrips(List<Offer> trips) {
         this.trips = trips;
     }
 

@@ -6,23 +6,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "TRIP")
+@Table(name = "OFFER")
 @NamedQueries({
-        @NamedQuery(name = "Trip.findByStringId", query = "SELECT t FROM Trip t WHERE t.short_name = :id AND t.deleted_at is null"),
-        @NamedQuery(name = "Trip.findByLevel", query = "SELECT t FROM Trip t WHERE t.required_level <= :required_level AND t.deleted_at is null"),
+        @NamedQuery(name = "Offer.findByStringId", query = "SELECT t FROM Offer t WHERE t.short_name = :id AND t.deleted_at is null"),
+        @NamedQuery(name = "Offer.findByLevel", query = "SELECT t FROM Offer t WHERE t.required_level <= :required_level AND t.deleted_at is null"),
 
-        @NamedQuery(name = "Trip.findByFilter", query = "SELECT DISTINCT t FROM Trip t JOIN t.sessions s WHERE (" +
+        @NamedQuery(name = "Offer.findByFilter", query = "SELECT DISTINCT t FROM Offer t JOIN t.sessions s WHERE (" +
                 "(:location is null OR t.location = :location) AND " +
                 "(:maxPrice is null OR s.price <= :maxPrice) AND " +
                 "(s.from_date >= :from_date) AND " +
                 "(s.to_date <= :to_date))"),
 
-        @NamedQuery(name = "Trip.findByPattern", query = "SELECT DISTINCT t FROM Trip t WHERE (" +
+        @NamedQuery(name = "Offer.findByPattern", query = "SELECT DISTINCT t FROM Offer t WHERE (" +
                 "(t.id IN :ids) AND " +
                 "(t.description LIKE :pattern ) OR " +
                 "(t.name LIKE :pattern))"),
 })
-public class Trip extends AbstractEntity {
+public class Offer extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -57,7 +57,7 @@ public class Trip extends AbstractEntity {
     @Column(nullable = false)
     @Min(value = 0, message = "Min 0")
     @Max(value = 10000, message = "Max 10 000")
-    private double deposit;
+    private double salary;
 
     @Basic(optional = false)
     @Column(nullable = false)
@@ -109,7 +109,7 @@ public class Trip extends AbstractEntity {
     @OneToMany(mappedBy = "trip")
     private List<TripReview> tripReviews;
 
-    public Trip() {
+    public Offer() {
         this.required_achievements_categorized = new ArrayList<>();
         this.required_achievements_special = new ArrayList<>();
         this.required_achievements_certificate = new ArrayList<>();
@@ -117,16 +117,16 @@ public class Trip extends AbstractEntity {
         this.sessions = new ArrayList<>();
     }
 
-    public Trip(@Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.")  @NotBlank(message = "Name has to be from 3 to 255 characters.") String name,
+    public Offer(@Size(max = 255, min = 3, message = "Name has to be from 3 to 255 characters.")  @NotBlank(message = "Name has to be from 3 to 255 characters.") String name,
                 @Min(value = 0, message = "Min 0") @Max(value = 20, message = "Max 20") int possible_xp_reward,
                 @Size(max = 3000, min = 0, message = "Max 3000 characters.") String description,
                 @Size(max = 100, min = 3, message = "Short name has to be from 3 to 100 characters.")  @NotBlank(message = "Short name has to be from 3 to 100 characters.") String short_name,
-                @Min(value = 0, message = "Min 0") @Max(value = 10000, message = "Max 10 000") double deposit,
+                @Min(value = 0, message = "Min 0") @Max(value = 10000, message = "Max 10 000") double salary,
                 @Size(max = 200, min = 0, message = "Max 200 characters.") String location,
                 @Min(value = 0, message = "Min 0") @Max(value = 100, message = "Max 100") int required_level
     ) {
         this.name = name;
-        this.deposit = deposit;
+        this.salary = salary;
         this.possible_xp_reward = possible_xp_reward;
         this.description = description;
         this.location= location;
@@ -203,12 +203,12 @@ public class Trip extends AbstractEntity {
         this.location = location;
     }
 
-    public double getDeposit() {
-        return deposit;
+    public double getSalary() {
+        return salary;
     }
 
-    public void setDeposit(double deposit) {
-        this.deposit = deposit;
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 
     public int getRequired_level() {
@@ -286,13 +286,13 @@ public class Trip extends AbstractEntity {
     @Override
     public String toString() {
 
-        return "Trip{" +
+        return "Offer{" +
                 "name='" + name + '\'' +
                 ", short_name='" + short_name + '\'' +
                 ", possible_xp_reward=" + possible_xp_reward +
                 ", description='" + description + '\'' +
                 ", rating=" + rating +
-                ", deposit=" + deposit +
+                ", salary=" + salary +
                 ", location='" + location + '\'' +
                 ", required_level=" + required_level +
                 ", category=" + category +

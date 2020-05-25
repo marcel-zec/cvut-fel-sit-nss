@@ -32,7 +32,7 @@ public class EnrollmentServiceTest {
 
     private Enrollment enrollment;
     private User user;
-    private Trip trip;
+    private Offer trip;
     private TripSession tripSession,tripSession2,tripSession3;
     private TripSessionDto tripSessionDto,tripSessionDto2,tripSessionDto3;
 
@@ -57,7 +57,7 @@ public class EnrollmentServiceTest {
     @Before
     public void prepare() throws Exception {
         user = Generator.generateUser();
-        trip = new Trip("test2",11,"Description","shortName1",1000,"Hawaii",2);
+        trip = new Offer("test2",11,"Description","shortName1",1000,"Hawaii",2);
 
         tripSession = new TripSession(trip, LocalDate.now(), LocalDate.now().plusDays(7),2000);
         tripSession2 = new TripSession(trip, LocalDate.now(), LocalDate.now().plusDays(10),2500);

@@ -61,7 +61,7 @@ public class TranslateService {
     }
 
     @Transactional
-    public TripDto translateTrip(Trip trip) {
+    public OfferDto translateTrip(Offer trip) {
         Objects.requireNonNull(trip);
         List<TripSessionDto> sessions = new ArrayList<>();
         List<AchievementCertificateDto> required_certificates = new ArrayList<>();
@@ -69,7 +69,7 @@ public class TranslateService {
         List<AchievementSpecialDto> required_achievements_special = new ArrayList<>();
         List<AchievementSpecialDto> gain_achievements = new ArrayList<>();
         List<TripReviewDto> tripReviews = new ArrayList<>();
-        Trip trip1 = tripDao.find(trip.getId());
+        Offer trip1 = tripDao.find(trip.getId());
 
         trip1.getRequired_achievements_certificate().forEach(achievementCertificate -> required_certificates.add(translateAchievementCertificate(achievementCertificate)));
         trip1.getRequired_achievements_categorized().forEach(achievementCategorized -> required_achievements_categorized.add(translateAchievementCategorized(achievementCategorized)));
@@ -78,8 +78,8 @@ public class TranslateService {
         trip1.getTripReviews().forEach(review -> tripReviews.add(translateTripReview(review)));
         trip1.getSessions().forEach(session-> sessions.add(translateSession(session)));
 
-        return new TripDto(trip.getId(),trip.getName(),trip.getShort_name(),trip.getPossible_xp_reward(),
-                trip.getDescription(),trip.getRating(),trip.getDeposit(),trip.getLocation(), trip.getRequired_level(),
+        return new OfferDto(trip.getId(),trip.getName(),trip.getShort_name(),trip.getPossible_xp_reward(),
+                trip.getDescription(),trip.getRating(),trip.getSalary(),trip.getLocation(), trip.getRequired_level(),
                 trip.getCategory().getId(), required_certificates, required_achievements_categorized, required_achievements_special, gain_achievements, sessions, tripReviews);
     }
 
@@ -153,9 +153,9 @@ public class TranslateService {
     @Transactional
     public CategoryDto translateCategory(Category category){
         Objects.requireNonNull(category);
-        List<TripDto> trips = new ArrayList<>();
+        List<OfferDto> trips = new ArrayList<>();
 
-        for (Trip trip : category.getTrips()) {
+        for (Offer trip : category.getTrips()) {
             trips.add(translateTrip(trip));
         }
 

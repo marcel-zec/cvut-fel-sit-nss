@@ -1,8 +1,8 @@
 package cz.cvut.fel.nss.parttimejobportal.rest;
 
-import cz.cvut.fel.nss.parttimejobportal.dto.TripDto;
+import cz.cvut.fel.nss.parttimejobportal.dto.OfferDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.TripSessionDto;
-import cz.cvut.fel.nss.parttimejobportal.model.Trip;
+import cz.cvut.fel.nss.parttimejobportal.model.Offer;
 import cz.cvut.fel.nss.parttimejobportal.model.TripSession;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +29,7 @@ import static org.junit.Assert.assertNull;
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class TripControllerTest extends AbstractTest {
 
-    private List<TripDto> tripDto;
+    private List<OfferDto> tripDto;
 
     @Before
     public void setUp(){
@@ -71,7 +71,7 @@ public class TripControllerTest extends AbstractTest {
     @Test
     @WithMockUser(username = "admin@gmail.com",roles={"USER","ADMIN"})
     public void createTripTest()throws Exception{
-        Trip trip = new Trip("test1",10,"Description","shortName",2000,"Hawaii",3);
+        Offer trip = new Offer("test1",10,"Description","shortName",2000,"Hawaii",3);
         trip.setSessions(Collections.singletonList(new TripSession(trip, LocalDate.now(), LocalDate.now().plusDays(7), 2000)));
         String uri = "/trip";
         String inputJson = super.mapToJson(trip);
@@ -85,9 +85,9 @@ public class TripControllerTest extends AbstractTest {
     @WithMockUser(username = "admin@gmail.com",roles={"USER","ADMIN","SUPERADMIN"})
     public void updateTest() throws Exception {
         String uri = "/trip/fuguvar";
-        Trip trip = new Trip("test1",10,"Description","shortName",2000,"Hawaii",3);
+        Offer trip = new Offer("test1",10,"Description","shortName",2000,"Hawaii",3);
         trip.setSessions(Collections.singletonList(new TripSession(trip, LocalDate.now(), LocalDate.now().plusDays(7), 2000)));
-        trip.setDeposit(1945);
+        trip.setSalary(1945);
         String inputJson = super.mapToJson(trip);
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.patch(uri).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
 
@@ -118,7 +118,7 @@ public class TripControllerTest extends AbstractTest {
         int status = mvcResult.getResponse().getStatus();
         assertEquals(204, status);
         String content = mvcResult.getResponse().getContentAsString();
-        assertEquals(content, "Trip is created successfully");
+        assertEquals(content, "Offer is created successfully");
     }
 
 //    @Test

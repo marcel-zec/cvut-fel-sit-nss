@@ -2,7 +2,7 @@ package cz.cvut.fel.nss.parttimejobportal.service;
 
 import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.model.Enrollment;
-import cz.cvut.fel.nss.parttimejobportal.model.Trip;
+import cz.cvut.fel.nss.parttimejobportal.model.Offer;
 import cz.cvut.fel.nss.parttimejobportal.model.TripReview;
 import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.exception.AlreadyExistsException;
@@ -56,7 +56,7 @@ public class TripReviewService {
         tripReview.setEnrollment(enrollment);
         tripReviewDao.persist(tripReview);
 
-        Trip trip = enrollment.getTrip();
+        Offer trip = enrollment.getTrip();
         long noReviews = trip.getTripReviews().size();
         double currentRating = trip.getRating();
         trip.setRating((currentRating*(noReviews-1) + tripReview.getRating())/noReviews);
@@ -71,7 +71,7 @@ public class TripReviewService {
         double oldRating = old.getRating();
         double newRating = tripReview.getRating();
 
-        Trip trip = old.getTrip();
+        Offer trip = old.getTrip();
         double currentRating = trip.getRating();
         long noReviews = trip.getTripReviews().size();
 

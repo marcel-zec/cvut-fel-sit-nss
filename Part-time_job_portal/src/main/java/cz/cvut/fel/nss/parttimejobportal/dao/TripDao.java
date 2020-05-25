@@ -1,6 +1,6 @@
 package cz.cvut.fel.nss.parttimejobportal.dao;
 
-import cz.cvut.fel.nss.parttimejobportal.model.Trip;
+import cz.cvut.fel.nss.parttimejobportal.model.Offer;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
@@ -10,15 +10,15 @@ import java.util.List;
 
 
 @Repository
-public class TripDao extends BaseDao<Trip> {
+public class TripDao extends BaseDao<Offer> {
     public TripDao() {
-        super(Trip.class);
+        super(Offer.class);
     }
 
-    public Trip find(String id){
+    public Offer find(String id){
         {
             try {
-                return em.createNamedQuery("Trip.findByStringId", Trip.class).setParameter("id", id)
+                return em.createNamedQuery("Offer.findByStringId", Offer.class).setParameter("id", id)
                         .getSingleResult();
             } catch (NoResultException e) {
                 return null;
@@ -26,11 +26,11 @@ public class TripDao extends BaseDao<Trip> {
         }
     }
 
-    public List<Trip> find(int required_level){
+    public List<Offer> find(int required_level){
 
         {
             try {
-                return em.createNamedQuery("Trip.findByLevel", Trip.class).setParameter("required_level", required_level)
+                return em.createNamedQuery("Offer.findByLevel", Offer.class).setParameter("required_level", required_level)
                         .getResultList();
             } catch (NoResultException e) {
                 return null;
@@ -38,12 +38,12 @@ public class TripDao extends BaseDao<Trip> {
         }
     }
 
-    public List<Trip> findByFilter(String location, LocalDate from_date, LocalDate to_date, Double maxPrice, String[] search){
+    public List<Offer> findByFilter(String location, LocalDate from_date, LocalDate to_date, Double maxPrice, String[] search){
 
         try {
-                List<Trip> filteredTrips = new ArrayList<>();
+                List<Offer> filteredTrips = new ArrayList<>();
                 //all trips matching filter, not search words
-                filteredTrips = em.createNamedQuery("Trip.findByFilter", Trip.class)
+                filteredTrips = em.createNamedQuery("Offer.findByFilter", Offer.class)
                         .setParameter("location", location)
                         .setParameter("from_date", from_date)
                         .setParameter("to_date", to_date)
@@ -51,7 +51,7 @@ public class TripDao extends BaseDao<Trip> {
                         .getResultList();
 
                 List<Long> ids = new ArrayList<>();
-                for (Trip t : filteredTrips){
+                for (Offer t : filteredTrips){
                     ids.add(t.getId());
                 }
 
@@ -62,7 +62,7 @@ public class TripDao extends BaseDao<Trip> {
                     for (String s : search) {
                         pattern = "%" + s + "%";
 
-                        List<Trip> filteredTrips2 = em.createNamedQuery("Trip.findByPattern", Trip.class)
+                        List<Offer> filteredTrips2 = em.createNamedQuery("Offer.findByPattern", Offer.class)
                                 .setParameter("ids", ids)
                                 .setParameter("pattern", pattern)
                                 .getResultList();

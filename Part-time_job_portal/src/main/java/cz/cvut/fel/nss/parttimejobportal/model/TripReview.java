@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "TRIP_REVIEW")
 @NamedQueries({
-        @NamedQuery(name = "TripReview.findByTripId", query = "SELECT t FROM Trip t WHERE t.short_name = :id AND t.deleted_at is null")
+        @NamedQuery(name = "TripReview.findByTripId", query = "SELECT t FROM Offer t WHERE t.short_name = :id AND t.deleted_at is null")
         })
 public class TripReview extends AbstractEntity {
 
@@ -37,7 +37,7 @@ public class TripReview extends AbstractEntity {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "trip_id", nullable = false)
-    private Trip trip;
+    private Offer trip;
 
     @JsonIgnore
     @OneToOne
@@ -48,7 +48,7 @@ public class TripReview extends AbstractEntity {
         date = LocalDateTime.now();
     }
 
-    public TripReview(@Size(max = 255, min = 0, message = "Max 255 characters.") String note, LocalDateTime date, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating, User author, Trip trip, Enrollment enrollment) {
+    public TripReview(@Size(max = 255, min = 0, message = "Max 255 characters.") String note, LocalDateTime date, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating, User author, Offer trip, Enrollment enrollment) {
         this.note = note;
         this.date = date;
         this.rating = rating;
@@ -85,11 +85,11 @@ public class TripReview extends AbstractEntity {
         return author;
     }
 
-    public Trip getTrip() {
+    public Offer getTrip() {
         return trip;
     }
 
-    public void setTrip(Trip trip) {
+    public void setTrip(Offer trip) {
         this.trip = trip;
     }
 
