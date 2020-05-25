@@ -76,11 +76,11 @@ public class DatabaseSeeder implements
         //TODO - vykona sa hned po spusteni
         System.out.println("Vypis po stupusteni aplikacie.");
 
+        createUsers();
         createCategories();
         createAchievement();
         createOffers();
         setAchievementsAndCategories();
-        createUsers();
         addAchievementsToUsers();
         try {
             signUsersToTrips();
@@ -91,59 +91,8 @@ public class DatabaseSeeder implements
         createUserReviews();
     }
 
-    private void createUserReviews() {
-        //1.userReview from Milan to Jan
-        Manager author = managerDao.findByEmail("admin@gmail.com");
-        User user = userDao.findByEmail("jan@gmail.com");
-        JobSession tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
-        UserReview userReview = new UserReview("It was a pleasure to work with you, Jane :) ", LocalDateTime.now(), 5, user, author, tripSession);
-        userReviewDao.persist(userReview);
 
-        //2.userReview from Jan to Milan
-        author = managerDao.findByEmail("admin@gmail.com");
-        user = userDao.findByEmail("milan@gmail.com");
-        tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
-        userReview = new UserReview("You are a super fugu guy, Milane :) ", LocalDateTime.now(), 5, user, author, tripSession);
-        userReviewDao.persist(userReview);
-
-        //3.userReview from Milan to Julia
-//        author = userDao.findByEmail("milan@gmail.com");
-//        user = userDao.findByEmail("july1331@gmail.com");
-//        tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
-//        userReview = new UserReview("I hope I see you again someday, Julia :) ", LocalDateTime.now(), 5, user, author, tripSession);
-//        userReviewDao.persist(userReview);
-    }
-
-    private void createTripReviews() {
-        //1.tripReview from Milan
-        User author = userDao.findByEmail("milan@gmail.com");
-        if(author.getTravel_journal().getEnrollments().size() > 0) {
-            Enrollment enrollment = author.getTravel_journal().getEnrollments().get(0);
-            TripReview tripReview = new TripReview("Really good offer, love it <3", LocalDateTime.now(), 5, author, enrollment.getTrip(),enrollment);
-            tripReviewDao.persist(tripReview);
-            updateTripRating(tripReview.getTrip(), tripReview.getRating());
-        }
-
-        //2.tripReview from Milan
-        author = userDao.findByEmail("milan@gmail.com");
-        if(author.getTravel_journal().getEnrollments().size() > 1) {
-            Enrollment enrollment = author.getTravel_journal().getEnrollments().get(1);
-            TripReview tripReview = new TripReview("it was good, but the whether was really bad :( ", LocalDateTime.now(), 3, author, enrollment.getTrip(),enrollment);
-            tripReviewDao.persist(tripReview);
-            updateTripRating(tripReview.getTrip(), tripReview.getRating());
-        }
-
-        //3.tripReview from Jan
-        author = userDao.findByEmail("jan@gmail.com");
-        if(author.getTravel_journal().getEnrollments().size() > 0) {
-            Enrollment enrollment = author.getTravel_journal().getEnrollments().get(0);
-            TripReview tripReview = new TripReview("it was the best offer of my entire life! Don't be afraid to enrol ;) ", LocalDateTime.now(), 3, author, enrollment.getTrip(),enrollment);
-            tripReviewDao.persist(tripReview);
-            updateTripRating(tripReview.getTrip(), tripReview.getRating());
-        }
-    }
-
-    void createUsers(){
+    private void createUsers(){
 
         //user Jan
         User user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Jan","Testovany","jan@gmail.com");
@@ -219,6 +168,60 @@ public class DatabaseSeeder implements
         System.out.println("Test admin persist.");
     }
 
+    private void createUserReviews() {
+        //1.userReview from Milan to Jan
+        Manager author = managerDao.findByEmail("admin@gmail.com");
+        User user = userDao.findByEmail("jan@gmail.com");
+        JobSession tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
+        UserReview userReview = new UserReview("It was a pleasure to work with you, Jane :) ", LocalDateTime.now(), 5, user, author, tripSession);
+        userReviewDao.persist(userReview);
+
+        //2.userReview from Jan to Milan
+        author = managerDao.findByEmail("admin@gmail.com");
+        user = userDao.findByEmail("milan@gmail.com");
+        tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
+        userReview = new UserReview("You are a super fugu guy, Milane :) ", LocalDateTime.now(), 5, user, author, tripSession);
+        userReviewDao.persist(userReview);
+
+        //3.userReview from Milan to Julia
+//        author = userDao.findByEmail("milan@gmail.com");
+//        user = userDao.findByEmail("july1331@gmail.com");
+//        tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
+//        userReview = new UserReview("I hope I see you again someday, Julia :) ", LocalDateTime.now(), 5, user, author, tripSession);
+//        userReviewDao.persist(userReview);
+    }
+
+    private void createTripReviews() {
+        //1.tripReview from Milan
+        User author = userDao.findByEmail("milan@gmail.com");
+        if(author.getTravel_journal().getEnrollments().size() > 0) {
+            Enrollment enrollment = author.getTravel_journal().getEnrollments().get(0);
+            TripReview tripReview = new TripReview("Really good offer, love it <3", LocalDateTime.now(), 5, author, enrollment.getTrip(),enrollment);
+            tripReviewDao.persist(tripReview);
+            updateTripRating(tripReview.getTrip(), tripReview.getRating());
+        }
+
+        //2.tripReview from Milan
+        author = userDao.findByEmail("milan@gmail.com");
+        if(author.getTravel_journal().getEnrollments().size() > 1) {
+            Enrollment enrollment = author.getTravel_journal().getEnrollments().get(1);
+            TripReview tripReview = new TripReview("it was good, but the whether was really bad :( ", LocalDateTime.now(), 3, author, enrollment.getTrip(),enrollment);
+            tripReviewDao.persist(tripReview);
+            updateTripRating(tripReview.getTrip(), tripReview.getRating());
+        }
+
+        //3.tripReview from Jan
+        author = userDao.findByEmail("jan@gmail.com");
+        if(author.getTravel_journal().getEnrollments().size() > 0) {
+            Enrollment enrollment = author.getTravel_journal().getEnrollments().get(0);
+            TripReview tripReview = new TripReview("it was the best offer of my entire life! Don't be afraid to enrol ;) ", LocalDateTime.now(), 3, author, enrollment.getTrip(),enrollment);
+            tripReviewDao.persist(tripReview);
+            updateTripRating(tripReview.getTrip(), tripReview.getRating());
+        }
+    }
+
+
+
 
     @Transactional
     void createOffers(){
@@ -229,7 +232,7 @@ public class DatabaseSeeder implements
 
         //priklady tripov a user progressu medzi nimi 0
         description = "Tento zajezd bude mit cenu za dopravu a kurz, po absolvování se odemkne achievement ´kuchař ryb fugu´, pro absolvování je potřeba mít achievement ´Kuchtík´." ;
-        offer = new Offer("Kurz vaření ryb Fugu",10,description,"fugukurz",150,"Tokyo, Japan",1,null);
+        offer = new Offer("Kurz vaření ryb Fugu",10,description,"fugukurz",150,"Tokyo, Japan",1, managerDao.findByEmail("admin@gmail.com"));
         //offer.addGainAchievement();
         //offer.addRequiredAchievement();
         offerDao.persist(offer);
@@ -246,7 +249,7 @@ public class DatabaseSeeder implements
 
         //1
         description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař ryb fugu´." ;
-        offer = new Offer("Vaření ryb Fugu, Praha",10,description,"fuguvar",120,"Praha, Česká republika",1,null);
+        offer = new Offer("Vaření ryb Fugu, Praha",10,description,"fuguvar",120,"Praha, Česká republika",1, managerDao.findByEmail("admin@gmail.com"));
         offerDao.persist(offer);
 
         tripSession = new JobSession(offer, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 4);
@@ -280,7 +283,7 @@ public class DatabaseSeeder implements
 
         //2.offer "Kuchař na Pražském hradě"
         description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař´." ;
-        offer = new Offer("Kuchař na Pražském hradě",8,description,"prahradvar",110,"Praha, Česká republika",3,null);
+        offer = new Offer("Kuchař na Pražském hradě",8,description,"prahradvar",110,"Praha, Česká republika",3, managerDao.findByEmail("admin@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 5);
         jobSessionDao.persist(tripSession);
@@ -295,7 +298,7 @@ public class DatabaseSeeder implements
 
         //3.offer "Kuchař menza Studentský dům, Praha"
         description = "Tento zajezd nevyzaduje zadne achievementy a po nem se nedaji ziskat specialni achievementy ale daji se ziskat achievementy jako jsou např. ´Kuchtík´, ´Kuchař´ apod. Odměna Xp je dost nízká aby se nedalo jednoduše dostat za tuhle práci na prestižnější místa jako pražský hrad, ale zároveň je možno si dopomoct s touto lehčí a dostupnější práci nahnat achievement kuchař, jestliže xp grind mám za sebou z jiných zájezdů." ;
-        offer = new Offer("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",140,"Praha, Česká republika",0,managerDao.findByEmail("admin@gmail.com"));
+        offer = new Offer("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",140,"Praha, Česká republika",0, managerDao.findByEmail("admin@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 2);
         jobSessionDao.persist(tripSession);
@@ -310,7 +313,7 @@ public class DatabaseSeeder implements
 
         //4.offer "projekt „Úsměv pro všechny“"
         description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
-        offer = new Offer("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0,null);
+        offer = new Offer("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0, managerDao.findByEmail("admin@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3);
         jobSessionDao.persist(tripSession);
@@ -328,7 +331,7 @@ public class DatabaseSeeder implements
 
         //5. offer - bez sessions
         description = "Neaktivni offer. Nema aktivni sessions, je viditelny pouze Administratorem.";
-        offer = new Offer("Retired trip", 12, description, "retrip", 135, "London, Great Britain", 5,null);
+        offer = new Offer("Retired trip", 12, description, "retrip", 135, "London, Great Britain", 5, managerDao.findByEmail("admin@gmail.com"));
         offerDao.persist(offer);
         //tripSession ma datum  ukonceni vcera
         tripSession = new JobSession(offer, LocalDate.now().minusDays(16), LocalDate.now().minusDays(1), 2);
@@ -338,7 +341,7 @@ public class DatabaseSeeder implements
 
         //6.offer "Animátor v českém krumlově"
         description = "Pojď animovat zábavní program pro účastníky zájezdů v Českém Krumlově! Zkušenosti nepotřebuješ jenom úsměv na rtech a odhodlání rozdávat radost." ;
-        offer = new Offer("Animátor v Českém Krumlově",6,description,"czekrum",180,"Český Krumlov, Česká republika",1,null);
+        offer = new Offer("Animátor v Českém Krumlově",6,description,"czekrum",180,"Český Krumlov, Česká republika",1, managerDao.findByEmail("admin@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2018-08-06"), LocalDate.parse("2018-08-12"), 5); //0
         jobSessionDao.persist(tripSession);
