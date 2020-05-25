@@ -74,7 +74,7 @@ public class Offer extends AbstractEntity {
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "manager_id")
+    @JoinColumn(name = "manager_id", nullable = false)
     private Manager author;
 
     @ManyToMany

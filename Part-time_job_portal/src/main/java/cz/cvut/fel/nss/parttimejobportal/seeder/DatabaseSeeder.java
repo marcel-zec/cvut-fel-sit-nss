@@ -232,7 +232,7 @@ public class DatabaseSeeder implements
 
         //priklady tripov a user progressu medzi nimi 0
         description = "Tento zajezd bude mit cenu za dopravu a kurz, po absolvování se odemkne achievement ´kuchař ryb fugu´, pro absolvování je potřeba mít achievement ´Kuchtík´." ;
-        offer = new Offer("Kurz vaření ryb Fugu",10,description,"fugukurz",150,"Tokyo, Japan",1,null);
+        offer = new Offer("Kurz vaření ryb Fugu",10,description,"fugukurz",150,"Tokyo, Japan",1, managerDao.findByEmail("admin@gmail.com"));
         //offer.addGainAchievement();
         //offer.addRequiredAchievement();
         offerDao.persist(offer);
@@ -249,7 +249,7 @@ public class DatabaseSeeder implements
 
         //1
         description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař ryb fugu´." ;
-        offer = new Offer("Vaření ryb Fugu, Praha",10,description,"fuguvar",120,"Praha, Česká republika",1,null);
+        offer = new Offer("Vaření ryb Fugu, Praha",10,description,"fuguvar",120,"Praha, Česká republika",1, managerDao.findByEmail("admin@gmail.com"));
         offerDao.persist(offer);
 
         tripSession = new JobSession(offer, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 4);
@@ -283,7 +283,7 @@ public class DatabaseSeeder implements
 
         //2.offer "Kuchař na Pražském hradě"
         description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař´." ;
-        offer = new Offer("Kuchař na Pražském hradě",8,description,"prahradvar",110,"Praha, Česká republika",3,null);
+        offer = new Offer("Kuchař na Pražském hradě",8,description,"prahradvar",110,"Praha, Česká republika",3, managerDao.findByEmail("admin@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 5);
         jobSessionDao.persist(tripSession);
@@ -313,7 +313,7 @@ public class DatabaseSeeder implements
 
         //4.offer "projekt „Úsměv pro všechny“"
         description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
-        offer = new Offer("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0,null);
+        offer = new Offer("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0, managerDao.findByEmail("admin@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3);
         jobSessionDao.persist(tripSession);
@@ -331,7 +331,7 @@ public class DatabaseSeeder implements
 
         //5. offer - bez sessions
         description = "Neaktivni offer. Nema aktivni sessions, je viditelny pouze Administratorem.";
-        offer = new Offer("Retired trip", 12, description, "retrip", 135, "London, Great Britain", 5,null);
+        offer = new Offer("Retired trip", 12, description, "retrip", 135, "London, Great Britain", 5, managerDao.findByEmail("admin@gmail.com"));
         offerDao.persist(offer);
         //tripSession ma datum  ukonceni vcera
         tripSession = new JobSession(offer, LocalDate.now().minusDays(16), LocalDate.now().minusDays(1), 2);
@@ -341,7 +341,7 @@ public class DatabaseSeeder implements
 
         //6.offer "Animátor v českém krumlově"
         description = "Pojď animovat zábavní program pro účastníky zájezdů v Českém Krumlově! Zkušenosti nepotřebuješ jenom úsměv na rtech a odhodlání rozdávat radost." ;
-        offer = new Offer("Animátor v Českém Krumlově",6,description,"czekrum",180,"Český Krumlov, Česká republika",1,null);
+        offer = new Offer("Animátor v Českém Krumlově",6,description,"czekrum",180,"Český Krumlov, Česká republika",1, managerDao.findByEmail("admin@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2018-08-06"), LocalDate.parse("2018-08-12"), 5); //0
         jobSessionDao.persist(tripSession);
