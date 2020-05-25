@@ -76,10 +76,16 @@ class Navigation extends React.Component {
                                 this.context.user.lastName}
                         </span>
                         <span>
-                            {this.context.user.travel_journal.level}. level
+                            {this.context.user.travel_journal
+                                ? this.context.user.travel_journal.level +
+                                  ". level"
+                                : null}
                         </span>
                         <span>
-                            {this.context.user.travel_journal.xp_count} XP
+                            {this.context.user.travel_journal
+                                ? this.context.user.travel_journal.xp_count +
+                                  " XP"
+                                : null}
                         </span>
                     </NavDropdown.Item>
                 ) : null}

@@ -131,12 +131,11 @@ class Profile extends React.Component {
                                 <h4>Moje hodnotenia</h4>
                             </Link>
                         </Col>
-                        
                         */}
                         <Col>
                             <Link to="/profile/trips">
                                 <FontAwesomeIcon icon="hammer" size="3x" />
-                                <h4>My brigády</h4>
+                                <h4>Moje brigády</h4>
                             </Link>
                         </Col>
 
