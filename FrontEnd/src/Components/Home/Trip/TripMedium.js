@@ -46,36 +46,27 @@ class TripMedium extends React.Component {
             dates = numberOfDates + " dates";
         }
         let sessions = this.props.trip.sessions;
-        let lowestPrice = sessions[0].price;
-
-        sessions.forEach((session) => {
-            if (session.price < lowestPrice) {
-                lowestPrice = session.price;
-            }
-        });
 
         return (
             <Link to={"/trips/" + this.props.trip.short_name}>
                 <Card className="mb-3 searchTrip">
                     <Card.Body className="d-flex">
-  
-                            <Col xs={5}>
-                                <div className="image-card">
-                                    <Card.Img
-                                        variant="top"
-                                        src="https://www.transparency.cz/wp-content/uploads/Jablonec-nad-Nisou-621x466.jpg"
-                                    />
-                                    <div className="trip_info">
-                                        <span className="image-text">
-                                            {" "}
-                                            {
-                                                this.props.trip.possible_xp_reward
-                                            } xp{" "}
-                                        </span>
-                                    </div>
+                        <Col xs={5}>
+                            <div className="image-card">
+                                <Card.Img
+                                    variant="top"
+                                    src="https://www.transparency.cz/wp-content/uploads/Jablonec-nad-Nisou-621x466.jpg"
+                                />
+                                <div className="trip_info">
+                                    <span className="image-text">
+                                        {" "}
+                                        {
+                                            this.props.trip.possible_xp_reward
+                                        } xp{" "}
+                                    </span>
                                 </div>
-                            
-                                </Col>
+                            </div>
+                        </Col>
                         <Col xs={7}>
                             <h4 className="ml-3">
                                 <Highlighter
@@ -113,7 +104,7 @@ class TripMedium extends React.Component {
                                     <Row>{reviewStars}</Row>
                                 </Col>
                                 <Col className="text price">
-                                    <span>{lowestPrice} Kč</span>
+                                    <span>{this.props.trip.salary} Kč</span>
                                 </Col>
                             </Row>
                         </Col>
