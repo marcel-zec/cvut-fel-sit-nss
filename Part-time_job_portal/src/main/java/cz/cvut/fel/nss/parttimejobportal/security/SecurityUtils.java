@@ -1,6 +1,6 @@
 package cz.cvut.fel.nss.parttimejobportal.security;
 
-import cz.cvut.fel.nss.parttimejobportal.model.User;
+import cz.cvut.fel.nss.parttimejobportal.model.AbstractUser;
 import cz.cvut.fel.nss.parttimejobportal.security.model.AuthenticationToken;
 import cz.cvut.fel.nss.parttimejobportal.security.model.UserDetails;
 import org.springframework.security.core.context.SecurityContext;
@@ -14,7 +14,7 @@ public class SecurityUtils {
      *
      * @return Current user
      */
-    public static User getCurrentUser() {
+    public static AbstractUser getCurrentUser() {
         final SecurityContext context = SecurityContextHolder.getContext();
         assert context != null;
         final UserDetails userDetails = (UserDetails) context.getAuthentication().getDetails();

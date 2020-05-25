@@ -28,13 +28,24 @@ public class LoginService {
 
 
     @Transactional(readOnly = true)
-    public UserDto login(/*String username*/ String email, String password) throws AlreadyLoginException {
+    public UserDto loginManager(/*String username*/ String email, String password) throws AlreadyLoginException {
 
         if (SecurityUtils.getCurrentUserDetails() != null) throw new AlreadyLoginException();
         Authentication auth = new UsernamePasswordAuthenticationToken(/*username*/ email, password);
-        provider.authenticate(auth);
+        provider.authenticate(auth,true);
         return translateService.translateUser(userDao.find(SecurityUtils.getCurrentUser().getId()));
 
     }
+
+    @Transactional(readOnly = true)
+    public UserDto loginUser(/*String username*/ String email, String password) throws AlreadyLoginException {
+
+        if (SecurityUtils.getCurrentUserDetails() != null) throw new AlreadyLoginException();
+        Authentication auth = new UsernamePasswordAuthenticationToken(/*username*/ email, password);
+        provider.authenticate(auth,false);
+        return translateService.translateUser(userDao.find(SecurityUtils.getCurrentUser().getId()));
+
+    }
+
 
 }

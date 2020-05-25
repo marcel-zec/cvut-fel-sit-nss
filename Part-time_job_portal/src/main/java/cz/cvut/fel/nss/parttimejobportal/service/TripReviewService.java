@@ -52,7 +52,7 @@ public class TripReviewService {
         if (enrollment.hasTripReview()) throw new AlreadyExistsException();
 
         tripReview.setTrip(enrollment.getTrip());
-        tripReview.setAuthor(SecurityUtils.getCurrentUser());
+        tripReview.setAuthor(userDao.find(SecurityUtils.getCurrentUser().getId()));
         tripReview.setEnrollment(enrollment);
         tripReviewDao.persist(tripReview);
 

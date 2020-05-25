@@ -1,12 +1,8 @@
 package cz.cvut.fel.nss.parttimejobportal.service;
 
 import cz.cvut.fel.nss.parttimejobportal.exception.*;
-import cz.cvut.fel.nss.parttimejobportal.model.Offer;
-import cz.cvut.fel.nss.parttimejobportal.model.TripReview;
-import cz.cvut.fel.nss.parttimejobportal.model.JobSession;
-import cz.cvut.fel.nss.parttimejobportal.model.User;
+import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.environment.util.Generator;
-import cz.cvut.fel.nss.parttimejobportal.exception.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

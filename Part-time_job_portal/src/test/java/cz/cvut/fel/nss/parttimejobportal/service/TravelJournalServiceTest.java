@@ -6,7 +6,6 @@ import cz.cvut.fel.nss.parttimejobportal.exception.BadPassword;
 import cz.cvut.fel.nss.parttimejobportal.exception.MissingVariableException;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.environment.util.Generator;
-import cz.cvut.fel.nss.parttimejobportal.model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +30,7 @@ import static org.junit.Assert.assertEquals;
 public class TravelJournalServiceTest {
 
     private TravelJournal travelJournal;
-    private User user;
+    private AbstractUser user;
     private Offer trip;
     private Category category;
 
@@ -47,7 +46,7 @@ public class TravelJournalServiceTest {
     @Before
     public void prepare() throws BadPassword, BadDateException, MissingVariableException {
         user = Generator.generateUser();
-        userService.createUser(user,user.getPassword());
+        userService.createUser((User) user,user.getPassword());
 
         category = new Category("TestCat");
         trip = new Offer("test1",10,"Description","shortName",2000,"Hawaii",3);
@@ -59,7 +58,7 @@ public class TravelJournalServiceTest {
         categoryService.create(category);
         offerService.create(trip);
 
-        travelJournal = new TravelJournal(user);
+        travelJournal = new TravelJournal((User) user);
         travelJournal.addTrip(trip.getCategory().getId());
         travelJournal.setXp_count(5);
 

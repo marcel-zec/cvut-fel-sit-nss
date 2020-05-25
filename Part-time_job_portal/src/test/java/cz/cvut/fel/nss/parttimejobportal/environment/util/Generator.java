@@ -1,7 +1,6 @@
 package cz.cvut.fel.nss.parttimejobportal.environment.util;
 
 import cz.cvut.fel.nss.parttimejobportal.model.*;
-import cz.cvut.fel.nss.parttimejobportal.model.*;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -32,7 +31,7 @@ public class Generator {
         return sb.toString();
     }
 
-    private static Address generateAddress(User user){
+    private static Address generateAddress(AbstractUser user){
         return new Address("City " + randomInt(), "Street " + randomInt(), randomInt(), "Z71" + randomInt(), "Country " + randomInt(), user);
     }
 

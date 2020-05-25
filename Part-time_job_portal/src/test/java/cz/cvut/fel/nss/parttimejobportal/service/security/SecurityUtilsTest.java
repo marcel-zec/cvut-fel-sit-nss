@@ -1,7 +1,7 @@
 package cz.cvut.fel.nss.parttimejobportal.service.security;
 
 import cz.cvut.fel.nss.parttimejobportal.environment.util.Generator;
-import cz.cvut.fel.nss.parttimejobportal.model.User;
+import cz.cvut.fel.nss.parttimejobportal.model.AbstractUser;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
 import cz.cvut.fel.nss.parttimejobportal.security.model.UserDetails;
 import cz.cvut.fel.nss.parttimejobportal.environment.util.Environment;
@@ -22,7 +22,7 @@ public class SecurityUtilsTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    private User user;
+    private AbstractUser user;
 
     @Before
     public void setUp() {
@@ -37,7 +37,7 @@ public class SecurityUtilsTest {
     @Test
     public void getCurrentUserReturnsCurrentlyLoggedInUser() {
         Environment.setCurrentUser(user);
-        final User result = SecurityUtils.getCurrentUser();
+        final AbstractUser result = SecurityUtils.getCurrentUser();
         assertEquals(user, result);
     }
 

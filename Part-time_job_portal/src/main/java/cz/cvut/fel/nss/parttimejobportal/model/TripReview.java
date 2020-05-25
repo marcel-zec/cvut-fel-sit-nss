@@ -81,7 +81,7 @@ public class TripReview extends AbstractEntity {
         this.rating = rating;
     }
 
-    public User getAuthor() {
+    public AbstractUser getAuthor() {
         return author;
     }
 

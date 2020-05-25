@@ -2,6 +2,7 @@ package cz.cvut.fel.nss.parttimejobportal.security;
 
 import cz.cvut.fel.nss.parttimejobportal.security.model.AuthenticationToken;
 import cz.cvut.fel.nss.parttimejobportal.security.model.UserDetails;
+import cz.cvut.fel.nss.parttimejobportal.service.security.RoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +24,39 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final RoleService roleService;
+
 
     @Autowired
-    public DefaultAuthenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+    public DefaultAuthenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder, RoleService roleService) {
 
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
+    }
+
+
+    public Authentication authenticate(Authentication authentication, boolean manager) throws AuthenticationException {
+        //loadUserByUsername is overloaded in userDetailService for finding user by email
+        UserDetails ud = (UserDetails) userDetailsService.loadUserByUsername(authentication.getPrincipal().toString());
+        if (manager){
+            if (roleService.isUser(ud.getUser())) throw new BadCredentialsException("Not validated");
+        } else {
+            if (roleService.isManager(ud.getUser())) throw new BadCredentialsException("Not validated");
+        }
+
+        if (!passwordEncoder.matches(authentication.getCredentials().toString(), ud.getPassword())) {
+            throw new BadCredentialsException("Not validated");
+        }
+        System.out.println("Login success.");
+        ud.eraseCredentials();
+        return SecurityUtils.setCurrentUser(ud);
     }
 
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        //loadUserByUsername is overloaded in userDetailService for finding user by email
+
         UserDetails ud = (UserDetails) userDetailsService.loadUserByUsername(authentication.getPrincipal().toString());
         if (!passwordEncoder.matches(authentication.getCredentials().toString(), ud.getPassword())) {
             throw new BadCredentialsException("Not validated");
@@ -43,10 +65,12 @@ public class DefaultAuthenticationProvider implements AuthenticationProvider {
         return SecurityUtils.setCurrentUser(ud);
     }
 
+
     @Override
     public boolean supports(Class<?> aClass) {
 
         return UsernamePasswordAuthenticationToken.class.isAssignableFrom(aClass) ||
                 AuthenticationToken.class.isAssignableFrom(aClass);
     }
+
 }

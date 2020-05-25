@@ -7,10 +7,7 @@ import cz.cvut.fel.nss.parttimejobportal.service.EnrollmentService;
 import cz.cvut.fel.nss.parttimejobportal.service.TranslateService;
 import cz.cvut.fel.nss.parttimejobportal.service.TravelJournalService;
 import cz.cvut.fel.nss.parttimejobportal.service.OfferService;
-import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
-import cz.cvut.fel.nss.parttimejobportal.model.*;
-import cz.cvut.fel.nss.parttimejobportal.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -46,13 +43,14 @@ public class DatabaseSeeder implements
     private TripReviewDao tripReviewDao;
     private UserReviewDao userReviewDao;
     private EnrollmentService enrollmentService;
+    private final ManagerDao managerDao;
 
     @Autowired
     public DatabaseSeeder(OfferDao offerDao, JobSessionDao jobSessionDao, AchievementCertificateDao achievementCertificateDao,
                           AchievementCategorizedDao achievementCategorizedDao, AchievementSpecialDao achievementSpecialDao,
                           CategoryDao categoryDao, UserDao userDao, AddressDao addressDao, EnrollmentDao enrollmentDao,
                           OfferService offerService, TranslateService translateService, TravelJournalService travelJournalService,
-                          TravelJournalDao travelJournalDao, TripReviewDao tripReviewDao, UserReviewDao userReviewDao, EnrollmentService enrollmentService) {
+                          TravelJournalDao travelJournalDao, TripReviewDao tripReviewDao, UserReviewDao userReviewDao, EnrollmentService enrollmentService, ManagerDao managerDao) {
         this.offerDao = offerDao;
         this.jobSessionDao = jobSessionDao;
         this.achievementCertificateDao = achievementCertificateDao;
@@ -69,6 +67,7 @@ public class DatabaseSeeder implements
         this.tripReviewDao = tripReviewDao;
         this.userReviewDao = userReviewDao;
         this.enrollmentService = enrollmentService;
+        this.managerDao = managerDao;
     }
 
     @Override
@@ -94,14 +93,14 @@ public class DatabaseSeeder implements
 
     private void createUserReviews() {
         //1.userReview from Milan to Jan
-        User author = userDao.findByEmail("milan@gmail.com");
+        Manager author = managerDao.findByEmail("admin@gmail.com");
         User user = userDao.findByEmail("jan@gmail.com");
         JobSession tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
         UserReview userReview = new UserReview("It was a pleasure to work with you, Jane :) ", LocalDateTime.now(), 5, user, author, tripSession);
         userReviewDao.persist(userReview);
 
         //2.userReview from Jan to Milan
-        author = userDao.findByEmail("jan@gmail.com");
+        author = managerDao.findByEmail("admin@gmail.com");
         user = userDao.findByEmail("milan@gmail.com");
         tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
         userReview = new UserReview("You are a super fugu guy, Milane :) ", LocalDateTime.now(), 5, user, author, tripSession);
@@ -462,6 +461,7 @@ public class DatabaseSeeder implements
         user.setRole(Role.USER);
 
         userDao.persist(user);
+
         Address address = new Address();
         address.setUser(user);
         address.setCountry("Slovakia");
@@ -513,8 +513,9 @@ public class DatabaseSeeder implements
         System.out.println("Test user persist.");
 
         //admin Peter
-        user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Peter","Testovany","admin@gmail.com");
-        user.setRole(Role.ADMIN);
+        Manager manager = new Manager(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Peter","Testovany","admin@gmail.com");
+        managerDao.persist(manager);
+        manager.setRole(Role.ADMIN);
         userDao.persist(user);
         address = new Address();
         address.setUser(user);
@@ -524,8 +525,8 @@ public class DatabaseSeeder implements
         address.setHouseNumber(20);
         address.setZipCode("05175");
         addressDao.persist(address);
-        user.setAddress(address);
-        userDao.update(user);
+        manager.setAddress(address);
+        managerDao.update(manager);
         System.out.println("Test admin persist.");
     }
 
@@ -584,7 +585,7 @@ public class DatabaseSeeder implements
         enrollmentDao.update(e);
     }
 
-    void signUserToTrip(User user, JobSession tripSession) throws NotAllowedException {
+    void signUserToTrip(AbstractUser user, JobSession tripSession) throws NotAllowedException {
         JobSessionDto tripSessionDto;
 
         tripSessionDto = translateService.translateSession(tripSession);

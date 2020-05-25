@@ -1,5 +1,6 @@
 package cz.cvut.fel.nss.parttimejobportal.service.security;
 
+import cz.cvut.fel.nss.parttimejobportal.model.AbstractUser;
 import cz.cvut.fel.nss.parttimejobportal.model.User;
 import cz.cvut.fel.nss.parttimejobportal.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class UserDetailsService implements org.springframework.security.core.use
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         //final User user = userDao.findByUsername(username);
-        final User user = userDao.findByEmail(email);
+        final AbstractUser user = userDao.findByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("User with email " + email + " not found.");
         }

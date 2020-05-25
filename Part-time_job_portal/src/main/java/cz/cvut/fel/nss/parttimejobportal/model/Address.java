@@ -39,14 +39,14 @@ public class Address extends AbstractEntity {
 
     @JsonIgnore
     @OneToOne(mappedBy = "address")
-    private User user;
+    private AbstractUser user;
 
     public Address(@NotBlank(message = "City cannot be blank") String city,
                    @NotBlank(message = "Street cannot be blank") String street,
                    int houseNumber,
                    @NotBlank(message = "ZIP code cannot be blank") String zipCode,
                    @NotBlank(message = "Country cannot be blank") String country,
-                   User user) {
+                   AbstractUser user) {
         this.city = city;
         this.street = street;
         this.houseNumber = houseNumber;
@@ -79,7 +79,7 @@ public class Address extends AbstractEntity {
         return country;
     }
 
-    public User getUser() {
+    public AbstractUser getUser() {
         return user;
     }
 
@@ -103,7 +103,7 @@ public class Address extends AbstractEntity {
         this.country = country;
     }
 
-    public void setUser(User user) {
+    public void setUser(AbstractUser user) {
         this.user = user;
     }
 

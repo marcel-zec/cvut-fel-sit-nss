@@ -1,8 +1,9 @@
 package cz.cvut.fel.nss.parttimejobportal.service;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadPassword;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
-import cz.cvut.fel.nss.parttimejobportal.model.User;
+import cz.cvut.fel.nss.parttimejobportal.model.AbstractUser;
 import cz.cvut.fel.nss.parttimejobportal.environment.util.Generator;
+import cz.cvut.fel.nss.parttimejobportal.model.User;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,8 +30,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class UserServiceTest {
-    User testUser = Generator.generateUser();
-    List<User> list = Arrays.asList(Generator.generateUser(), Generator.generateUser(), Generator.generateUser());
+    AbstractUser testUser = Generator.generateUser();
+    List<AbstractUser> list = Arrays.asList(Generator.generateUser(), Generator.generateUser(), Generator.generateUser());
 
     @Autowired
     TranslateService ts;
@@ -43,9 +44,9 @@ public class UserServiceTest {
 
     @Before
     public void init() throws BadPassword {
-        sut.createUser(testUser, testUser.getPassword());
-        for (User us: list) {
-            sut.createUser(us, us.getPassword());
+        sut.createUser((User) testUser, testUser.getPassword());
+        for (AbstractUser us: list) {
+            sut.createUser((User) us, us.getPassword());
             System.out.println(us.toString());
         }
     }

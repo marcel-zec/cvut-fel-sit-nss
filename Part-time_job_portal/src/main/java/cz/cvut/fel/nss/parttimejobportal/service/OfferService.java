@@ -4,12 +4,10 @@ import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.dto.OfferDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.JobSessionDto;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
-import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadDateException;
 import cz.cvut.fel.nss.parttimejobportal.exception.MissingVariableException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
-import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
 import cz.cvut.fel.nss.parttimejobportal.security.model.UserDetails;
 import cz.cvut.fel.nss.parttimejobportal.service.security.AccessService;
@@ -142,7 +140,7 @@ public class OfferService {
     }
 
     @Transactional
-    public void signUpToTrip(JobSessionDto tripSessionDto, User current_user) throws NotAllowedException {
+    public void signUpToTrip(JobSessionDto tripSessionDto, AbstractUser current_user) throws NotAllowedException {
         JobSession tripSession = jobSessionDao.find(tripSessionDto.getId());
 //      TODO odkomentovat ked bude otestovane ukoncovanie tripov
 //       if (tripSession.getFrom_date().isBefore(ChronoLocalDate.from(LocalDateTime.now()))) throw new NotAllowedException();
@@ -171,15 +169,16 @@ public class OfferService {
     }
 
     @Transactional
-    public List<Offer> findAfford(User current_user) throws NotAllowedException {
+    public List<Offer> findAfford(AbstractUser current_user) throws NotAllowedException {
         if (current_user == null) throw new NotAllowedException();
-        User user = accessService.getUser(current_user);
+        User user = userDao.find(current_user.getId());
+        if (user == null) throw new NotAllowedException();
         int level = translateService.countLevel(translateService.translateTravelJournal(user.getTravel_journal()).getXp_count());
         return  offerDao.find(level);
     }
 
     @Transactional
-    public List<Offer> findNotAfford(User current_user) throws NotAllowedException {
+    public List<Offer> findNotAfford(AbstractUser current_user) throws NotAllowedException {
         List<Offer> trips = offerDao.findAll();
         trips.removeAll(findAfford(current_user));
         return trips;

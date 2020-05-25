@@ -2,7 +2,7 @@ package cz.cvut.fel.nss.parttimejobportal.environment.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cz.cvut.fel.nss.parttimejobportal.config.AppConfig;
-import cz.cvut.fel.nss.parttimejobportal.model.User;
+import cz.cvut.fel.nss.parttimejobportal.model.AbstractUser;
 import cz.cvut.fel.nss.parttimejobportal.security.model.AuthenticationToken;
 import cz.cvut.fel.nss.parttimejobportal.security.model.UserDetails;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -39,7 +39,7 @@ public class Environment {
         return new StringHttpMessageConverter(StandardCharsets.UTF_8);
     }
 
-    public static void setCurrentUser(User user) {
+    public static void setCurrentUser(AbstractUser user) {
         final UserDetails userDetails = new UserDetails(user, new HashSet<>());
         SecurityContext context = new SecurityContextImpl();
         context.setAuthentication(new AuthenticationToken(userDetails.getAuthorities(), userDetails));

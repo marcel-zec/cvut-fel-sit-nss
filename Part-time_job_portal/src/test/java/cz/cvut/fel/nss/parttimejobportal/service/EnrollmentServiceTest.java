@@ -5,7 +5,6 @@ import cz.cvut.fel.nss.parttimejobportal.dto.JobSessionDto;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.environment.util.Generator;
-import cz.cvut.fel.nss.parttimejobportal.model.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -73,7 +72,7 @@ public class EnrollmentServiceTest {
         trip.setCategory(category);
         categoryService.create(category);
 
-        userService.createUser(user,user.getPassword());
+        userService.createUser((User) user,user.getPassword());
         tripSessionDto = translateService.translateSession(tripSession);
         tripSessionDto2 = translateService.translateSession(tripSession2);
         tripSessionDto3 = translateService.translateSession(tripSession3);

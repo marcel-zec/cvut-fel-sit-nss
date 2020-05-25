@@ -22,12 +22,12 @@ public class SettingsController {
             this.accessService = accessService;
         }
 
-    @PatchMapping(value = "/password", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void updatePassword(@RequestBody HashMap<String,String> hashMap) throws BadPassword {
-        String oldPassword = hashMap.get("old_password");
-        String newPassword = hashMap.get("new_password");
-        String newPasswordAgain = hashMap.get("new_password_again");
-
-        accessService.changePassword(oldPassword,newPassword,newPasswordAgain);
-    }
+//    @PatchMapping(value = "/password", consumes = MediaType.APPLICATION_JSON_VALUE)
+//    public void updatePassword(@RequestBody HashMap<String,String> hashMap) throws BadPassword {
+//        String oldPassword = hashMap.get("old_password");
+//        String newPassword = hashMap.get("new_password");
+//        String newPasswordAgain = hashMap.get("new_password_again");
+//
+//        accessService.changePassword(oldPassword,newPassword,newPasswordAgain);
+//    }
 }

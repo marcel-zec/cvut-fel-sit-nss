@@ -1,15 +1,9 @@
 package cz.cvut.fel.nss.parttimejobportal.service;
 
 
+import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.dto.UserReviewDto;
-import cz.cvut.fel.nss.parttimejobportal.model.Enrollment;
-import cz.cvut.fel.nss.parttimejobportal.model.JobSession;
-import cz.cvut.fel.nss.parttimejobportal.model.User;
-import cz.cvut.fel.nss.parttimejobportal.model.UserReview;
-import cz.cvut.fel.nss.parttimejobportal.dao.EnrollmentDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.JobSessionDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.UserDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.UserReviewDao;
+import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.exception.UnauthorizedException;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
@@ -29,16 +23,18 @@ public class UserReviewService {
     private final UserDao userDao;
     private final JobSessionDao jobSessionDao;
     private final EnrollmentDao enrollmentDao;
+    private final ManagerDao managerDao;
 
 
     @Autowired
-    public UserReviewService(TranslateService translateService, UserReviewDao userReviewDao, UserDao userDao, JobSessionDao jobSessionDao, EnrollmentDao enrollmentDao) {
+    public UserReviewService(TranslateService translateService, UserReviewDao userReviewDao, UserDao userDao, JobSessionDao jobSessionDao, EnrollmentDao enrollmentDao, ManagerDao managerDao) {
 
         this.translateService = translateService;
         this.userReviewDao = userReviewDao;
         this.userDao = userDao;
         this.jobSessionDao = jobSessionDao;
         this.enrollmentDao = enrollmentDao;
+        this.managerDao = managerDao;
     }
 
     @Transactional
@@ -76,6 +72,7 @@ public class UserReviewService {
         if (SecurityUtils.isAuthenticatedAnonymously()) throw new UnauthorizedException();
 
         User user = userDao.find(SecurityUtils.getCurrentUser().getId());
+        if (user == null) throw new UnauthorizedException();
 
         List<UserReviewDto> userReviewDtos = new ArrayList<>();
         if (user.getUserReviews() == null) throw new NotFoundException();
@@ -87,11 +84,11 @@ public class UserReviewService {
     }
 
     @Transactional
-    public void create(long enrollmentId, User currentUser, Long tripSessionId, UserReview userReview) throws Exception {
+    public void create(long enrollmentId, AbstractUser currentUser, Long tripSessionId, UserReview userReview) throws Exception {
 
         Enrollment enrollment = enrollmentDao.find(enrollmentId);
         User user = enrollment.getTravelJournal().getUser();
-        User current_user = userDao.find(currentUser.getId());
+        Manager current_user = managerDao.find(currentUser.getId());
         JobSession tripSession = jobSessionDao.find(tripSessionId);
 
         if (user == null || tripSession==null) throw new NotFoundException();
@@ -103,13 +100,13 @@ public class UserReviewService {
     }
 
     @Transactional
-    public void create(long enrollmentId, User currentUser) throws Exception {
+    public void create(long enrollmentId, AbstractUser currentUser) throws Exception {
 
         Enrollment enrollment = enrollmentDao.find(enrollmentId);
         if (enrollment == null) throw new NotFoundException();
 
         User user = enrollment.getTravelJournal().getUser();
-        User current_user = userDao.find(currentUser.getId());
+        Manager current_user = managerDao.find(currentUser.getId());
         JobSession tripSession = jobSessionDao.find(enrollment.getTripSession().getId());
         UserReview userReview = new UserReview();
 

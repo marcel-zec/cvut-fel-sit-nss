@@ -9,7 +9,6 @@ import cz.cvut.fel.nss.parttimejobportal.dao.UserDao;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadPassword;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.exception.UnauthorizedException;
-import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class UserService {
 
 
     @Autowired
-    public UserService(UserDao dao, TripReviewDao tripReviewDao, TravelJournalDao travelJournalDao, AddressDao addressDao, TranslateService translateService, TranslateBackService translateBackService) {
+    public UserService(UserDao dao, TripReviewDao tripReviewDao, TravelJournalDao travelJournalDao, AddressDao addressDao, TranslateService translateService, cz.cvut.fel.nss.parttimejobportal.service.TranslateBackService translateBackService) {
         this.dao = dao;
         this.tripReviewDao = tripReviewDao;
         this.travelJournalDao = travelJournalDao;
@@ -97,33 +96,33 @@ public class UserService {
     }
 
     @Transactional
-    public void update(UserDto userDto, User current_user) throws NotFoundException {
+    public void update(UserDto userDto, AbstractUser current_user) throws NotFoundException {
         Objects.requireNonNull(userDto);
-        current_user = dao.find(current_user.getId());
+        User user = dao.find(current_user.getId());
 
-        if (current_user == null) throw new NotFoundException();
+        if (user == null) throw new NotFoundException();
 
-        User newUser = translateBackService.translateUser(userDto);
+        User newUser = (User) translateBackService.translateUser(userDto);
 
-        newUser.setId(current_user.getId());
-        newUser.setRole(current_user.getRole());
-        newUser.setTripReviews(current_user.getTripReviews());
+        newUser.setId(user.getId());
+        newUser.setRole(user.getRole());
+        newUser.setTripReviews(user.getTripReviews());
 
         if (newUser.getAddress() != null ) {
-            Address oldAddress = current_user.getAddress();
+            Address oldAddress = user.getAddress();
             newUser.getAddress().setId(oldAddress.getId());
             oldAddress = newUser.getAddress();
             addressDao.update(oldAddress);
         }
         if (newUser.getTravel_journal() != null){
-            TravelJournal oldTravelJournal = current_user.getTravel_journal();
+            TravelJournal oldTravelJournal = user.getTravel_journal();
             newUser.getTravel_journal().setId(oldTravelJournal.getId());
             oldTravelJournal = newUser.getTravel_journal();
             travelJournalDao.update(oldTravelJournal);
         }
 
-        current_user=newUser;
-        dao.update(current_user);
+        user=newUser;
+        dao.update(user);
     }
 
     @Transactional

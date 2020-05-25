@@ -3,7 +3,7 @@ package cz.cvut.fel.nss.parttimejobportal.service;
 import cz.cvut.fel.nss.parttimejobportal.dto.AddressDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.UserDto;
 import cz.cvut.fel.nss.parttimejobportal.model.Address;
-import cz.cvut.fel.nss.parttimejobportal.model.User;
+import cz.cvut.fel.nss.parttimejobportal.model.AbstractUser;
 import cz.cvut.fel.nss.parttimejobportal.dao.AddressDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.UserDao;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
@@ -28,10 +28,10 @@ public class TranslateBackService {
 
 
     @Transactional
-    public User translateUser(UserDto userDto) throws NotFoundException {
+    public AbstractUser translateUser(UserDto userDto) throws NotFoundException {
 
         Objects.requireNonNull(userDto);
-        User user = userDao.find(userDto.getId());
+        AbstractUser user = userDao.find(userDto.getId());
         if (user == null) throw new NotFoundException();
 
         user.setEmail(userDto.getEmail());

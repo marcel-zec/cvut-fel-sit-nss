@@ -5,6 +5,7 @@ import cz.cvut.fel.nss.parttimejobportal.dto.RequestWrapper;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadPassword;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.exception.UnauthorizedException;
+import cz.cvut.fel.nss.parttimejobportal.model.User;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityConstants;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
 import cz.cvut.fel.nss.parttimejobportal.service.UserService;
@@ -33,7 +34,7 @@ public class UserController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> register(@RequestBody RequestWrapper requestWrapper) throws BadPassword {
-        userService.createUser(requestWrapper.getUser(), requestWrapper.getPassword_control());
+        userService.createUser((User) requestWrapper.getUser(), requestWrapper.getPassword_control());
         //LOG.debug("User {} successfully registered.", user);
         //final HttpHeaders headers = RestUtils.createLocationHeaderFromCurrentUri("/current");
         //return new ResponseEntity<>(headers, HttpStatus.CREATED);

@@ -8,7 +8,6 @@ import cz.cvut.fel.nss.parttimejobportal.dao.AchievementCategorizedDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.AchievementCertificateDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.AchievementSpecialDao;
 import cz.cvut.fel.nss.parttimejobportal.dto.AchievementCategorizedDto;
-import cz.cvut.fel.nss.parttimejobportal.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
