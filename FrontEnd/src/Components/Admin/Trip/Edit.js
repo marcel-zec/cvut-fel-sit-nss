@@ -476,10 +476,10 @@ class Edit extends React.Component {
                     />
 
                     <Form className="mt-3 mb-5" onSubmit={this.submitHandler}>
-                        <h1>Edit trip</h1>
+                        <h1>Edit job</h1>
                         <Form.Row>
                             <Form.Group as={Col} controlId="formGridName">
-                                <Form.Label>Name of trip</Form.Label>
+                                <Form.Label>Name of job</Form.Label>
                                 <Form.Control
                                     placeholder="Enter name"
                                     value={this.state.trip.name}
@@ -525,9 +525,9 @@ class Edit extends React.Component {
                         </Form.Row>
                         <Form.Row>
                             <Form.Group as={Col} controlId="formGridDeposit">
-                                <Form.Label>Deposit</Form.Label>
+                                <Form.Label>Salary (per hour)</Form.Label>
                                 <Form.Control
-                                    placeholder="Enter deposite price"
+                                    placeholder="Enter salary (per hour)"
                                     value={this.state.trip.deposit}
                                     onChange={(event) =>
                                         this.inputUpdateHandler(

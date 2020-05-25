@@ -259,7 +259,7 @@ class Close extends React.Component {
                 achievements_removed.length > 0 ? (
                     <MyAlert
                         variant="warning"
-                        text="Removed achievements"
+                        text="Odstránené achievementy"
                         list={achievements_removed}
                     />
                 ) : null;
@@ -267,14 +267,14 @@ class Close extends React.Component {
             let xp_reward_alert = null;
             if (this.state.form.elements.actual_xp_reward.less) {
                 xp_reward_alert = (
-                    <MyAlert variant="danger" text="Cannot be less than 0." />
+                    <MyAlert variant="danger" text="Nemôže byť menej ako 0." />
                 );
             } else if (this.state.form.elements.actual_xp_reward.more) {
                 xp_reward_alert = (
                     <MyAlert
                         variant="danger"
                         text={
-                            "Cannot be more than " +
+                            "Nemôže byť viac než " +
                             this.state.enrollment.trip.possible_xp_reward +
                             "."
                         }
@@ -288,10 +288,10 @@ class Close extends React.Component {
                     <MyAlert
                         variant="warning"
                         text={
-                            "Reward was decresed by " +
+                            "Odmena bola znížená o " +
                             (this.state.enrollment.trip.possible_xp_reward -
                                 this.state.enrollment.actual_xp_reward) +
-                            " points."
+                            " bodov."
                         }
                     />
                 );
@@ -303,7 +303,7 @@ class Close extends React.Component {
                         <Card /*style={{ width: "18rem" }}*/>
                             <Card.Body>
                                 <Card.Subtitle className="text-muted mb-3">
-                                    Trip
+                                    Brigáda
                                 </Card.Subtitle>
                                 <Card.Title>
                                     {this.state.enrollment.trip.name}
@@ -350,7 +350,7 @@ class Close extends React.Component {
                         <Card>
                             <Card.Body>
                                 <Card.Subtitle className="text-muted mb-3">
-                                    User reward
+                                    Odmena uživateľa
                                 </Card.Subtitle>
                                 <Card.Text>
                                     <FontAwesomeIcon
@@ -369,7 +369,7 @@ class Close extends React.Component {
                                 <Row className="d-flex">
                                     <Card.Body>
                                         <Card.Title className="text-muted">
-                                            Gain achievements
+                                            Získava achievementy
                                         </Card.Title>
                                         <Form.Group
                                             as={Col}
@@ -416,7 +416,9 @@ class Close extends React.Component {
                                 </Row>
                                 <Row>
                                     <Card.Body>
-                                        <Form.Label>Review</Form.Label>
+                                        <Form.Label>
+                                            Hodnotenie uživateľa
+                                        </Form.Label>
                                         <Form.Group className="d-flex flex-column w-50">
                                             <span>
                                                 {this.state.review.rating}

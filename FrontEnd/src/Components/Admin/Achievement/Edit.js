@@ -314,10 +314,10 @@ class Edit extends React.Component {
                     />
 
                     <Form className="mt-3 mb-5" onSubmit={this.submitHandler}>
-                        <h1>Edit achievement</h1>
+                        <h1>Úprava achievementu</h1>
 
                         <Form.Group as={Col} controlId="formGridName">
-                            <Form.Label>Name of trip</Form.Label>
+                            <Form.Label>Meno achievementu</Form.Label>
                             <Form.Control
                                 value={this.state.achievement.name}
                                 onChange={(event) =>
@@ -334,7 +334,7 @@ class Edit extends React.Component {
                         </Form.Group>
 
                         <Form.Group controlId="exampleForm.ControlTextarea1">
-                            <Form.Label>Description</Form.Label>
+                            <Form.Label>Popis</Form.Label>
                             <Form.Control
                                 as="textarea"
                                 rows="5"

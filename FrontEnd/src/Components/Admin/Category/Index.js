@@ -65,14 +65,14 @@ class Index extends React.Component {
                         variant="success"
                         link="/category/create"
                         side="right"
-                        label="Add category"
+                        label="Pridať kategóriu"
                     />
 
                     <Table striped bordered hover>
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Settings</th>
+                                <th>Meno</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>{tableRows}</tbody>

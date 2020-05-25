@@ -76,18 +76,18 @@ class Index extends React.Component {
         this.setState({
             modal: {
                 show: true,
-                title: "End enrollment",
+                title: "Ukončiť brigádu",
                 description: [
-                    "Do you want to end trip enrollment with full reward and 5 start rating?",
+                    "Chceš ukončiť brigádu s plnou odmenou a plným hodnotením účastníka (5 hviezd)?",
                     user.firstName + " " + user.lastName,
-                    "from " +
+                    "od " +
                         enrollment.tripSession.from_date +
-                        " to " +
+                        " do " +
                         enrollment.tripSession.to_date,
                 ],
 
                 button: {
-                    title: "Yes",
+                    title: "Áno",
                     onClick: this.submitHandler,
                     onClickParameter: enrollment,
                 },
@@ -137,7 +137,8 @@ class Index extends React.Component {
                                     key="set-end"
                                     overlay={
                                         <Tooltip>
-                                            Set reward and review.
+                                            Ukončenie s možnosťou upraviť odmenu
+                                            a ohodnotiť účastníka.
                                         </Tooltip>
                                     }
                                 >
@@ -153,8 +154,8 @@ class Index extends React.Component {
                                     key="end"
                                     overlay={
                                         <Tooltip>
-                                            End trip with full reward and 5
-                                            stars review without notes.
+                                            Ukončiť s plnou odmenou a plným
+                                            hodnotením účastníka.
                                         </Tooltip>
                                     }
                                 >
@@ -192,7 +193,7 @@ class Index extends React.Component {
             }
 
             return (
-                <Container>
+                <Container className="mt-5">
                     {alert}
 
                     <ModalCentered
@@ -206,11 +207,11 @@ class Index extends React.Component {
                     <Table striped bordered hover>
                         <thead>
                             <tr>
-                                <th>Trip</th>
-                                <th>User</th>
-                                <th>Date of start</th>
-                                <th>Date of end</th>
-                                <th>Settings</th>
+                                <th>Brigáda</th>
+                                <th>Uživateľ</th>
+                                <th>Začiatok</th>
+                                <th>Koniec</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>{tableRows}</tbody>

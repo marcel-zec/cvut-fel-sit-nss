@@ -1,6 +1,6 @@
 import React from "react";
 import Form from "react-bootstrap/Form";
-import { Col, Button, Row } from "react-bootstrap";
+import { Col, Button, Row, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import icons from "../../../Files/icons.json";
@@ -394,10 +394,10 @@ class Create extends React.Component {
                 />
 
                 <Form className="mt-3 mb-5" onSubmit={this.submitHandler}>
-                    <h1>Create achievement</h1>
+                    <h1>Vytváranie achievementu</h1>
 
                     <Form.Group as={Col} controlId="formGridName">
-                        <Form.Label>Name of trip</Form.Label>
+                        <Form.Label>Meno achievementu</Form.Label>
                         <Form.Control
                             className={validationClassName(
                                 "name",
@@ -414,7 +414,7 @@ class Create extends React.Component {
                     </Form.Group>
 
                     <Form.Group controlId="exampleForm.ControlTextarea1">
-                        <Form.Label>Description</Form.Label>
+                        <Form.Label>Popis</Form.Label>
                         <Form.Control
                             as="textarea"
                             rows="5"
@@ -445,39 +445,81 @@ class Create extends React.Component {
                     </div>
 
                     <Form.Group>
-                        <Form.Label as="legend">Type</Form.Label>
+                        <Form.Label as="legend">Typ</Form.Label>
                         <Col>
-                            <Button
-                                variant={this.state.typeButtons.special.variant}
-                                onClick={(event) =>
-                                    this.typeButtonHandler(event, "special")
+                            <OverlayTrigger
+                                key="special"
+                                overlay={
+                                    <Tooltip>
+                                        Uživateľ získa po absolvovaní tripu.
+                                    </Tooltip>
                                 }
-                                className="m-3"
                             >
-                                Special
-                            </Button>
-                            <Button
-                                variant={
-                                    this.state.typeButtons.categorized.variant
+                                <Button
+                                    variant={
+                                        this.state.typeButtons.special.variant
+                                    }
+                                    onClick={(event) =>
+                                        this.typeButtonHandler(event, "special")
+                                    }
+                                    className="m-3"
+                                >
+                                    Brigádnický
+                                </Button>
+                            </OverlayTrigger>
+
+                            <OverlayTrigger
+                                key="categorized"
+                                overlay={
+                                    <Tooltip>
+                                        Achievement získa uživateľ za zadaný
+                                        počet absolvovaných brigád v tejto
+                                        kategórií.
+                                    </Tooltip>
                                 }
-                                onClick={(event) =>
-                                    this.typeButtonHandler(event, "categorized")
-                                }
-                                className="m-3"
                             >
-                                Categoriezed
-                            </Button>
-                            <Button
-                                variant={
-                                    this.state.typeButtons.certificate.variant
+                                <Button
+                                    variant={
+                                        this.state.typeButtons.categorized
+                                            .variant
+                                    }
+                                    onClick={(event) =>
+                                        this.typeButtonHandler(
+                                            event,
+                                            "categorized"
+                                        )
+                                    }
+                                    className="m-3"
+                                >
+                                    Kategorizovaný
+                                </Button>
+                            </OverlayTrigger>
+
+                            <OverlayTrigger
+                                key="certificate"
+                                overlay={
+                                    <Tooltip>
+                                        Uživateľ získa po nahraní certifikátu a
+                                        overení administrátorom.
+                                    </Tooltip>
                                 }
-                                onClick={(event) =>
-                                    this.typeButtonHandler(event, "certificate")
-                                }
-                                className="m-3"
                             >
-                                Certificate
-                            </Button>
+                                <Button
+                                    variant={
+                                        this.state.typeButtons.certificate
+                                            .variant
+                                    }
+                                    onClick={(event) =>
+                                        this.typeButtonHandler(
+                                            event,
+                                            "certificate"
+                                        )
+                                    }
+                                    className="m-3"
+                                >
+                                    Certifikát
+                                </Button>
+                            </OverlayTrigger>
                         </Col>
                     </Form.Group>
                     <div class="invalid-feedback">

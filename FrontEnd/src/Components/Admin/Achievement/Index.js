@@ -197,7 +197,7 @@ class Index extends React.Component {
                         variant="success"
                         link="/achievement/create"
                         side="right"
-                        label="Add achievement"
+                        label="Pridať achievement"
                     />
 
                     {alert}
@@ -208,39 +208,39 @@ class Index extends React.Component {
                         }
                         id="uncontrolled-tab-example"
                     >
-                        <Tab eventKey="special" title="Special">
+                        <Tab eventKey="special" title="Brigádne">
                             <Table striped bordered hover>
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Icon</th>
-                                        <th>Settings</th>
+                                        <th>Meno</th>
+                                        <th>Ikona</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>{specialRows}</tbody>
                             </Table>
                         </Tab>
-                        <Tab eventKey="categorized" title="Categories">
+                        <Tab eventKey="categorized" title="Kategorizované">
                             <Table striped bordered hover>
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Icon</th>
-                                        <th>Category</th>
-                                        <th>Limit level</th>
-                                        <th>Settings</th>
+                                        <th>Meno</th>
+                                        <th>Ikona</th>
+                                        <th>Kategória</th>
+                                        <th>Počet brigád</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>{categorizedRows}</tbody>
                             </Table>
                         </Tab>
-                        <Tab eventKey="certificate" title="Certificate">
+                        <Tab eventKey="certificate" title="Certifikáty">
                             <Table striped bordered hover>
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Icon</th>
-                                        <th>Settings</th>
+                                        <th>Meno</th>
+                                        <th>Ikona</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>{certificateRows}</tbody>

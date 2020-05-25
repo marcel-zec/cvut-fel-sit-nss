@@ -83,10 +83,10 @@ class Create extends React.Component {
                 />
 
                 <Form className="mt-3 mb-5" onSubmit={this.submitHandler}>
-                    <h1>Create category</h1>
+                    <h1>Vytváranie kategórie</h1>
 
                     <Form.Group as={Col} controlId="formGridName">
-                        <Form.Label>Name of category</Form.Label>
+                        <Form.Label>Meno kategórie</Form.Label>
                         <Form.Control
                             className={validationClassName(
                                 "name",
