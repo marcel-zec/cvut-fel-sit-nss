@@ -78,7 +78,7 @@ public class DatabaseSeeder implements
 
         createCategories();
         createAchievement();
-        createTrips();
+        createOffers();
         setAchievementsAndCategories();
         createUsers();
         addAchievementsToUsers();
@@ -119,7 +119,7 @@ public class DatabaseSeeder implements
         User author = userDao.findByEmail("milan@gmail.com");
         if(author.getTravel_journal().getEnrollments().size() > 0) {
             Enrollment enrollment = author.getTravel_journal().getEnrollments().get(0);
-            TripReview tripReview = new TripReview("Really good trip, love it <3", LocalDateTime.now(), 5, author, enrollment.getTrip(),enrollment);
+            TripReview tripReview = new TripReview("Really good offer, love it <3", LocalDateTime.now(), 5, author, enrollment.getTrip(),enrollment);
             tripReviewDao.persist(tripReview);
             updateTripRating(tripReview.getTrip(), tripReview.getRating());
         }
@@ -137,321 +137,10 @@ public class DatabaseSeeder implements
         author = userDao.findByEmail("jan@gmail.com");
         if(author.getTravel_journal().getEnrollments().size() > 0) {
             Enrollment enrollment = author.getTravel_journal().getEnrollments().get(0);
-            TripReview tripReview = new TripReview("it was the best trip of my entire life! Don't be afraid to enrol ;) ", LocalDateTime.now(), 3, author, enrollment.getTrip(),enrollment);
+            TripReview tripReview = new TripReview("it was the best offer of my entire life! Don't be afraid to enrol ;) ", LocalDateTime.now(), 3, author, enrollment.getTrip(),enrollment);
             tripReviewDao.persist(tripReview);
             updateTripRating(tripReview.getTrip(), tripReview.getRating());
         }
-    }
-
-    @Transactional
-    void createTrips(){
-        String description;// = "Nullam gravida lectus tempus congue pretium. Nunc volutpat diam orci, a consectetur dui iaculis sollicitudin. Fusce varius nisi placerat turpis viverra pulvinar. Pellentesque vel commodo nibh, sed volutpat nunc. Duis congue enim malesuada sapien commodo egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum interdum, ante eu vehicula porttitor, libero purus consequat metus, quis aliquet lectus orci sit amet mi. Aenean libero sapien, tempus sit amet lorem in, cursus sodales erat. Vivamus suscipit felis et ex pulvinar, vitae rutrum diam tempus. ";
-        Offer trip;/* = new Offer("Casablanca Me gusto",15,description,"casablanca_me_gusta",1000,"Casablan, Mexico",2);
-        offerDao.persist(trip);
-        */JobSession tripSession;
-
-        //priklady tripov a user progressu medzi nimi 0
-        description = "Tento zajezd bude mit cenu za dopravu a kurz, po absolvování se odemkne achievement ´kuchař ryb fugu´, pro absolvování je potřeba mít achievement ´Kuchtík´." ;
-        trip = new Offer("Kurz vaření ryb Fugu",10,description,"fugukurz",150,"Tokyo, Japan",1);
-        //trip.addGainAchievement();
-        //trip.addRequiredAchievement();
-        offerDao.persist(trip);
-        tripSession = new JobSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new JobSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 3);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new JobSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 3);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        offerDao.update(trip);
-
-        //1
-        description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař ryb fugu´." ;
-        trip = new Offer("Vaření ryb Fugu, Praha",10,description,"fuguvar",120,"Praha, Česká republika",1);
-        offerDao.persist(trip);
-
-        tripSession = new JobSession(trip, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 4);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-
-        tripSession = new JobSession(trip, LocalDate.parse("2020-07-12"), LocalDate.parse("2020-07-18"), 3);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-
-        tripSession = new JobSession(trip, LocalDate.parse("2020-07-18"), LocalDate.parse("2020-07-24"), 5);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-
-        //tripSession ma datum  ukonceni vcera
-        tripSession = new JobSession(trip, LocalDate.now().minusDays(16), LocalDate.now().minusDays(1), 4);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-
-        //tripSession ma datum  ukonceni predevcirem
-        tripSession = new JobSession(trip, LocalDate.now().minusDays(15), LocalDate.now().minusDays(2), 3);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-
-        //tripSession ma datum  ukonceni pred tydnem
-        tripSession = new JobSession(trip, LocalDate.now().minusDays(21), LocalDate.now().minusDays(7), 2);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-
-        offerDao.update(trip);
-
-        //2.trip "Kuchař na Pražském hradě"
-        description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař´." ;
-        trip = new Offer("Kuchař na Pražském hradě",8,description,"prahradvar",110,"Praha, Česká republika",3);
-        offerDao.persist(trip);
-        tripSession = new JobSession(trip, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 5);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new JobSession(trip, LocalDate.parse("2020-07-12"), LocalDate.parse("2020-07-18"), 4);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new JobSession(trip, LocalDate.parse("2020-07-18"), LocalDate.parse("2020-07-24"), 8);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        offerDao.update(trip);
-
-        //3.trip "Kuchař menza Studentský dům, Praha"
-        description = "Tento zajezd nevyzaduje zadne achievementy a po nem se nedaji ziskat specialni achievementy ale daji se ziskat achievementy jako jsou např. ´Kuchtík´, ´Kuchař´ apod. Odměna Xp je dost nízká aby se nedalo jednoduše dostat za tuhle práci na prestižnější místa jako pražský hrad, ale zároveň je možno si dopomoct s touto lehčí a dostupnější práci nahnat achievement kuchař, jestliže xp grind mám za sebou z jiných zájezdů." ;
-        trip = new Offer("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",140,"Praha, Česká republika",0);
-        offerDao.persist(trip);
-        tripSession = new JobSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 2);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new JobSession(trip, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 3);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new JobSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 2);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        offerDao.update(trip);
-
-        //4.trip "projekt „Úsměv pro všechny“"
-        description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
-        trip = new Offer("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0);
-        offerDao.persist(trip);
-        tripSession = new JobSession(trip, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new JobSession(trip, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 5);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new JobSession(trip, LocalDate.parse("2020-06-24"), LocalDate.parse("2020-06-30"), 3);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        offerDao.update(trip);
-
-        //5. trip - bez sessions
-        description = "Neaktivni trip. Nema aktivni sessions, je viditelny pouze Administratorem.";
-        trip = new Offer("Retired trip", 12, description, "retrip", 135, "London, Great Britain", 5);
-        offerDao.persist(trip);
-        //tripSession ma datum  ukonceni vcera
-        tripSession = new JobSession(trip, LocalDate.now().minusDays(16), LocalDate.now().minusDays(1), 2);
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        offerDao.update(trip);
-
-        //6.trip "Animátor v českém krumlově"
-        description = "Pojď animovat zábavní program pro účastníky zájezdů v Českém Krumlově! Zkušenosti nepotřebuješ jenom úsměv na rtech a odhodlání rozdávat radost." ;
-        trip = new Offer("Animátor v Českém Krumlově",6,description,"czekrum",180,"Český Krumlov, Česká republika",1);
-        offerDao.persist(trip);
-        tripSession = new JobSession(trip, LocalDate.parse("2018-08-06"), LocalDate.parse("2018-08-12"), 5); //0
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new JobSession(trip, LocalDate.parse("2018-08-12"), LocalDate.parse("2018-08-18"), 4);//1
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new JobSession(trip, LocalDate.parse("2018-08-18"), LocalDate.parse("2018-08-24"), 8);//2
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new JobSession(trip, LocalDate.parse("2019-08-06"), LocalDate.parse("2019-08-12"), 2);//3
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new JobSession(trip, LocalDate.parse("2019-08-12"), LocalDate.parse("2019-08-18"), 3);//4
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new JobSession(trip, LocalDate.parse("2019-08-18"), LocalDate.parse("2019-08-24"), 3);//5
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new JobSession(trip, LocalDate.parse("2020-08-06"), LocalDate.parse("2020-08-12"), 3);//6
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new JobSession(trip, LocalDate.parse("2020-08-12"), LocalDate.parse("2020-08-18"), 8);//7
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        tripSession = new JobSession(trip, LocalDate.parse("2020-08-18"), LocalDate.parse("2020-08-24"), 2);//8
-        jobSessionDao.persist(tripSession);
-        trip.addSession(tripSession);
-        offerDao.update(trip);
-    }
-
-    @Transactional
-    void createAchievement(){
-        AchievementCertificate achievementCertificate;
-        AchievementSpecial achievementSpecial;
-        AchievementCategorized achievementCategorized;
-        //ACHIEVEMENTY ZAJEZDOVE
-
-        //Certifikáty
-        achievementCertificate = new AchievementCertificate("Certifikát Angličtina B2", "Uživatel má certifikát B2 v anglickém jazyku.", "graduation-cap"); //0
-        achievementCertificateDao.persist(achievementCertificate);
-        achievementCertificate = new AchievementCertificate("Certifikát Španěličina C1", "Uživatel má certifikát C1 v španělském jazyku.", "graduation-cap"); //1
-        achievementCertificateDao.persist(achievementCertificate);
-
-        //Specifické achievementy
-        achievementSpecial = new AchievementSpecial("Kuchař sushi", "Uživatel má zkušenosti s přípravou sushi.", "fish"); //0
-        achievementSpecialDao.persist(achievementSpecial);
-
-        achievementSpecial = new AchievementSpecial("Kuchař ryby fugu", "Uživatel má zkušenosti s přípravou jedovatých ryb fugu.", "fish"); //1
-        achievementSpecialDao.persist(achievementSpecial);
-
-        achievementSpecial = new AchievementSpecial("Master Kung-Fugu", "Uživatel je sama zkušenost ohledne přípravy jedovatých ryb fugu.", "fish"); //2
-        achievementSpecialDao.persist(achievementSpecial);
-
-        achievementSpecial = new AchievementSpecial("Horolezec", "Uživatel má zkušenosti s lezením po skalách.", "mountain"); //3
-        achievementSpecialDao.persist(achievementSpecial);
-
-        achievementSpecial = new AchievementSpecial("Restaurátor hradů", "Uživatel má zkušenosti s restaurací starých památek.", "chess-rook"); //3
-        achievementSpecialDao.persist(achievementSpecial);
-
-        //Achievementy za počet zájezdů v konkrétních kategoriích
-        achievementCategorized = new AchievementCategorized("Kuchtík", "Uživatel byl jednou vařit.", "hamburger"); //0
-        achievementCategorized.setCategory(categoryDao.findAll().get(0));
-        achievementCategorized.setLimit(1);
-        achievementCategorizedDao.persist(achievementCategorized);
-
-        achievementCategorized = new AchievementCategorized("Kuchař", "Uživatel vařil už na 5-ti zájezdech.", "pizza-slice"); //1
-        achievementCategorized.setCategory(categoryDao.findAll().get(0));
-        achievementCategorized.setLimit(5);
-        achievementCategorizedDao.persist(achievementCategorized);
-
-        achievementCategorized = new AchievementCategorized("Pohl v Reichu", "Uživatel vařil už na 15-ti zájezdech.", "glass-cheers"); //2
-        achievementCategorized.setCategory(categoryDao.findAll().get(0));
-        achievementCategorized.setLimit(15);
-        achievementCategorizedDao.persist(achievementCategorized);
-
-        achievementCategorized = new AchievementCategorized("Šprýmař", "Uživatel byl jednou dělat animátora.", "hamburger"); //3
-        achievementCategorized.setCategory(categoryDao.findAll().get(5));
-        achievementCategorized.setLimit(1);
-        achievementCategorizedDao.persist(achievementCategorized);
-
-        achievementCategorized = new AchievementCategorized("Animátor", "Uživatel animoval už na 5-ti zájezdech.", "pizza-slice"); //4
-        achievementCategorized.setCategory(categoryDao.findAll().get(5));
-        achievementCategorized.setLimit(5);
-        achievementCategorizedDao.persist(achievementCategorized);
-
-        achievementCategorized = new AchievementCategorized("Herbert West - ReAnimátor", "Uživatel byl animátorem už na 15-ti zájezdech. Ten oživý každoý zájezd.", "glass-cheers"); //5
-        achievementCategorized.setCategory(categoryDao.findAll().get(5));
-        achievementCategorized.setLimit(15);
-        achievementCategorizedDao.persist(achievementCategorized);
-    }
-
-    void setAchievementsAndCategories(){
-        List<AchievementCertificate> certificates = achievementCertificateDao.findAll();
-        List<AchievementCategorized> categorized =achievementCategorizedDao.findAll();
-        List<AchievementSpecial> special = achievementSpecialDao.findAll();
-        List<Category> categories = categoryDao.findAll();
-        List<Offer> trips = offerDao.findAll();
-
-        //sakra prace :D mozno to pojde
-        //IT IS DONE THE HARD WAY BECAUSE AUTHOR (ME) IS LITERALLY BRAINDED RETARD
-        //ak budete mat problem sa orientovat v tejto casti nemam vam to za zle je to humus...
-        //O.S.
-
-        //Kurz vareni ryb fugu
-        Offer trip = trips.get(0);
-        trip.addRequired_achievements_categorized(categorized.get(0));
-        categorized.get(0).addTrips(trip);
-        trip.addGain_achievements_special(special.get(1));
-        special.get(1).addTrips(trip);
-        trip.setCategory(categories.get(4));
-        categories.get(4).add(trip);
-
-        //Vareni ryb Fugu, Praha
-        trip =  trips.get(1);
-        trip.addRequired_achievements_special(special.get(1));
-        special.get(1).addTrips(trip);
-        trip.addGain_achievements_special(special.get(2));
-        special.get(2).addTrips(trip);
-        trip.setCategory(categories.get(0));
-        categories.get(0).add(trip);
-
-        trip =  trips.get(2);
-        trip.addRequired_achievements_categorized(categorized.get(1));
-        categorized.get(1).addTrips(trip);
-        trip.setCategory(categories.get(0));
-        categories.get(0).add(trip);
-
-        trip =  trips.get(3);
-        trip.setCategory(categories.get(0));
-        categories.get(0).add(trip);
-
-        trip = trips.get(4);
-        trip.setCategory(categories.get(6));
-        categories.get(6).add(trip);
-
-        trip = trips.get(5);
-        trip.setCategory(categories.get(2));
-        categories.get(2).add(trip);
-
-        trip = trips.get(6);
-        trip.setCategory(categories.get(5));
-        categories.get(5).add(trip);
-
-        //jediny zlepsovak co tu je aj ked by to but ani nemusel...
-        for(Offer t : trips) {
-            offerDao.update(t);
-        }
-        for(AchievementCategorized ac : categorized) {
-            achievementCategorizedDao.update(ac);
-        }
-        for(AchievementCertificate cert : certificates) {
-            achievementCertificateDao.update(cert);
-        }
-        for(AchievementSpecial spec : special) {
-            achievementSpecialDao.update(spec);
-        }
-        for(Category category : categories) {
-            categoryDao.update(category);
-        }
-
-    }
-
-    void createCategories(){
-        Category category = new Category("Vaření");//0
-        categoryDao.persist(category);
-
-        category = new Category("Archeologie");//1
-        categoryDao.persist(category);
-
-        category = new Category("Restaurování");//2
-        categoryDao.persist(category);
-
-        category = new Category("Práce instruktora");//3
-        categoryDao.persist(category);
-
-        category = new Category("Kurz");//4
-        categoryDao.persist(category);
-
-        category = new Category("Práce animátora");//5
-        categoryDao.persist(category);
-
-        category = new Category("Humanitarní akce");//6
-        categoryDao.persist(category);
-
-        category = new Category("Učitel");//7
-        categoryDao.persist(category);
-
-        category = new Category("Práce na stavbě");//8
-        categoryDao.persist(category);
     }
 
     void createUsers(){
@@ -530,26 +219,339 @@ public class DatabaseSeeder implements
         System.out.println("Test admin persist.");
     }
 
+
+    @Transactional
+    void createOffers(){
+        String description;// = "Nullam gravida lectus tempus congue pretium. Nunc volutpat diam orci, a consectetur dui iaculis sollicitudin. Fusce varius nisi placerat turpis viverra pulvinar. Pellentesque vel commodo nibh, sed volutpat nunc. Duis congue enim malesuada sapien commodo egestas. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum interdum, ante eu vehicula porttitor, libero purus consequat metus, quis aliquet lectus orci sit amet mi. Aenean libero sapien, tempus sit amet lorem in, cursus sodales erat. Vivamus suscipit felis et ex pulvinar, vitae rutrum diam tempus. ";
+        Offer offer;/* = new Offer("Casablanca Me gusto",15,description,"casablanca_me_gusta",1000,"Casablan, Mexico",2);
+        offerDao.persist(offer);
+        */JobSession tripSession;
+
+        //priklady tripov a user progressu medzi nimi 0
+        description = "Tento zajezd bude mit cenu za dopravu a kurz, po absolvování se odemkne achievement ´kuchař ryb fugu´, pro absolvování je potřeba mít achievement ´Kuchtík´." ;
+        offer = new Offer("Kurz vaření ryb Fugu",10,description,"fugukurz",150,"Tokyo, Japan",1,null);
+        //offer.addGainAchievement();
+        //offer.addRequiredAchievement();
+        offerDao.persist(offer);
+        tripSession = new JobSession(offer, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        tripSession = new JobSession(offer, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 3);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        tripSession = new JobSession(offer, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 3);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        offerDao.update(offer);
+
+        //1
+        description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař ryb fugu´." ;
+        offer = new Offer("Vaření ryb Fugu, Praha",10,description,"fuguvar",120,"Praha, Česká republika",1,null);
+        offerDao.persist(offer);
+
+        tripSession = new JobSession(offer, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 4);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+
+        tripSession = new JobSession(offer, LocalDate.parse("2020-07-12"), LocalDate.parse("2020-07-18"), 3);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+
+        tripSession = new JobSession(offer, LocalDate.parse("2020-07-18"), LocalDate.parse("2020-07-24"), 5);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+
+        //tripSession ma datum  ukonceni vcera
+        tripSession = new JobSession(offer, LocalDate.now().minusDays(16), LocalDate.now().minusDays(1), 4);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+
+        //tripSession ma datum  ukonceni predevcirem
+        tripSession = new JobSession(offer, LocalDate.now().minusDays(15), LocalDate.now().minusDays(2), 3);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+
+        //tripSession ma datum  ukonceni pred tydnem
+        tripSession = new JobSession(offer, LocalDate.now().minusDays(21), LocalDate.now().minusDays(7), 2);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+
+        offerDao.update(offer);
+
+        //2.offer "Kuchař na Pražském hradě"
+        description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař´." ;
+        offer = new Offer("Kuchař na Pražském hradě",8,description,"prahradvar",110,"Praha, Česká republika",3,null);
+        offerDao.persist(offer);
+        tripSession = new JobSession(offer, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 5);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        tripSession = new JobSession(offer, LocalDate.parse("2020-07-12"), LocalDate.parse("2020-07-18"), 4);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        tripSession = new JobSession(offer, LocalDate.parse("2020-07-18"), LocalDate.parse("2020-07-24"), 8);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        offerDao.update(offer);
+
+        //3.offer "Kuchař menza Studentský dům, Praha"
+        description = "Tento zajezd nevyzaduje zadne achievementy a po nem se nedaji ziskat specialni achievementy ale daji se ziskat achievementy jako jsou např. ´Kuchtík´, ´Kuchař´ apod. Odměna Xp je dost nízká aby se nedalo jednoduše dostat za tuhle práci na prestižnější místa jako pražský hrad, ale zároveň je možno si dopomoct s touto lehčí a dostupnější práci nahnat achievement kuchař, jestliže xp grind mám za sebou z jiných zájezdů." ;
+        offer = new Offer("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",140,"Praha, Česká republika",0,managerDao.findByEmail("admin@gmail.com"));
+        offerDao.persist(offer);
+        tripSession = new JobSession(offer, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 2);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        tripSession = new JobSession(offer, LocalDate.parse("2020-06-12"), LocalDate.parse("2020-06-18"), 3);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        tripSession = new JobSession(offer, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 2);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        offerDao.update(offer);
+
+        //4.offer "projekt „Úsměv pro všechny“"
+        description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
+        offer = new Offer("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0,null);
+        offerDao.persist(offer);
+        tripSession = new JobSession(offer, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        tripSession = new JobSession(offer, LocalDate.parse("2020-06-18"), LocalDate.parse("2020-06-24"), 5);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        tripSession = new JobSession(offer, LocalDate.parse("2020-06-24"), LocalDate.parse("2020-06-30"), 3);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        offerDao.update(offer);
+
+        //5. offer - bez sessions
+        description = "Neaktivni offer. Nema aktivni sessions, je viditelny pouze Administratorem.";
+        offer = new Offer("Retired trip", 12, description, "retrip", 135, "London, Great Britain", 5,null);
+        offerDao.persist(offer);
+        //tripSession ma datum  ukonceni vcera
+        tripSession = new JobSession(offer, LocalDate.now().minusDays(16), LocalDate.now().minusDays(1), 2);
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        offerDao.update(offer);
+
+        //6.offer "Animátor v českém krumlově"
+        description = "Pojď animovat zábavní program pro účastníky zájezdů v Českém Krumlově! Zkušenosti nepotřebuješ jenom úsměv na rtech a odhodlání rozdávat radost." ;
+        offer = new Offer("Animátor v Českém Krumlově",6,description,"czekrum",180,"Český Krumlov, Česká republika",1,null);
+        offerDao.persist(offer);
+        tripSession = new JobSession(offer, LocalDate.parse("2018-08-06"), LocalDate.parse("2018-08-12"), 5); //0
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        tripSession = new JobSession(offer, LocalDate.parse("2018-08-12"), LocalDate.parse("2018-08-18"), 4);//1
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        tripSession = new JobSession(offer, LocalDate.parse("2018-08-18"), LocalDate.parse("2018-08-24"), 8);//2
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        tripSession = new JobSession(offer, LocalDate.parse("2019-08-06"), LocalDate.parse("2019-08-12"), 2);//3
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        tripSession = new JobSession(offer, LocalDate.parse("2019-08-12"), LocalDate.parse("2019-08-18"), 3);//4
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        tripSession = new JobSession(offer, LocalDate.parse("2019-08-18"), LocalDate.parse("2019-08-24"), 3);//5
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        tripSession = new JobSession(offer, LocalDate.parse("2020-08-06"), LocalDate.parse("2020-08-12"), 3);//6
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        tripSession = new JobSession(offer, LocalDate.parse("2020-08-12"), LocalDate.parse("2020-08-18"), 8);//7
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        tripSession = new JobSession(offer, LocalDate.parse("2020-08-18"), LocalDate.parse("2020-08-24"), 2);//8
+        jobSessionDao.persist(tripSession);
+        offer.addSession(tripSession);
+        offerDao.update(offer);
+    }
+
+    @Transactional
+    void createAchievement(){
+        AchievementCertificate achievementCertificate;
+        AchievementSpecial achievementSpecial;
+        AchievementCategorized achievementCategorized;
+        //ACHIEVEMENTY ZAJEZDOVE
+
+        //Certifikáty
+        achievementCertificate = new AchievementCertificate("Certifikát Angličtina B2", "Uživatel má certifikát B2 v anglickém jazyku.", "graduation-cap"); //0
+        achievementCertificateDao.persist(achievementCertificate);
+        achievementCertificate = new AchievementCertificate("Certifikát Španěličina C1", "Uživatel má certifikát C1 v španělském jazyku.", "graduation-cap"); //1
+        achievementCertificateDao.persist(achievementCertificate);
+
+        //Specifické achievementy
+        achievementSpecial = new AchievementSpecial("Kuchař sushi", "Uživatel má zkušenosti s přípravou sushi.", "fish"); //0
+        achievementSpecialDao.persist(achievementSpecial);
+
+        achievementSpecial = new AchievementSpecial("Kuchař ryby fugu", "Uživatel má zkušenosti s přípravou jedovatých ryb fugu.", "fish"); //1
+        achievementSpecialDao.persist(achievementSpecial);
+
+        achievementSpecial = new AchievementSpecial("Master Kung-Fugu", "Uživatel je sama zkušenost ohledne přípravy jedovatých ryb fugu.", "fish"); //2
+        achievementSpecialDao.persist(achievementSpecial);
+
+        achievementSpecial = new AchievementSpecial("Horolezec", "Uživatel má zkušenosti s lezením po skalách.", "mountain"); //3
+        achievementSpecialDao.persist(achievementSpecial);
+
+        achievementSpecial = new AchievementSpecial("Restaurátor hradů", "Uživatel má zkušenosti s restaurací starých památek.", "chess-rook"); //3
+        achievementSpecialDao.persist(achievementSpecial);
+
+        //Achievementy za počet zájezdů v konkrétních kategoriích
+        achievementCategorized = new AchievementCategorized("Kuchtík", "Uživatel byl jednou vařit.", "hamburger"); //0
+        achievementCategorized.setCategory(categoryDao.findAll().get(0));
+        achievementCategorized.setLimit(1);
+        achievementCategorizedDao.persist(achievementCategorized);
+
+        achievementCategorized = new AchievementCategorized("Kuchař", "Uživatel vařil už na 5-ti zájezdech.", "pizza-slice"); //1
+        achievementCategorized.setCategory(categoryDao.findAll().get(0));
+        achievementCategorized.setLimit(5);
+        achievementCategorizedDao.persist(achievementCategorized);
+
+        achievementCategorized = new AchievementCategorized("Pohl v Reichu", "Uživatel vařil už na 15-ti zájezdech.", "glass-cheers"); //2
+        achievementCategorized.setCategory(categoryDao.findAll().get(0));
+        achievementCategorized.setLimit(15);
+        achievementCategorizedDao.persist(achievementCategorized);
+
+        achievementCategorized = new AchievementCategorized("Šprýmař", "Uživatel byl jednou dělat animátora.", "hamburger"); //3
+        achievementCategorized.setCategory(categoryDao.findAll().get(5));
+        achievementCategorized.setLimit(1);
+        achievementCategorizedDao.persist(achievementCategorized);
+
+        achievementCategorized = new AchievementCategorized("Animátor", "Uživatel animoval už na 5-ti zájezdech.", "pizza-slice"); //4
+        achievementCategorized.setCategory(categoryDao.findAll().get(5));
+        achievementCategorized.setLimit(5);
+        achievementCategorizedDao.persist(achievementCategorized);
+
+        achievementCategorized = new AchievementCategorized("Herbert West - ReAnimátor", "Uživatel byl animátorem už na 15-ti zájezdech. Ten oživý každoý zájezd.", "glass-cheers"); //5
+        achievementCategorized.setCategory(categoryDao.findAll().get(5));
+        achievementCategorized.setLimit(15);
+        achievementCategorizedDao.persist(achievementCategorized);
+    }
+
+    void setAchievementsAndCategories(){
+        List<AchievementCertificate> certificates = achievementCertificateDao.findAll();
+        List<AchievementCategorized> categorized =achievementCategorizedDao.findAll();
+        List<AchievementSpecial> special = achievementSpecialDao.findAll();
+        List<Category> categories = categoryDao.findAll();
+        List<Offer> trips = offerDao.findAll();
+
+        //sakra prace :D mozno to pojde
+        //IT IS DONE THE HARD WAY BECAUSE AUTHOR (ME) IS LITERALLY BRAINDED RETARD
+        //ak budete mat problem sa orientovat v tejto casti nemam vam to za zle je to humus...
+        //O.S.
+
+        //Kurz vareni ryb fugu
+        Offer offer = trips.get(0);
+        offer.addRequired_achievements_categorized(categorized.get(0));
+        categorized.get(0).addTrips(offer);
+        offer.addGain_achievements_special(special.get(1));
+        special.get(1).addTrips(offer);
+        offer.setCategory(categories.get(4));
+        categories.get(4).add(offer);
+
+        //Vareni ryb Fugu, Praha
+        offer =  trips.get(1);
+        offer.addRequired_achievements_special(special.get(1));
+        special.get(1).addTrips(offer);
+        offer.addGain_achievements_special(special.get(2));
+        special.get(2).addTrips(offer);
+        offer.setCategory(categories.get(0));
+        categories.get(0).add(offer);
+
+        offer =  trips.get(2);
+        offer.addRequired_achievements_categorized(categorized.get(1));
+        categorized.get(1).addTrips(offer);
+        offer.setCategory(categories.get(0));
+        categories.get(0).add(offer);
+
+        offer =  trips.get(3);
+        offer.setCategory(categories.get(0));
+        categories.get(0).add(offer);
+
+        offer = trips.get(4);
+        offer.setCategory(categories.get(6));
+        categories.get(6).add(offer);
+
+        offer = trips.get(5);
+        offer.setCategory(categories.get(2));
+        categories.get(2).add(offer);
+
+        offer = trips.get(6);
+        offer.setCategory(categories.get(5));
+        categories.get(5).add(offer);
+
+        //jediny zlepsovak co tu je aj ked by to but ani nemusel...
+        for(Offer t : trips) {
+            offerDao.update(t);
+        }
+        for(AchievementCategorized ac : categorized) {
+            achievementCategorizedDao.update(ac);
+        }
+        for(AchievementCertificate cert : certificates) {
+            achievementCertificateDao.update(cert);
+        }
+        for(AchievementSpecial spec : special) {
+            achievementSpecialDao.update(spec);
+        }
+        for(Category category : categories) {
+            categoryDao.update(category);
+        }
+
+    }
+
+    void createCategories(){
+        Category category = new Category("Vaření");//0
+        categoryDao.persist(category);
+
+        category = new Category("Archeologie");//1
+        categoryDao.persist(category);
+
+        category = new Category("Restaurování");//2
+        categoryDao.persist(category);
+
+        category = new Category("Práce instruktora");//3
+        categoryDao.persist(category);
+
+        category = new Category("Kurz");//4
+        categoryDao.persist(category);
+
+        category = new Category("Práce animátora");//5
+        categoryDao.persist(category);
+
+        category = new Category("Humanitarní akce");//6
+        categoryDao.persist(category);
+
+        category = new Category("Učitel");//7
+        categoryDao.persist(category);
+
+        category = new Category("Práce na stavbě");//8
+        categoryDao.persist(category);
+    }
+
+
     void signUsersToTrips() throws NotAllowedException {
         //JAN
         User user = userDao.findAll().get(0);
-        Offer trip = offerDao.findAll().get(0);
-        JobSession tripSession = trip.getSessions().get(0);
+        Offer offer = offerDao.findAll().get(0);
+        JobSession tripSession = offer.getSessions().get(0);
         TravelJournal travelJournal;
 
         //test
         /*
         System.out.println("SESSION: " + tripSession.toString());
         System.out.println("TRIP IN SESSION: " + tripSession.getTrip().toString());
-        System.out.println("CATEGORIZED IN TRIP: " + trip.getRequired_achievements_categorized().toString());
-        System.out.println("CAT IN TRIP DTO: " + translateService.translateAchievementCategorized(trip.getRequired_achievements_categorized().get(0)));
-        System.out.println("TRIP DTO: " + translateService.translateTrip(trip).toString());
+        System.out.println("CATEGORIZED IN TRIP: " + offer.getRequired_achievements_categorized().toString());
+        System.out.println("CAT IN TRIP DTO: " + translateService.translateAchievementCategorized(offer.getRequired_achievements_categorized().get(0)));
+        System.out.println("TRIP DTO: " + translateService.translateTrip(offer).toString());
         System.out.println("TRIP DTO: " + translateService.translateTrip(tripSession.getTrip()).toString());
         System.out.println("SESSION DTO: " + translateService.translateSession(tripSession));
         */
 
-        trip = offerDao.findAll().get(1);
-        tripSession = trip.getSessions().get(0);
+        offer = offerDao.findAll().get(1);
+        tripSession = offer.getSessions().get(0);
         signUserToTrip(user, tripSession);
 
         travelJournal = user.getTravel_journal();
@@ -559,8 +561,8 @@ public class DatabaseSeeder implements
 
         //JULIA
         user = userDao.findAll().get(2);
-        trip = offerDao.findAll().get(0);
-        tripSession = trip.getSessions().get(1);
+        offer = offerDao.findAll().get(0);
+        tripSession = offer.getSessions().get(1);
 
         signUserToTrip(user, tripSession);
 
@@ -571,9 +573,9 @@ public class DatabaseSeeder implements
 
         //Milan
         user = userDao.findAll().get(1);
-        //trip "Fuguvar"
-        trip = offerDao.findAll().get(1);
-        tripSession = trip.getSessions().get(1);
+        //offer "Fuguvar"
+        offer = offerDao.findAll().get(1);
+        tripSession = offer.getSessions().get(1);
         signUserToTrip(user, tripSession);
 
         signUpUserToExpiredEnrollmentsForTesting(user);
@@ -624,23 +626,23 @@ public class DatabaseSeeder implements
 
         List<Enrollment> enrollments = travelJournal.getEnrollments();
         JobSession tripSession;
-        Offer trip = offerDao.findAll().get(1);
+        Offer offer = offerDao.findAll().get(1);
         Enrollment e;
 
         //enrolment ke tripu, ktery ma datum  ukonceni vcera 0
-        tripSession = trip.getSessions().get(3);
+        tripSession = offer.getSessions().get(3);
         e = createEnrol(tripSession, user);
         enrollments.add(e);
         enrollmentDao.persist(e);
 
         //enrolment ke tripu, ktery ma datum  ukonceni predevcirem 1
-        tripSession = trip.getSessions().get(4);
+        tripSession = offer.getSessions().get(4);
         e = createEnrol(tripSession, user);
         enrollments.add(e);
         enrollmentDao.persist(e);
 
         //enrolment ke tripu, ktery ma datum  ukonceni pred tydem 2
-        tripSession = trip.getSessions().get(5);
+        tripSession = offer.getSessions().get(5);
         e = createEnrol(tripSession, user);
         enrollments.add(e);
         enrollmentDao.persist(e);
@@ -648,9 +650,9 @@ public class DatabaseSeeder implements
         travelJournalDao.update(travelJournal);
 
         //get animator trip
-        trip = offerDao.findAll().get(6);
+        offer = offerDao.findAll().get(6);
         for(int i = 1; i < 7; i++) {
-            tripSession = trip.getSessions().get(i);
+            tripSession = offer.getSessions().get(i);
             e = createEnrol(tripSession, user);
             enrollments.add(e);
             enrollmentDao.persist(e);
@@ -692,16 +694,16 @@ public class DatabaseSeeder implements
         return enrollment;
     }
 
-    private void updateTripRating(Offer trip, double rating) {
+    private void updateTripRating(Offer offer, double rating) {
         long noReviews;
-        if(trip.getTripReviews() == null) {
+        if(offer.getTripReviews() == null) {
             noReviews = 1;
         }
         else {
-            noReviews = trip.getTripReviews().size();
+            noReviews = offer.getTripReviews().size();
         }
-        double currentRating = trip.getRating();
-        trip.setRating((currentRating*(noReviews) + rating)/(noReviews+1));
-        offerDao.update(trip);
+        double currentRating = offer.getRating();
+        offer.setRating((currentRating*(noReviews) + rating)/(noReviews+1));
+        offerDao.update(offer);
     }
 }

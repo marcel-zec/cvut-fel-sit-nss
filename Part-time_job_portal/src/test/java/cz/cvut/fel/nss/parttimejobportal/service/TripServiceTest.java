@@ -44,7 +44,7 @@ public class TripServiceTest {
 
     @Before
     public void init() throws BadDateException, MissingVariableException {
-        trip = new Offer("test1",10,"Description","shortName",2000,"Hawaii",3);
+        trip = new Offer("test1",10,"Description","shortName",2000,"Hawaii",3,null);
 
         ArrayList<JobSession> s = new ArrayList<>();
         s.add(new JobSession(trip,LocalDate.now(), LocalDate.now().plusDays(7),2000));
@@ -57,7 +57,7 @@ public class TripServiceTest {
     @Transactional
     @Rollback
     public void create_CreatesNewTrip() throws BadDateException, MissingVariableException {
-        Offer tr = new Offer("test2",11,"Description","shortName1",1000,"Hawaii",2);
+        Offer tr = new Offer("test2",11,"Description","shortName1",1000,"Hawaii",2,null);
         ArrayList<JobSession> s = new ArrayList<>();
         s.add(new JobSession(tr,LocalDate.now(), LocalDate.now().plusDays(7),2000));
         tr.setSessions(s);

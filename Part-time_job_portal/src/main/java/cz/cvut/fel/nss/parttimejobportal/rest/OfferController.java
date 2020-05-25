@@ -23,13 +23,13 @@ import java.util.List;
 @CrossOrigin(origins = SecurityConstants.ORIGIN_URI)
 @RestController
 @RequestMapping("/trip")
-public class TripController {
+public class OfferController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TripController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(OfferController.class);
     private OfferService offerService;
 
     @Autowired
-    public TripController(OfferService offerService) {
+    public OfferController(OfferService offerService) {
         this.offerService = offerService;
     }
 
@@ -70,16 +70,16 @@ public class TripController {
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void create(@RequestBody Offer trip) throws BadDateException, MissingVariableException {
-        offerService.create(trip);
+    public void create(@RequestBody Offer offer) throws BadDateException, MissingVariableException {
+        offerService.create(offer);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
     @PatchMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable String identificator, @RequestBody Offer trip) throws BadDateException, NotFoundException, MissingVariableException {
+    public void update(@PathVariable String identificator, @RequestBody Offer offer) throws BadDateException, NotFoundException, MissingVariableException {
 
-        offerService.update(identificator, trip);
+        offerService.update(identificator, offer);
         LOG.info("Offer {} updated.", identificator);
     }
 

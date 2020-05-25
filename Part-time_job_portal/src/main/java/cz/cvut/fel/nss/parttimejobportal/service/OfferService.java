@@ -33,9 +33,10 @@ public class OfferService {
     private final UserDao userDao;
     private final EnrollmentDao enrollmentDao;
     private final TravelJournalDao travelJournalDao;
+    private final ManagerDao managerDao;
 
     @Autowired
-    public OfferService(OfferDao offerDao, JobSessionDao jobSessionDao, TripReviewDao tripReviewDao, TranslateService translateService, AccessService accessService, UserDao userDao, EnrollmentDao enrollmentDao, TravelJournalDao travelJournalDao) {
+    public OfferService(OfferDao offerDao, JobSessionDao jobSessionDao, TripReviewDao tripReviewDao, TranslateService translateService, AccessService accessService, UserDao userDao, EnrollmentDao enrollmentDao, TravelJournalDao travelJournalDao, ManagerDao managerDao) {
         this.offerDao = offerDao;
         this.jobSessionDao = jobSessionDao;
         this.tripReviewDao = tripReviewDao;
@@ -44,6 +45,7 @@ public class OfferService {
         this.userDao = userDao;
         this.enrollmentDao = enrollmentDao;
         this.travelJournalDao = travelJournalDao;
+        this.managerDao = managerDao;
     }
 
     @Transactional
@@ -123,20 +125,21 @@ public class OfferService {
     }
 
     @Transactional
-    public void create(Offer trip) throws BadDateException, MissingVariableException {
+    public void create(Offer offer) throws BadDateException, MissingVariableException {
 
-        Objects.requireNonNull(trip);
-        if (trip.getSessions().size()<=0) throw new MissingVariableException();
-        offerDao.persist(trip);
-        for (JobSession session: trip.getSessions()) {
+        Objects.requireNonNull(offer);
+        if (offer.getSessions().size()<=0) throw new MissingVariableException();
+        offerDao.persist(offer);
+        for (JobSession session: offer.getSessions()) {
             if (session.getTo_date().isBefore(session.getFrom_date())) {
-                offerDao.remove(trip);
+                offerDao.remove(offer);
                 throw new BadDateException();
             }
-            session.setTrip(trip);
+            session.setTrip(offer);
             jobSessionDao.persist(session);
         }
-        offerDao.update(trip);
+        offer.setAuthor(managerDao.find(SecurityUtils.getCurrentUser().getId()));
+        offerDao.update(offer);
     }
 
     @Transactional
@@ -192,6 +195,7 @@ public class OfferService {
         //todo pridat vynimku na rolu
 
         newTrip.setId(trip.getId());
+        newTrip.setAuthor(managerDao.find(SecurityUtils.getCurrentUser().getId()));
 
 //        newTrip.setReviews(trip.getReviews());
         if (newTrip.getSessions().size()<=0) throw new MissingVariableException();

@@ -73,6 +73,9 @@ public class Offer extends AbstractEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @ManyToOne
+    @JoinColumn(name = "manager_id")
+    private Manager author;
 
     @ManyToMany
     @JoinTable(
@@ -123,7 +126,8 @@ public class Offer extends AbstractEntity {
                 @Size(max = 100, min = 3, message = "Short name has to be from 3 to 100 characters.")  @NotBlank(message = "Short name has to be from 3 to 100 characters.") String short_name,
                 @Min(value = 0, message = "Min 0") @Max(value = 10000, message = "Max 10 000") double salary,
                 @Size(max = 200, min = 0, message = "Max 200 characters.") String location,
-                @Min(value = 0, message = "Min 0") @Max(value = 100, message = "Max 100") int required_level
+                @Min(value = 0, message = "Min 0") @Max(value = 100, message = "Max 100") int required_level,
+                 Manager author
     ) {
         this.name = name;
         this.salary = salary;
@@ -137,6 +141,7 @@ public class Offer extends AbstractEntity {
         this.required_achievements_certificate = new ArrayList<>();
         this.gain_achievements_special = new ArrayList<>();
         this.sessions = new ArrayList<>();
+        this.author = author;
     }
 
     public void setCategory(Category category) {
@@ -282,6 +287,19 @@ public class Offer extends AbstractEntity {
     public void setTripReviews(List<TripReview> tripReviews) {
         this.tripReviews = tripReviews;
     }
+
+
+    public Manager getAuthor() {
+
+        return author;
+    }
+
+
+    public void setAuthor(Manager author) {
+
+        this.author = author;
+    }
+
 
     @Override
     public String toString() {

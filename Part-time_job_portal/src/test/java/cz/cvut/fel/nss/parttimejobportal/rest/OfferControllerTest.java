@@ -27,7 +27,7 @@ import static org.junit.Assert.assertNull;
 @SpringBootTest
 @Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
-public class TripControllerTest extends AbstractTest {
+public class OfferControllerTest extends AbstractTest {
 
     private List<OfferDto> tripDto;
 
@@ -50,7 +50,7 @@ public class TripControllerTest extends AbstractTest {
 
     @Test
     public void filterTest() throws Exception {
-        System.out.println("TripControllerTest - filterTest");
+        System.out.println("OfferControllerTest - filterTest");
         String uri = "/trip/filter?location=Tokyo, Japan&max_price=4000&from_date=2020-06-07&to_date=2020-06-18";
         MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON_VALUE)).andReturn();
 
@@ -71,7 +71,7 @@ public class TripControllerTest extends AbstractTest {
     @Test
     @WithMockUser(username = "admin@gmail.com",roles={"USER","ADMIN"})
     public void createTripTest()throws Exception{
-        Offer trip = new Offer("test1",10,"Description","shortName",2000,"Hawaii",3);
+        Offer trip = new Offer("test1",10,"Description","shortName",2000,"Hawaii",3,null);
         trip.setSessions(Collections.singletonList(new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(7), 2000)));
         String uri = "/trip";
         String inputJson = super.mapToJson(trip);
@@ -85,7 +85,7 @@ public class TripControllerTest extends AbstractTest {
     @WithMockUser(username = "admin@gmail.com",roles={"USER","ADMIN","SUPERADMIN"})
     public void updateTest() throws Exception {
         String uri = "/trip/fuguvar";
-        Offer trip = new Offer("test1",10,"Description","shortName",2000,"Hawaii",3);
+        Offer trip = new Offer("test1",10,"Description","shortName",2000,"Hawaii",3,null);
         trip.setSessions(Collections.singletonList(new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(7), 2000)));
         trip.setSalary(1945);
         String inputJson = super.mapToJson(trip);
