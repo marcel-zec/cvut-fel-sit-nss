@@ -109,7 +109,7 @@ class TripHistory extends React.Component {
                         placement="right"
                         overlay={
                             <Tooltip id={`tooltip-${++placement}`}>
-                                Add review of this trip.
+                                Pridaj hodnotenie brigády
                             </Tooltip>
                         }
                     >
@@ -119,7 +119,7 @@ class TripHistory extends React.Component {
                                 this.toggleReviewForm();
                             }}
                         >
-                            Add review
+                            Pridaj
                             <FontAwesomeIcon icon="comment-medical" />
                         </Button>
                     </OverlayTrigger>
@@ -128,7 +128,7 @@ class TripHistory extends React.Component {
                 this.state.show_review &&
                 !this.state.enrollment.hasOwnProperty("tripReview")
             ) {
-                commentButton = "Review in process";
+                commentButton = "Práve sa hodnotí";
             } else {
                 //comment icons for updating
                 commentButton = (
@@ -139,7 +139,7 @@ class TripHistory extends React.Component {
                                 this.showModalHandler();
                             }}
                         >
-                            Show review
+                            Ukáž
                         </Button>
                         <ModalCentered
                             show={this.state.show_modal_review}
@@ -235,24 +235,24 @@ class TripHistory extends React.Component {
                                     />
                                 </div>
                             </Col>
-                            <Col xs={3}>
+                            <Col xs={4}>
                                 <Card.Title className="mb-2 text-muted">
-                                    Name
+                                    Meno
                                 </Card.Title>
                                 <Card.Text>
                                     {this.state.enrollment.trip.name}
                                 </Card.Text>
 
                                 <Card.Title className="mb-2 text-muted">
-                                    Location
+                                    Miesto
                                 </Card.Title>
                                 <Card.Text>
                                     {this.state.enrollment.trip.location}
                                 </Card.Text>
                             </Col>
-                            <Col>
+                            <Col xs={4}>
                                 <Card.Title className="mb-2 text-muted">
-                                    Trip session
+                                    Dátum
                                 </Card.Title>
                                 <Card.Text className="d-flex">
                                     <DatePicker
@@ -275,15 +275,16 @@ class TripHistory extends React.Component {
                                     />
                                 </Card.Text>
                                 <Card.Title className="mb-2 text-muted">
-                                    Reward XP and achievements
+                                    Odmena
                                 </Card.Title>
                                 <Card.Text>
-                                    {this.props.trip.xp} XP - {achievments}
+                                    {this.state.enrollment.actual_xp_reward} XP
+                                    {achievments}
                                 </Card.Text>
                             </Col>
-                            <Col>
+                            <Col xs={3}>
                                 <Card.Title className="mb-2 text-muted">
-                                    Added to travel journal on
+                                    Pridané do denníku
                                 </Card.Title>
                                 <Card.Text>
                                     <DatePicker
@@ -291,12 +292,12 @@ class TripHistory extends React.Component {
                                         selected={Date.parse(
                                             this.state.enrollment.enrollDate
                                         )}
-                                        dateFormat="dd. MM. yyyy, hh:mm"
+                                        dateFormat="dd. MM. yyyy"
                                         disabled={true}
                                     />
                                 </Card.Text>
                                 <Card.Title className="mb-2 text-muted">
-                                    Review
+                                    Hodnotenie
                                 </Card.Title>
                                 <Card.Text>{commentButton}</Card.Text>
                             </Col>

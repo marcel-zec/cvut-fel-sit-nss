@@ -246,7 +246,7 @@ class ProfileTrips extends Profile {
                                 this.switchToActive(event.target)
                             }
                         >
-                            Now active
+                            Aktívne
                         </span>
                         <span
                             id="switchToArchive"
@@ -254,7 +254,7 @@ class ProfileTrips extends Profile {
                                 this.switchToArchive(event.target)
                             }
                         >
-                            Archive
+                            Archív
                         </span>
                     </div>
                     <div id="tripsElementBlock">

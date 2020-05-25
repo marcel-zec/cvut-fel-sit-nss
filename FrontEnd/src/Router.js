@@ -66,7 +66,6 @@ function Router(props) {
     };
 
     return (
-        
         <div>
             <Route
                 path="/profile"
@@ -78,7 +77,7 @@ function Router(props) {
             <Route path="/profile/achievments" component={ProfileAchievments} />
             <Route path="/profile/trips" component={ProfileTrips} />
             <Route path="/profile/trips/active" component={ActiveTrip} />
-            <Route path="/profile/reviews" component={UserReview} />
+            {/*<Route path="/profile/reviews" component={UserReview} />*/}
 
             <Switch>
                 {/*Global*/}
