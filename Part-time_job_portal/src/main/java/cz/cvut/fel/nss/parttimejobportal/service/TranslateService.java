@@ -96,7 +96,7 @@ public class TranslateService {
 
         return new OfferDto(trip.getId(),trip.getName(),trip.getShort_name(),trip.getPossible_xp_reward(),
                 trip.getDescription(),trip.getRating(),trip.getSalary(),trip.getLocation(), trip.getRequired_level(),
-                trip.getCategory().getId(), required_certificates, required_achievements_categorized, required_achievements_special, gain_achievements, sessions, tripReviews);
+                translateCategory(trip.getCategory()),trip.getAuthor().getId(), required_certificates, required_achievements_categorized, required_achievements_special, gain_achievements, sessions, tripReviews);
     }
 
     @Transactional
@@ -171,11 +171,7 @@ public class TranslateService {
         Objects.requireNonNull(category);
         List<OfferDto> trips = new ArrayList<>();
 
-        for (Offer trip : category.getTrips()) {
-            trips.add(translateTrip(trip));
-        }
-
-        return new CategoryDto(category.getId(),category.getName(),trips);
+        return new CategoryDto(category.getId(),category.getName());
     }
 
     @Transactional

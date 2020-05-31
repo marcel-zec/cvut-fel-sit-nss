@@ -151,7 +151,7 @@ public class DatabaseSeeder implements
         System.out.println("Test user persist.");
 
         //admin Peter
-        Manager manager = new Manager(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Peter","Testovany","admin@gmail.com");
+        Manager manager = new Manager(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Admin","Prvy","admin@gmail.com");
         managerDao.persist(manager);
         manager.setRole(Role.ADMIN);
         userDao.persist(user);
@@ -160,7 +160,39 @@ public class DatabaseSeeder implements
         address.setCountry("Slovakia");
         address.setCity("Licartovce");
         address.setStreet("Vranovska");
+        address.setHouseNumber(10);
+        address.setZipCode("05175");
+        addressDao.persist(address);
+        manager.setAddress(address);
+        managerDao.update(manager);
+        System.out.println("Test admin persist.");
+
+        manager = new Manager(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Admin","Druhy","admin1@gmail.com");
+        managerDao.persist(manager);
+        manager.setRole(Role.ADMIN);
+        userDao.persist(user);
+        address = new Address();
+        address.setUser(user);
+        address.setCountry("Slovakia");
+        address.setCity("Peckovany");
+        address.setStreet("Vranovska");
         address.setHouseNumber(20);
+        address.setZipCode("05175");
+        addressDao.persist(address);
+        manager.setAddress(address);
+        managerDao.update(manager);
+        System.out.println("Test admin persist.");
+
+        manager = new Manager(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Admin","Treti","admin2@gmail.com");
+        managerDao.persist(manager);
+        manager.setRole(Role.ADMIN);
+        userDao.persist(user);
+        address = new Address();
+        address.setUser(user);
+        address.setCountry("Slovakia");
+        address.setCity("Povazany");
+        address.setStreet("Vranovska");
+        address.setHouseNumber(30);
         address.setZipCode("05175");
         addressDao.persist(address);
         manager.setAddress(address);
@@ -298,7 +330,7 @@ public class DatabaseSeeder implements
 
         //3.offer "Kuchař menza Studentský dům, Praha"
         description = "Tento zajezd nevyzaduje zadne achievementy a po nem se nedaji ziskat specialni achievementy ale daji se ziskat achievementy jako jsou např. ´Kuchtík´, ´Kuchař´ apod. Odměna Xp je dost nízká aby se nedalo jednoduše dostat za tuhle práci na prestižnější místa jako pražský hrad, ale zároveň je možno si dopomoct s touto lehčí a dostupnější práci nahnat achievement kuchař, jestliže xp grind mám za sebou z jiných zájezdů." ;
-        offer = new Offer("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",140,"Praha, Česká republika",0, managerDao.findByEmail("admin@gmail.com"));
+        offer = new Offer("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",140,"Praha, Česká republika",0, managerDao.findByEmail("admin1@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 2);
         jobSessionDao.persist(tripSession);
@@ -313,7 +345,7 @@ public class DatabaseSeeder implements
 
         //4.offer "projekt „Úsměv pro všechny“"
         description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
-        offer = new Offer("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0, managerDao.findByEmail("admin@gmail.com"));
+        offer = new Offer("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0, managerDao.findByEmail("admin1@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3);
         jobSessionDao.persist(tripSession);
@@ -341,7 +373,7 @@ public class DatabaseSeeder implements
 
         //6.offer "Animátor v českém krumlově"
         description = "Pojď animovat zábavní program pro účastníky zájezdů v Českém Krumlově! Zkušenosti nepotřebuješ jenom úsměv na rtech a odhodlání rozdávat radost." ;
-        offer = new Offer("Animátor v Českém Krumlově",6,description,"czekrum",180,"Český Krumlov, Česká republika",1, managerDao.findByEmail("admin@gmail.com"));
+        offer = new Offer("Animátor v Českém Krumlově",6,description,"czekrum",180,"Český Krumlov, Česká republika",1, managerDao.findByEmail("admin2@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2018-08-06"), LocalDate.parse("2018-08-12"), 5); //0
         jobSessionDao.persist(tripSession);

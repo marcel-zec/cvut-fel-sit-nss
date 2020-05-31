@@ -1,11 +1,8 @@
 package cz.cvut.fel.nss.parttimejobportal.service;
 
+import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.dto.UserDto;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
-import cz.cvut.fel.nss.parttimejobportal.dao.AddressDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.TravelJournalDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.TripReviewDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.UserDao;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadPassword;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.exception.UnauthorizedException;
@@ -22,6 +19,7 @@ import java.util.Objects;
 public class UserService {
 
     private final UserDao dao;
+    private final ManagerDao managerDao;
     private final TripReviewDao tripReviewDao;
     private final TravelJournalDao travelJournalDao;
     private final AddressDao addressDao;
@@ -30,8 +28,9 @@ public class UserService {
 
 
     @Autowired
-    public UserService(UserDao dao, TripReviewDao tripReviewDao, TravelJournalDao travelJournalDao, AddressDao addressDao, TranslateService translateService, cz.cvut.fel.nss.parttimejobportal.service.TranslateBackService translateBackService) {
+    public UserService(UserDao dao, ManagerDao managerDao, TripReviewDao tripReviewDao, TravelJournalDao travelJournalDao, AddressDao addressDao, TranslateService translateService, cz.cvut.fel.nss.parttimejobportal.service.TranslateBackService translateBackService) {
         this.dao = dao;
+        this.managerDao = managerDao;
         this.tripReviewDao = tripReviewDao;
         this.travelJournalDao = travelJournalDao;
         this.addressDao = addressDao;
@@ -68,7 +67,8 @@ public class UserService {
     @Transactional
     public UserDto showCurrentUser() throws UnauthorizedException {
         if (SecurityUtils.isAuthenticatedAnonymously()) throw new UnauthorizedException();
-            return translateService.translateUser(dao.find(SecurityUtils.getCurrentUser().getId()));
+        if(SecurityUtils.getCurrentUser().getRole().equals(Role.USER)) return translateService.translateUser(dao.find(SecurityUtils.getCurrentUser().getId()));
+        return translateService.translateManager(managerDao.find(SecurityUtils.getCurrentUser().getId()));
     }
 
     @Transactional
