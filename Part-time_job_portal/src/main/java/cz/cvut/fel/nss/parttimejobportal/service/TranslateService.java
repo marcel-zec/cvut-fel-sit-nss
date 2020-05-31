@@ -168,10 +168,8 @@ public class TranslateService {
 
     @Transactional
     public CategoryDto translateCategory(Category category){
-        Objects.requireNonNull(category);
-        List<OfferDto> trips = new ArrayList<>();
 
-        return new CategoryDto(category.getId(),category.getName());
+        return category == null ? null : new CategoryDto(category.getId(),category.getName());
     }
 
     @Transactional
