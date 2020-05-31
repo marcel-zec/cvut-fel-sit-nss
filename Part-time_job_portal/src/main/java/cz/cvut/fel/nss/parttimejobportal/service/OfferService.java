@@ -27,24 +27,24 @@ public class OfferService {
 
     private final OfferDao offerDao;
     private final JobSessionDao jobSessionDao;
-    private final TripReviewDao tripReviewDao;
+    private final JobReviewDao jobReviewDao;
     private final TranslateService translateService;
     private final AccessService accessService;
     private final UserDao userDao;
     private final EnrollmentDao enrollmentDao;
-    private final TravelJournalDao travelJournalDao;
+    private final JobJournalDao jobJournalDao;
     private final ManagerDao managerDao;
 
     @Autowired
-    public OfferService(OfferDao offerDao, JobSessionDao jobSessionDao, TripReviewDao tripReviewDao, TranslateService translateService, AccessService accessService, UserDao userDao, EnrollmentDao enrollmentDao, TravelJournalDao travelJournalDao, ManagerDao managerDao) {
+    public OfferService(OfferDao offerDao, JobSessionDao jobSessionDao, JobReviewDao jobReviewDao, TranslateService translateService, AccessService accessService, UserDao userDao, EnrollmentDao enrollmentDao, JobJournalDao jobJournalDao, ManagerDao managerDao) {
         this.offerDao = offerDao;
         this.jobSessionDao = jobSessionDao;
-        this.tripReviewDao = tripReviewDao;
+        this.jobReviewDao = jobReviewDao;
         this.translateService = translateService;
         this.accessService = accessService;
         this.userDao = userDao;
         this.enrollmentDao = enrollmentDao;
-        this.travelJournalDao = travelJournalDao;
+        this.jobJournalDao = jobJournalDao;
         this.managerDao = managerDao;
     }
 
@@ -158,13 +158,13 @@ public class OfferService {
             enrollment.setTrip(tripSession.getTrip());
             enrollment.setState(EnrollmentState.ACTIVE);
             enrollment.setTripSession(tripSession);
-            enrollment.setTravelJournal(user.getTravel_journal());
+            enrollment.setJobJournal(user.getTravel_journal());
 
             System.out.println(enrollment.toString());
 
             enrollmentDao.persist(enrollment);
             user.getTravel_journal().addEnrollment(enrollment);
-            travelJournalDao.update(user.getTravel_journal());
+            jobJournalDao.update(user.getTravel_journal());
         }
         else {
             System.out.println("!USER DID NOT GET SIGNED UP TO TRIP!");
@@ -176,7 +176,7 @@ public class OfferService {
         if (current_user == null) throw new NotAllowedException();
         User user = userDao.find(current_user.getId());
         if (user == null) throw new NotAllowedException();
-        int level = translateService.countLevel(translateService.translateTravelJournal(user.getTravel_journal()).getXp_count());
+        int level = translateService.countLevel(translateService.translateJobJournal(user.getTravel_journal()).getXp_count());
         return  offerDao.find(level);
     }
 
@@ -263,7 +263,7 @@ public class OfferService {
         return tripDtos;
     }
 
-    public boolean checkOwnedAchievements(TravelJournal usersJournal, Offer trip) {
+    public boolean checkOwnedAchievements(JobJournal usersJournal, Offer trip) {
         List<AchievementCategorized> ownedCat = usersJournal.getEarnedAchievementsCategorized();
         List<AchievementCertificate> ownedCer = usersJournal.getCertificates();
         List<AchievementSpecial> ownedSpec = usersJournal.getEarnedAchievementsSpecial();

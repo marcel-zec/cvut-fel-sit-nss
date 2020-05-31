@@ -30,13 +30,13 @@ public class UserDto  {
     private Role role;
 
     private AddressDto address;
-    private TravelJournalDto travel_journal;
-    private List<TripReviewDto> tripReviews;
+    private JobJournalDto travel_journal;
+    private List<JobReviewDto> jobReviews;
     private List<UserReviewDto> userReviewDtos;
 
 
     public UserDto() {
-        this.tripReviews = new ArrayList<>();
+        this.jobReviews = new ArrayList<>();
     }
 
 
@@ -44,7 +44,7 @@ public class UserDto  {
                    @Size(max = 30, min = 1, message = "First name is in incorrect format.") @NotNull(message = "First name cannot be blank") String firstName,
                    @NotNull(message = "Last name cannot be blank") String lastName,
                    @Email(message = "Email should be valid") @NotNull(message = "Email cannot be blank") String email,
-                   AddressDto address, TravelJournalDto travel_journal, List<TripReviewDto> tripReviews, Role role,  List<UserReviewDto> userReviewDtos) {
+                   AddressDto address, JobJournalDto travel_journal, List<JobReviewDto> jobReviews, Role role,  List<UserReviewDto> userReviewDtos) {
 
         this.id = id;
         this.firstName = firstName;
@@ -52,7 +52,7 @@ public class UserDto  {
         this.email = email;
         this.address = address;
         this.travel_journal = travel_journal;
-        this.tripReviews = tripReviews;
+        this.jobReviews = jobReviews;
         this.role = role;
         this.userReviewDtos = userReviewDtos;
     }
@@ -130,27 +130,27 @@ public class UserDto  {
     }
 
 
-    public TravelJournalDto getTravel_journal() {
+    public JobJournalDto getTravel_journal() {
 
         return travel_journal;
     }
 
 
-    public void setTravel_journal(TravelJournalDto travel_journal) {
+    public void setTravel_journal(JobJournalDto travel_journal) {
 
         this.travel_journal = travel_journal;
     }
 
 
-    public List<TripReviewDto> getTripReviews() {
+    public List<JobReviewDto> getJobReviews() {
 
-        return tripReviews;
+        return jobReviews;
     }
 
 
-    public void setTripReviews(List<TripReviewDto> tripReviews) {
+    public void setJobReviews(List<JobReviewDto> jobReviews) {
 
-        this.tripReviews = tripReviews;
+        this.jobReviews = jobReviews;
     }
 
 

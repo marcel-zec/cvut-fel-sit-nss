@@ -40,7 +40,7 @@ public class TripServiceTest {
     @Autowired
     private UserService userService;
     @Autowired
-    private TripReviewService tripReviewService;
+    private JobReviewService jobReviewService;
 
     @Before
     public void init() throws BadDateException, MissingVariableException {
@@ -95,14 +95,14 @@ public class TripServiceTest {
     public void remove_TripRemoved() throws NotFoundException, BadPassword, UnauthorizedException, AlreadyExistsException {
 
         User user = Generator.generateUser();
-        TripReview tripReview = new TripReview();
-        tripReview.setNote("note");
-        tripReview.setRating(1);
-        tripReview.setDate(LocalDateTime.now());
-        user.addTripReview(tripReview);
+        JobReview jobReview = new JobReview();
+        jobReview.setNote("note");
+        jobReview.setRating(1);
+        jobReview.setDate(LocalDateTime.now());
+        user.addJobReview(jobReview);
 
         userService.createUser(user,user.getPassword());
-        tripReviewService.create(tripReview,trip.getSessions().get(0).getId());
+        jobReviewService.create(jobReview,trip.getSessions().get(0).getId());
 
         offerService.delete(trip.getShort_name());
         assertThrows(NotFoundException.class, ()-> offerService.find(trip.getId()));

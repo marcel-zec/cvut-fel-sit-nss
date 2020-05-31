@@ -54,7 +54,7 @@ public class OfferDto {
     private List<AchievementSpecialDto> required_achievements_special;
     private List<AchievementSpecialDto> gain_achievements_special;
     private List<JobSessionDto> sessions;
-    private List<TripReviewDto> tripReviewDtos;
+    private List<JobReviewDto> jobReviewDtos;
 
     public OfferDto() {
     }
@@ -63,7 +63,7 @@ public class OfferDto {
                    @Min(value = 0, message = "Min 0") @Max(value = 20, message = "Max 20") int possible_xp_reward, @Size(max = 3000, min = 0, message = "Max 3000 characters.") String description, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating,
                    @Min(value = 0, message = "Min 0") @Max(value = 10000, message = "Max 10 000") double salary, @Size(max = 200, min = 0, message = "Max 200 characters.") String location, @Min(value = 0, message = "Min 0") int required_level, CategoryDto categoryDto, Long authorId, List<AchievementCertificateDto> required_certificates,
                    List<AchievementCategorizedDto> required_achievements_categorized, List<AchievementSpecialDto> required_achievements_special,
-                   List<AchievementSpecialDto> gain_achievements, List<JobSessionDto> sessions, List<TripReviewDto> tripReviewDtos) {
+                   List<AchievementSpecialDto> gain_achievements, List<JobSessionDto> sessions, List<JobReviewDto> jobReviewDtos) {
         this.id = id;
         this.name = name;
         this.short_name = short_name;
@@ -79,7 +79,7 @@ public class OfferDto {
         this.required_achievements_special = required_achievements_special;
         this.gain_achievements_special = gain_achievements;
         this.sessions = sessions;
-        this.tripReviewDtos = tripReviewDtos;
+        this.jobReviewDtos = jobReviewDtos;
     }
 
     public String getName() {
@@ -202,12 +202,12 @@ public class OfferDto {
         this.sessions = sessions;
     }
 
-    public List<TripReviewDto> getTripReviewDtos() {
-        return tripReviewDtos;
+    public List<JobReviewDto> getJobReviewDtos() {
+        return jobReviewDtos;
     }
 
-    public void setTripReviewDtos(List<TripReviewDto> tripReviewDtos) {
-        this.tripReviewDtos = tripReviewDtos;
+    public void setJobReviewDtos(List<JobReviewDto> jobReviewDtos) {
+        this.jobReviewDtos = jobReviewDtos;
     }
 
     public Long getId() {

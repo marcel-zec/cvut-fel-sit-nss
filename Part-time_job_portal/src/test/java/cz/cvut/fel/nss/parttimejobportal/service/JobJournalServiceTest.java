@@ -27,15 +27,15 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest
 @Transactional
 @TestPropertySource(locations = "classpath:application-test.properties")
-public class TravelJournalServiceTest {
+public class JobJournalServiceTest {
 
-    private TravelJournal travelJournal;
+    private JobJournal jobJournal;
     private AbstractUser user;
     private Offer trip;
     private Category category;
 
     @Autowired
-    private TravelJournalService travelJournalService;
+    private JobJournalService jobJournalService;
     @Autowired
     private UserService userService;
     @Autowired
@@ -58,19 +58,19 @@ public class TravelJournalServiceTest {
         categoryService.create(category);
         offerService.create(trip);
 
-        travelJournal = new TravelJournal((User) user);
-        travelJournal.addTrip(trip.getCategory().getId());
-        travelJournal.setXp_count(5);
+        jobJournal = new JobJournal((User) user);
+        jobJournal.addTrip(trip.getCategory().getId());
+        jobJournal.setXp_count(5);
 
-        travelJournal.setTrip_counter(new HashMap<Long,Integer>(){{put(category.getId(),1);}});
+        jobJournal.setTrip_counter(new HashMap<Long,Integer>(){{put(category.getId(),1);}});
     }
 
     @Test
     @Transactional
     @Rollback
     public void addTrip(){
-        travelJournalService.addTrip(travelJournal.getId(),trip.getId());
-        Assert.assertEquals(travelJournal.getId(),userService.find(user.getId()).getTravel_journal().getId());
+        jobJournalService.addTrip(jobJournal.getId(),trip.getId());
+        Assert.assertEquals(jobJournal.getId(),userService.find(user.getId()).getTravel_journal().getId());
     }
 }
 

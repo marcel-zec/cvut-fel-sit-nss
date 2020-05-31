@@ -29,24 +29,24 @@ public class EnrollmentDto {
     private EnrollmentState state;
 
     private List<AchievementSpecialDto> recieved_achievements_special;
-    private Long travelJournalId;
+    private Long jobJournalId;
     private OfferDto trip;
     private JobSessionDto tripSession;
-    private TripReviewDto tripReview;
+    private JobReviewDto jobReview;
 
 
     public EnrollmentDto(@NotNull(message = "Id cannot be blank") Long id, @PastOrPresent LocalDateTime enrollDate, boolean deposit_was_paid, int actual_xp_reward, EnrollmentState state, List<AchievementSpecialDto> recieved_achievements_special,
-                         Long travelJournalId, OfferDto trip, JobSessionDto tripSession, TripReviewDto tripReview) {
+                         Long jobJournalId, OfferDto trip, JobSessionDto tripSession, JobReviewDto jobReview) {
         this.id = id;
         this.enrollDate = enrollDate;
         this.deposit_was_paid = deposit_was_paid;
         this.actual_xp_reward = actual_xp_reward;
         this.state = state;
         this.recieved_achievements_special = recieved_achievements_special;
-        this.travelJournalId = travelJournalId;
+        this.jobJournalId = jobJournalId;
         this.trip = trip;
         this.tripSession = tripSession;
-        this.tripReview = tripReview;
+        this.jobReview = jobReview;
     }
 
 
@@ -123,15 +123,15 @@ public class EnrollmentDto {
         this.recieved_achievements_special = recieved_achievements_special;
     }
 
-    public Long getTravelJournalId() {
+    public Long getJobJournalId() {
 
-        return travelJournalId;
+        return jobJournalId;
     }
 
 
-    public void setTravelJournalId(Long travelJournalId) {
+    public void setJobJournalId(Long jobJournalId) {
 
-        this.travelJournalId = travelJournalId;
+        this.jobJournalId = jobJournalId;
     }
 
 
@@ -158,11 +158,11 @@ public class EnrollmentDto {
         this.tripSession = tripSession;
     }
 
-    public TripReviewDto getTripReview() {
-        return tripReview;
+    public JobReviewDto getJobReview() {
+        return jobReview;
     }
 
-    public void setTripReview(TripReviewDto tripReview) {
-        this.tripReview = tripReview;
+    public void setJobReview(JobReviewDto jobReview) {
+        this.jobReview = jobReview;
     }
 }

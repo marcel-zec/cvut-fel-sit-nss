@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.List;
 
-public class TravelJournalDto {
+public class JobJournalDto {
 
     @NotNull(message = "Id cannot be blank")
     private Long id;
@@ -26,7 +26,7 @@ public class TravelJournalDto {
     private List<AchievementCategorizedDto> categorized;
     private List<AchievementSpecialDto> special;
 
-    public TravelJournalDto(@NotNull(message = "Id cannot be blank") Long id, int xp_count, HashMap<CategoryDto, Integer> trip_counter, Long userId, List<AchievementCertificateDto> certificates, List<AchievementCategorizedDto> categorized,
+    public JobJournalDto(@NotNull(message = "Id cannot be blank") Long id, int xp_count, HashMap<CategoryDto, Integer> trip_counter, Long userId, List<AchievementCertificateDto> certificates, List<AchievementCategorizedDto> categorized,
                             List<AchievementSpecialDto> special, int level) {
         this.id = id;
         this.xp_count = xp_count;
@@ -39,7 +39,7 @@ public class TravelJournalDto {
     }
 
 
-    public TravelJournalDto() {
+    public JobJournalDto() {
     }
 
 

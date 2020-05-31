@@ -45,8 +45,8 @@ public class Generator {
         String email = username + "@imejl.cz";
         final User user = new User(generatePassword(), "Tester", "Testovany", email);
         user.setAddress(generateAddress(user));
-        List<TripReview> tripReviews = new ArrayList<>();
-        user.setTripReviews(tripReviews);
+        List<JobReview> jobReviews = new ArrayList<>();
+        user.setJobReviews(jobReviews);
         //TODO: vygenerovat prazdny list reviewů ?
         return user;
     }

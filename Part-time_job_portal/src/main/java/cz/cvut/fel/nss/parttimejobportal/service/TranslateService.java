@@ -3,7 +3,7 @@ package cz.cvut.fel.nss.parttimejobportal.service;
 import cz.cvut.fel.nss.parttimejobportal.dto.*;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.dao.CategoryDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.TravelJournalDao;
+import cz.cvut.fel.nss.parttimejobportal.dao.JobJournalDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.OfferDao;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,12 +12,12 @@ import java.util.*;
 
 @Service
 public class TranslateService {
-    private final TravelJournalDao travelJournalDao;
+    private final JobJournalDao jobJournalDao;
     private final OfferDao offerDao;
     private final CategoryDao categoryDao;
 
-    public TranslateService(TravelJournalDao travelJournalDao, OfferDao offerDao, CategoryDao categoryDao) {
-        this.travelJournalDao = travelJournalDao;
+    public TranslateService(JobJournalDao jobJournalDao, OfferDao offerDao, CategoryDao categoryDao) {
+        this.jobJournalDao = jobJournalDao;
         this.offerDao = offerDao;
         this.categoryDao = categoryDao;
     }
@@ -26,13 +26,13 @@ public class TranslateService {
     public UserDto translateUser(User user) {
         System.out.println(user.toString());
         Objects.requireNonNull(user);
-        List<TripReviewDto> tripReviewDtos = new ArrayList<>();
-        List<TripReview> tripReviews = user.getTripReviews();
+        List<JobReviewDto> jobReviewDtos = new ArrayList<>();
+        List<JobReview> jobReviews = user.getJobReviews();
         List<UserReviewDto> userReviewDtos = new ArrayList<>();
         List<UserReview> userReviews =  user.getUserReviews();
 
-        if (tripReviews.size() > 0){
-            tripReviews.forEach(review-> tripReviewDtos.add(translateTripReview(review)));
+        if (jobReviews.size() > 0){
+            jobReviews.forEach(review-> jobReviewDtos.add(translateJobReview(review)));
         }
 
         if (userReviews.size() > 0){
@@ -40,20 +40,20 @@ public class TranslateService {
         }
 
         if (user.getTravel_journal() != null) {
-            TravelJournalDto travelJournalDto = translateTravelJournal(user.getTravel_journal());
+            JobJournalDto jobJournalDto = translateJobJournal(user.getTravel_journal());
             return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getEmail(),
-                    translateAddress(user.getAddress()),travelJournalDto,tripReviewDtos, user.getRole(),userReviewDtos);
+                    translateAddress(user.getAddress()),jobJournalDto,jobReviewDtos, user.getRole(),userReviewDtos);
         }
 
        return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getEmail(),
-                translateAddress(user.getAddress()),null,tripReviewDtos, user.getRole(),userReviewDtos);
+                translateAddress(user.getAddress()),null,jobReviewDtos, user.getRole(),userReviewDtos);
     }
 
     @Transactional
     public UserDto translateManager(Manager manager) {
         System.out.println(manager.toString());
         Objects.requireNonNull(manager);
-        List<TripReviewDto> tripReviewDtos = new ArrayList<>();
+        List<JobReviewDto> jobReviewDtos = new ArrayList<>();
         List<UserReviewDto> userReviewDtos = new ArrayList<>();
         List<UserReview> userReviews =  manager.getUserReviewsAuthor();
 
@@ -64,7 +64,7 @@ public class TranslateService {
 
 
         return new UserDto(manager.getId(),manager.getFirstName(),manager.getLastName(),manager.getEmail(),
-                translateAddress(manager.getAddress()),null,tripReviewDtos, manager.getRole(),userReviewDtos);
+                translateAddress(manager.getAddress()),null,jobReviewDtos, manager.getRole(),userReviewDtos);
     }
 
 
@@ -84,19 +84,19 @@ public class TranslateService {
         List<AchievementCategorizedDto> required_achievements_categorized = new ArrayList<>();
         List<AchievementSpecialDto> required_achievements_special = new ArrayList<>();
         List<AchievementSpecialDto> gain_achievements = new ArrayList<>();
-        List<TripReviewDto> tripReviews = new ArrayList<>();
+        List<JobReviewDto> jobReviews = new ArrayList<>();
         Offer trip1 = offerDao.find(trip.getId());
 
         trip1.getRequired_achievements_certificate().forEach(achievementCertificate -> required_certificates.add(translateAchievementCertificate(achievementCertificate)));
         trip1.getRequired_achievements_categorized().forEach(achievementCategorized -> required_achievements_categorized.add(translateAchievementCategorized(achievementCategorized)));
         trip1.getRequired_achievements_special().forEach(achievementSpecial -> required_achievements_special.add(translateAchievementSpecial(achievementSpecial)));
         trip1.getGain_achievements_special().forEach(achievementSpecial -> gain_achievements.add(translateAchievementSpecial(achievementSpecial)));
-        trip1.getTripReviews().forEach(review -> tripReviews.add(translateTripReview(review)));
+        trip1.getJobReviews().forEach(review -> jobReviews.add(translateJobReview(review)));
         trip1.getSessions().forEach(session-> sessions.add(translateSession(session)));
 
         return new OfferDto(trip.getId(),trip.getName(),trip.getShort_name(),trip.getPossible_xp_reward(),
                 trip.getDescription(),trip.getRating(),trip.getSalary(),trip.getLocation(), trip.getRequired_level(),
-                translateCategory(trip.getCategory()),trip.getAuthor().getId(), required_certificates, required_achievements_categorized, required_achievements_special, gain_achievements, sessions, tripReviews);
+                translateCategory(trip.getCategory()),trip.getAuthor().getId(), required_certificates, required_achievements_categorized, required_achievements_special, gain_achievements, sessions, jobReviews);
     }
 
     @Transactional
@@ -112,7 +112,7 @@ public class TranslateService {
         List<Long> owned_travel_journals = new ArrayList<>();
 
         achievementCertificate.getTrips().forEach(trip -> trips.add(trip.getId()));
-        achievementCertificate.getOwned_travel_journals().forEach(travelJournal -> owned_travel_journals.add(travelJournal.getId()));
+        achievementCertificate.getOwned_travel_journals().forEach(jobJournal -> owned_travel_journals.add(jobJournal.getId()));
 
         return new AchievementCertificateDto(achievementCertificate.getId(),achievementCertificate.getName(),achievementCertificate.getDescription(),achievementCertificate.getIcon(),
                 trips,owned_travel_journals);
@@ -125,7 +125,7 @@ public class TranslateService {
         List<Long> owned_travel_journals = new ArrayList<>();
 
         achievementSpecial.getTrips().forEach(trip -> trips.add(trip.getId()));
-        achievementSpecial.getOwned_travel_journals().forEach(travelJournal -> owned_travel_journals.add(travelJournal.getId()));
+        achievementSpecial.getOwned_travel_journals().forEach(jobJournal -> owned_travel_journals.add(jobJournal.getId()));
 
         return new AchievementSpecialDto(achievementSpecial.getId(),achievementSpecial.getName(),achievementSpecial.getDescription(),achievementSpecial.getIcon(),
                 trips,owned_travel_journals);
@@ -138,32 +138,32 @@ public class TranslateService {
         List<Long> owned_travel_journals = new ArrayList<>();
 
         achievementCategorized.getTrips().forEach(trip -> trips.add(trip.getId()));
-        achievementCategorized.getOwned_travel_journals().forEach(travelJournal -> owned_travel_journals.add(travelJournal.getId()));
+        achievementCategorized.getOwned_travel_journals().forEach(jobJournal -> owned_travel_journals.add(jobJournal.getId()));
 
         return new AchievementCategorizedDto(achievementCategorized.getId(),achievementCategorized.getName(),achievementCategorized.getDescription(),achievementCategorized.getIcon(),
                 trips,owned_travel_journals, achievementCategorized.getLimit(), achievementCategorized.getCategory().getId());
     }
 
     @Transactional
-    public TravelJournalDto translateTravelJournal(TravelJournal travelJournal){
-        Objects.requireNonNull(travelJournal);
+    public JobJournalDto translateJobJournal(JobJournal jobJournal){
+        Objects.requireNonNull(jobJournal);
         List<AchievementCertificateDto> certificateDtos = new ArrayList<>();
         List<AchievementCategorizedDto> categorizedDtos = new ArrayList<>();
         List<AchievementSpecialDto> specialDtos = new ArrayList<>();
         HashMap<CategoryDto, Integer> trip_counter= new HashMap<CategoryDto, Integer>();
-        TravelJournal travelJournal1 = travelJournalDao.find(travelJournal.getId());
+        JobJournal jobJournal1 = jobJournalDao.find(jobJournal.getId());
 
-        for (Long categoryID : travelJournal1.getTrip_counter().keySet()) {
+        for (Long categoryID : jobJournal1.getTrip_counter().keySet()) {
             Category category = categoryDao.find(categoryID);
             CategoryDto categoryDto= translateCategory(category);
-            trip_counter.put(categoryDto,travelJournal.getTrip_counter().get(category));
+            trip_counter.put(categoryDto,jobJournal.getTrip_counter().get(category));
         }
 
-        travelJournal1.getCertificates().forEach(certificate -> certificateDtos.add(translateAchievementCertificate(certificate)));
-        travelJournal1.getEarnedAchievementsCategorized().forEach(categorized -> categorizedDtos.add(translateAchievementCategorized(categorized)));
-        travelJournal1.getEarnedAchievementsSpecial().forEach(special -> specialDtos.add(translateAchievementSpecial(special)));
+        jobJournal1.getCertificates().forEach(certificate -> certificateDtos.add(translateAchievementCertificate(certificate)));
+        jobJournal1.getEarnedAchievementsCategorized().forEach(categorized -> categorizedDtos.add(translateAchievementCategorized(categorized)));
+        jobJournal1.getEarnedAchievementsSpecial().forEach(special -> specialDtos.add(translateAchievementSpecial(special)));
 
-        return new TravelJournalDto(travelJournal.getId(), travelJournal.getXp_count(), trip_counter,travelJournal.getUser().getId(), certificateDtos, categorizedDtos, specialDtos, countLevel(travelJournal.getXp_count()));
+        return new JobJournalDto(jobJournal.getId(), jobJournal.getXp_count(), trip_counter,jobJournal.getUser().getId(), certificateDtos, categorizedDtos, specialDtos, countLevel(jobJournal.getXp_count()));
     }
 
     @Transactional
@@ -180,18 +180,18 @@ public class TranslateService {
         List<AchievementSpecialDto> recieved_achievements_special = new ArrayList<>();
 
         enrollment.getRecieved_achievements().forEach(achievement_special -> recieved_achievements_special.add(translateAchievementSpecial(achievement_special)));
-        TripReviewDto tripReviewDto = enrollment.hasTripReview() ? translateTripReview(enrollment.getTripReview()) : null;
+        JobReviewDto jobReviewDto = enrollment.hasJobReview() ? translateJobReview(enrollment.getJobReview()) : null;
 
         return new EnrollmentDto(enrollment.getId(),enrollment.getEnrollDate(),enrollment.isDeposit_was_paid(),enrollment.getActual_xp_reward(),enrollment.getState(),
-                recieved_achievements_special,enrollment.getTravelJournal().getId(),translateTrip(enrollment.getTrip()),translateSession(enrollment.getTripSession()),tripReviewDto);
+                recieved_achievements_special,enrollment.getJobJournal().getId(),translateTrip(enrollment.getTrip()),translateSession(enrollment.getTripSession()),jobReviewDto);
     }
 
     @Transactional
-    public TripReviewDto translateTripReview(TripReview tripReview){
-        Objects.requireNonNull(tripReview);
+    public JobReviewDto translateJobReview(JobReview jobReview){
+        Objects.requireNonNull(jobReview);
 
-        return new TripReviewDto(tripReview.getId(),tripReview.getNote(),tripReview.getDate(),
-                tripReview.getRating(),tripReview.getAuthor().getFirstName() + " " +tripReview.getAuthor().getLastName());
+        return new JobReviewDto(jobReview.getId(),jobReview.getNote(),jobReview.getDate(),
+                jobReview.getRating(),jobReview.getAuthor().getFirstName() + " " +jobReview.getAuthor().getLastName());
     }
 
     @Transactional

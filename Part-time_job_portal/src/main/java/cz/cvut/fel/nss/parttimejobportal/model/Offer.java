@@ -110,7 +110,7 @@ public class Offer extends AbstractEntity {
     private List<JobSession> sessions;
 
     @OneToMany(mappedBy = "trip")
-    private List<TripReview> tripReviews;
+    private List<JobReview> jobReviews;
 
     public Offer() {
         this.required_achievements_categorized = new ArrayList<>();
@@ -280,12 +280,12 @@ public class Offer extends AbstractEntity {
         this.sessions.add(tripSession);
     }
 
-    public List<TripReview> getTripReviews() {
-        return tripReviews;
+    public List<JobReview> getJobReviews() {
+        return jobReviews;
     }
 
-    public void setTripReviews(List<TripReview> tripReviews) {
-        this.tripReviews = tripReviews;
+    public void setJobReviews(List<JobReview> jobReviews) {
+        this.jobReviews = jobReviews;
     }
 
 
