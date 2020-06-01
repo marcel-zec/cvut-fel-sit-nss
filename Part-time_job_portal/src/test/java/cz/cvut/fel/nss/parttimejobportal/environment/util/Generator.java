@@ -43,7 +43,7 @@ public class Generator {
     public static User generateUser() {
         String username =  "UserrNo"+ randomInt();
         String email = username + "@imejl.cz";
-        final User user = new User(generatePassword(), "Tester", "Testovany", email);
+        final User user = new User(generatePassword(), "Tester", "Testovany", email, "123056789");
         user.setAddress(generateAddress(user));
         List<JobReview> jobReviews = new ArrayList<>();
         user.setJobReviews(jobReviews);
