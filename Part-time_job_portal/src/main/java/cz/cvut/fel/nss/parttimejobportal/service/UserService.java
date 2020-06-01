@@ -1,11 +1,9 @@
 package cz.cvut.fel.nss.parttimejobportal.service;
 
+import cz.cvut.fel.nss.parttimejobportal.dao.*;
+import cz.cvut.fel.nss.parttimejobportal.dto.AbstractUserDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.UserDto;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
-import cz.cvut.fel.nss.parttimejobportal.dao.AddressDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.TravelJournalDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.TripReviewDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.UserDao;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadPassword;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.exception.UnauthorizedException;
@@ -22,18 +20,20 @@ import java.util.Objects;
 public class UserService {
 
     private final UserDao dao;
-    private final TripReviewDao tripReviewDao;
-    private final TravelJournalDao travelJournalDao;
+    private final ManagerDao managerDao;
+    private final JobReviewDao jobReviewDao;
+    private final JobJournalDao jobJournalDao;
     private final AddressDao addressDao;
     private final TranslateService translateService;
     private final TranslateBackService translateBackService;
 
 
     @Autowired
-    public UserService(UserDao dao, TripReviewDao tripReviewDao, TravelJournalDao travelJournalDao, AddressDao addressDao, TranslateService translateService, cz.cvut.fel.nss.parttimejobportal.service.TranslateBackService translateBackService) {
+    public UserService(UserDao dao, ManagerDao managerDao, JobReviewDao jobReviewDao, JobJournalDao jobJournalDao, AddressDao addressDao, TranslateService translateService, cz.cvut.fel.nss.parttimejobportal.service.TranslateBackService translateBackService) {
         this.dao = dao;
-        this.tripReviewDao = tripReviewDao;
-        this.travelJournalDao = travelJournalDao;
+        this.managerDao = managerDao;
+        this.jobReviewDao = jobReviewDao;
+        this.jobJournalDao = jobJournalDao;
         this.addressDao = addressDao;
         this.translateService = translateService;
         this.translateBackService = translateBackService;
@@ -53,8 +53,8 @@ public class UserService {
             addressDao.persist(user.getAddress());
         }
         if (user.getTravel_journal() == null) {
-            TravelJournal tj = new TravelJournal(user);
-            travelJournalDao.persist(tj);
+            JobJournal tj = new JobJournal(user);
+            jobJournalDao.persist(tj);
             user.setTravel_journal(tj);
         }
         dao.update(user);
@@ -66,9 +66,15 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto showCurrentUser() throws UnauthorizedException {
+    public AbstractUserDto showCurrentUser() throws UnauthorizedException {
         if (SecurityUtils.isAuthenticatedAnonymously()) throw new UnauthorizedException();
-            return translateService.translateUser(dao.find(SecurityUtils.getCurrentUser().getId()));
+        if(SecurityUtils.getCurrentUser().getRole().equals(Role.USER)) return translateService.translateUser(dao.find(SecurityUtils.getCurrentUser().getId()));
+        return translateService.translateManager(managerDao.find(SecurityUtils.getCurrentUser().getId()));
+    }
+
+    @Transactional
+    public JobJournal getJobJournal(){
+         return dao.find(SecurityUtils.getCurrentUser().getId()).getTravel_journal();
     }
 
     @Transactional
@@ -84,11 +90,11 @@ public class UserService {
             e.softDelete();
         }
         user.getTravel_journal().softDelete();
-        travelJournalDao.update(user.getTravel_journal());
+        jobJournalDao.update(user.getTravel_journal());
 
-        for (TripReview tr: user.getTripReviews()) {
+        for (JobReview tr: user.getJobReviews()) {
             tr.softDelete();
-            tripReviewDao.update(tr);
+            jobReviewDao.update(tr);
         }
 
         user.softDelete();
@@ -106,7 +112,7 @@ public class UserService {
 
         newUser.setId(user.getId());
         newUser.setRole(user.getRole());
-        newUser.setTripReviews(user.getTripReviews());
+        newUser.setJobReviews(user.getJobReviews());
 
         if (newUser.getAddress() != null ) {
             Address oldAddress = user.getAddress();
@@ -115,10 +121,10 @@ public class UserService {
             addressDao.update(oldAddress);
         }
         if (newUser.getTravel_journal() != null){
-            TravelJournal oldTravelJournal = user.getTravel_journal();
-            newUser.getTravel_journal().setId(oldTravelJournal.getId());
-            oldTravelJournal = newUser.getTravel_journal();
-            travelJournalDao.update(oldTravelJournal);
+            JobJournal oldJobJournal = user.getTravel_journal();
+            newUser.getTravel_journal().setId(oldJobJournal.getId());
+            oldJobJournal = newUser.getTravel_journal();
+            jobJournalDao.update(oldJobJournal);
         }
 
         user=newUser;

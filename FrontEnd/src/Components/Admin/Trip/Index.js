@@ -52,21 +52,20 @@ class Index extends React.Component {
                 this.state.trips.forEach((element) => {
                     let category = null;
                     if (element.category) category = element.category.name;
-
+                    console.log(element);
                     tableRows.push(
                         <tr>
                             <td>{element.name}</td>
                             <td>{category}</td>
                             <td>{element.required_level}</td>
                             <td>{element.possible_xp_reward}</td>
-                            <td>{element.deposit}</td>
+                            <td>{element.salary}</td>
                             <td>
                                 <OverlayTrigger
                                     key="participants"
                                     overlay={
                                         <Tooltip>
-                                            Show participants registered to
-                                            trip.
+                                            Ukáž zapísaných uživateľov.
                                         </Tooltip>
                                     }
                                 >
@@ -87,9 +86,7 @@ class Index extends React.Component {
 
                                 <OverlayTrigger
                                     key="edit"
-                                    overlay={
-                                        <Tooltip>Edit trip attributes.</Tooltip>
-                                    }
+                                    overlay={<Tooltip>Uprav brigádu.</Tooltip>}
                                 >
                                     <Link
                                         className="p-3"
@@ -130,7 +127,7 @@ class Index extends React.Component {
                         variant="success"
                         link="/trip/create"
                         side="right"
-                        label="Add trip"
+                        label="Pridať brigádu"
                     />
 
                     {alert}
@@ -138,12 +135,12 @@ class Index extends React.Component {
                     <Table striped bordered hover>
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Category</th>
-                                <th>Required level</th>
-                                <th>Possible XP reward</th>
-                                <th>Deposit</th>
-                                <th>Settings</th>
+                                <th>Meno</th>
+                                <th>Kategória</th>
+                                <th>Požadovaný min. level</th>
+                                <th>Odmena XP</th>
+                                <th>Výplata</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>{tableRows}</tbody>

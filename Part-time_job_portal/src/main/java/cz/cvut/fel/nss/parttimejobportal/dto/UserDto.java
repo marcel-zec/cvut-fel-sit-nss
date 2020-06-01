@@ -15,31 +15,27 @@ public class UserDto extends AbstractUserDto {
     @NotBlank(message = "Phone number cannot be blank")
     private String phone_number;
 
-    @NotNull
-    private int level = 0;
-
-    private TravelJournalDto travel_journal;
-    private List<TripReviewDto> tripReviews;
+    private JobJournalDto travel_journal;
+    private List<JobReviewDto> jobReviews;
     private List<UserReviewDto> userReviewDtos;
 
 
     public UserDto() {
         super(Role.USER);
         userReviewDtos = new ArrayList<>();
-        tripReviews = new ArrayList<>();
+        jobReviews = new ArrayList<>();
     }
 
 
     public UserDto(@NotNull(message = "Id cannot be blank") Long id, @Size(max = 30, min = 1, message = "First name is in incorrect format.") @NotNull(message = "First name cannot be blank") String firstName,
                    @NotNull(message = "Last name cannot be blank") String lastName, @Email(message = "Email should be valid") @NotNull(message = "Email cannot be blank") String email, AddressDto address,
-                   @Size(max = 12, min = 9, message = "Phone number is in incorrect format.") @NotBlank(message = "Phone number cannot be blank") String phone_number, @NotNull int level,
-                   TravelJournalDto travel_journal, List<TripReviewDto> tripReviews, List<UserReviewDto> userReviewDtos) {
+                   @Size(max = 12, min = 9, message = "Phone number is in incorrect format.") @NotBlank(message = "Phone number cannot be blank") String phone_number,
+                   JobJournalDto travel_journal, List<JobReviewDto> tripReviews, List<UserReviewDto> userReviewDtos) {
 
         super(id, firstName, lastName, email, address, Role.USER);
         this.phone_number = phone_number;
-        this.level = level;
         this.travel_journal = travel_journal;
-        this.tripReviews = tripReviews;
+        this.jobReviews = tripReviews;
         this.userReviewDtos = userReviewDtos;
     }
 
@@ -56,39 +52,27 @@ public class UserDto extends AbstractUserDto {
     }
 
 
-    public int getLevel() {
-
-        return level;
-    }
-
-
-    public void setLevel(int level) {
-
-        this.level = level;
-    }
-
-
-    public TravelJournalDto getTravel_journal() {
+    public JobJournalDto getTravel_journal() {
 
         return travel_journal;
     }
 
 
-    public void setTravel_journal(TravelJournalDto travel_journal) {
+    public void setTravel_journal(JobJournalDto travel_journal) {
 
         this.travel_journal = travel_journal;
     }
 
 
-    public List<TripReviewDto> getTripReviews() {
+    public List<JobReviewDto> getJobReviews() {
 
-        return tripReviews;
+        return jobReviews;
     }
 
 
-    public void setTripReviews(List<TripReviewDto> tripReviews) {
+    public void setJobReviews(List<JobReviewDto> jobReviews) {
 
-        this.tripReviews = tripReviews;
+        this.jobReviews = jobReviews;
     }
 
 

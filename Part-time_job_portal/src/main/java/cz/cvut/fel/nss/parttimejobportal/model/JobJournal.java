@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "TRAVELJOURNAL")
-public class TravelJournal extends AbstractEntity{
+public class JobJournal extends AbstractEntity{
     @Basic(optional = false)
     @Column(nullable = false)
     private int xp_count = 0;
@@ -31,10 +31,10 @@ public class TravelJournal extends AbstractEntity{
     @ManyToMany
     private List<AchievementSpecial> earnedAchievementsSpecial;
 
-    @OneToMany(mappedBy = "travelJournal")
+    @OneToMany(mappedBy = "jobJournal")
     private List<Enrollment> enrollments;
 
-    public TravelJournal() {
+    public JobJournal() {
         this.trip_counter = new HashMap<Long,Integer>();
         this.enrollments = new ArrayList<Enrollment>();
         this.earnedAchievementsCategorized = new ArrayList<AchievementCategorized>();
@@ -42,7 +42,7 @@ public class TravelJournal extends AbstractEntity{
         this.certificates = new ArrayList<AchievementCertificate>();
     }
 
-    public TravelJournal(User user) {
+    public JobJournal(User user) {
         this.user = user;
         this.trip_counter = new HashMap<Long,Integer>();
         this.enrollments = new ArrayList<Enrollment>();

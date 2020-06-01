@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -48,7 +49,7 @@ public class OfferController {
     public List<OfferDto> getAll() {
 
         if(!SecurityUtils.isAuthenticatedAnonymously()) {
-            if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.SUPERUSER)) {
+            if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.MANAGER)) {
                 return offerService.findAllDto();
             }
         }
@@ -60,7 +61,7 @@ public class OfferController {
     public OfferDto get(@PathVariable String identificator) {
 
         if(!SecurityUtils.isAuthenticatedAnonymously()) {
-            if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.SUPERUSER)) {
+            if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.MANAGER)) {
                 return offerService.findByString(identificator);
             }
         }

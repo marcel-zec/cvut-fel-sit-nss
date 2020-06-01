@@ -2,6 +2,7 @@ package cz.cvut.fel.nss.parttimejobportal.service;
 
 import cz.cvut.fel.nss.parttimejobportal.dao.AbstractUserDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.ManagerDao;
+import cz.cvut.fel.nss.parttimejobportal.dto.ManagerDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.UserDto;
 import cz.cvut.fel.nss.parttimejobportal.model.Address;
 import cz.cvut.fel.nss.parttimejobportal.model.Manager;
@@ -51,7 +52,7 @@ public class AdminService {
     }
 
     @Transactional
-    public UserDto find(Long id) {
+    public ManagerDto find(Long id) {
         Objects.requireNonNull(id);
         Manager user = managerDao.find(id);
         if(user != null && user.getRole() == Role.ADMIN) return translateService.translateManager(user);
@@ -59,12 +60,12 @@ public class AdminService {
     }
 
     @Transactional
-    public List<UserDto> findAll() {
-        List<UserDto> adminDtos = new ArrayList<>();
-        for (Manager user:managerDao.findAll()) {
-            if(user.getRole() == Role.ADMIN) adminDtos.add(translateService.translateManager(user));
+    public List<ManagerDto> findAll() {
+        List<ManagerDto> managerDtos = new ArrayList<>();
+        for (Manager manager : managerDao.findAll()) {
+            managerDtos.add(translateService.translateManager(manager));
         }
-        return adminDtos;
+        return managerDtos;
     }
 
     // predpokladam, ze admina muze upravovat samotny admin a superuser

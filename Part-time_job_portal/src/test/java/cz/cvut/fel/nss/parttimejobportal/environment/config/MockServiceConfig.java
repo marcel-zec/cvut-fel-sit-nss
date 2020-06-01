@@ -48,14 +48,14 @@ public class MockServiceConfig {
     }
 
     @Bean
-    public TravelJournalService travelJournalService() {
-        return mock(TravelJournalService.class);
+    public JobJournalService jobJournalService() {
+        return mock(JobJournalService.class);
     }
 
 
     @Bean
-    public TripReviewService tripReviewService() {
-        return mock(TripReviewService.class);
+    public JobReviewService jobReviewService() {
+        return mock(JobReviewService.class);
     }
 
     @Bean

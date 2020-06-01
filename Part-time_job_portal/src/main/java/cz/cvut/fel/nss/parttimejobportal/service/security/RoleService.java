@@ -11,6 +11,6 @@ public class RoleService {
     }
 
     public boolean isManager(AbstractUser user){
-        return user.getRole() == Role.ADMIN || user.getRole() == Role.SUPERUSER;
+        return user.getRole() == Role.ADMIN || user.getRole() == Role.MANAGER;
     }
 }

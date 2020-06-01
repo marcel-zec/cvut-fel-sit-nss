@@ -54,32 +54,74 @@ class Navigation extends React.Component {
 
         const logoutItem = (
             <NavDropdown.Item>
-                <NavLink to="/logout">
-                    Log out
-                    <FontAwesomeIcon icon="power-off" />
+                <NavLink
+                    to="/logout"
+                    className="d-flex justify-content-between"
+                >
+                    <span>Log out</span>
+                    <span>
+                        <FontAwesomeIcon icon="power-off" />
+                    </span>
                 </NavLink>
             </NavDropdown.Item>
         );
 
         const userNavigation = (
             <>
-                <NavDropdown.Item>XP</NavDropdown.Item>
+                {this.context.user != null ? (
+                    <NavDropdown.Item className="d-flex flex-column align-items-center">
+                        <span>
+                            {this.context.user.firstName +
+                                " " +
+                                this.context.user.lastName}
+                        </span>
+                        <span>
+                            {this.context.user.travel_journal
+                                ? this.context.user.travel_journal.level +
+                                  ". level"
+                                : null}
+                        </span>
+                        <span>
+                            {this.context.user.travel_journal
+                                ? this.context.user.travel_journal.xp_count +
+                                  " XP"
+                                : null}
+                        </span>
+                    </NavDropdown.Item>
+                ) : null}
+
                 <NavDropdown.Divider />
                 <NavDropdown.Item>
-                    <NavLink to="/profile/achievments">
-                        My achievments <FontAwesomeIcon icon="trophy" />
+                    <NavLink
+                        to="/profile/achievments"
+                        className="d-flex justify-content-between"
+                    >
+                        <span>Moje achievementy</span>
+                        <span>
+                            <FontAwesomeIcon icon="trophy" className="ml-3" />
+                        </span>
                     </NavLink>
                 </NavDropdown.Item>
                 <NavDropdown.Item>
-                    <NavLink to="/profile/trips">
-                        My trips
-                        <FontAwesomeIcon icon="suitcase" />
+                    <NavLink
+                        to="/profile/trips"
+                        className="d-flex justify-content-between"
+                    >
+                        <span>Moje brigády</span>
+                        <span>
+                            <FontAwesomeIcon icon="hammer" />
+                        </span>
                     </NavLink>
                 </NavDropdown.Item>
                 <NavDropdown.Item>
-                    <NavLink to="/profile/details">
-                        Settings
-                        <FontAwesomeIcon icon="cog" />
+                    <NavLink
+                        to="/profile/details"
+                        className="d-flex justify-content-between"
+                    >
+                        <span>Nastavenia</span>
+                        <span>
+                            <FontAwesomeIcon icon="cog" />
+                        </span>
                     </NavLink>
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
@@ -90,19 +132,19 @@ class Navigation extends React.Component {
         const adminNavigation = (
             <>
                 <NavDropdown.Item>
-                    <NavLink to="/close">Close</NavLink>
+                    <NavLink to="/close">Uzatvaranie brigád</NavLink>
                 </NavDropdown.Item>
                 <NavDropdown.Item>
-                    <NavLink to="/trip">Trips</NavLink>
+                    <NavLink to="/trip">Brigády</NavLink>
                 </NavDropdown.Item>
                 <NavDropdown.Item>
-                    <NavLink to="/user">Users</NavLink>
+                    <NavLink to="/user">Uživatelia</NavLink>
                 </NavDropdown.Item>
                 <NavDropdown.Item>
-                    <NavLink to="/achievement">Achievements</NavLink>
+                    <NavLink to="/achievement">Achievementy</NavLink>
                 </NavDropdown.Item>
                 <NavDropdown.Item>
-                    <NavLink to="/category">Categories</NavLink>
+                    <NavLink to="/category">Kategórie</NavLink>
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
                 {logoutItem}

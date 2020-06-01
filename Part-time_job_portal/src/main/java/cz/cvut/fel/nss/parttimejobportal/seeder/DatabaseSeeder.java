@@ -4,8 +4,9 @@ import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.dto.JobSessionDto;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.service.EnrollmentService;
+import cz.cvut.fel.nss.parttimejobportal.service.JobJournalService;
 import cz.cvut.fel.nss.parttimejobportal.service.TranslateService;
-import cz.cvut.fel.nss.parttimejobportal.service.TravelJournalService;
+import cz.cvut.fel.nss.parttimejobportal.service.JobJournalService;
 import cz.cvut.fel.nss.parttimejobportal.service.OfferService;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,31 +27,33 @@ import java.util.logging.Logger;
 public class DatabaseSeeder implements
         ApplicationListener<ContextRefreshedEvent> {
 
-    private Logger LOGGER = Logger.getLogger(DatabaseSeeder.class.getName());
-    private OfferDao offerDao;
-    private JobSessionDao jobSessionDao;
-    private AchievementCertificateDao achievementCertificateDao;
-    private AchievementCategorizedDao achievementCategorizedDao;
-    private AchievementSpecialDao achievementSpecialDao;
-    private CategoryDao categoryDao;
-    private UserDao userDao;
-    private AddressDao addressDao;
-    private EnrollmentDao enrollmentDao;
-    private OfferService offerService;
-    private TranslateService translateService;
-    private TravelJournalService travelJournalService;
-    private TravelJournalDao travelJournalDao;
-    private TripReviewDao tripReviewDao;
-    private UserReviewDao userReviewDao;
-    private EnrollmentService enrollmentService;
+    private final Logger LOGGER = Logger.getLogger(DatabaseSeeder.class.getName());
+    private final OfferDao offerDao;
+    private final JobSessionDao jobSessionDao;
+    private final AchievementCertificateDao achievementCertificateDao;
+    private final AchievementCategorizedDao achievementCategorizedDao;
+    private final AchievementSpecialDao achievementSpecialDao;
+    private final CategoryDao categoryDao;
+    private final UserDao userDao;
+    private final AddressDao addressDao;
+    private final EnrollmentDao enrollmentDao;
+    private final OfferService offerService;
+    private final TranslateService translateService;
+    private final JobJournalService jobJournalService;
+    private final JobJournalDao jobJournalDao;
+    private final JobReviewDao jobReviewDao;
+    private final UserReviewDao userReviewDao;
+    private final EnrollmentService enrollmentService;
     private final ManagerDao managerDao;
+    private final AdminDao adminDao;
 
     @Autowired
     public DatabaseSeeder(OfferDao offerDao, JobSessionDao jobSessionDao, AchievementCertificateDao achievementCertificateDao,
                           AchievementCategorizedDao achievementCategorizedDao, AchievementSpecialDao achievementSpecialDao,
                           CategoryDao categoryDao, UserDao userDao, AddressDao addressDao, EnrollmentDao enrollmentDao,
-                          OfferService offerService, TranslateService translateService, TravelJournalService travelJournalService,
-                          TravelJournalDao travelJournalDao, TripReviewDao tripReviewDao, UserReviewDao userReviewDao, EnrollmentService enrollmentService, ManagerDao managerDao) {
+                          OfferService offerService, TranslateService translateService, JobJournalService jobJournalService,
+                          JobJournalDao jobJournalDao, JobReviewDao jobReviewDao, UserReviewDao userReviewDao, EnrollmentService enrollmentService,
+                          ManagerDao managerDao, AdminDao adminDao) {
         this.offerDao = offerDao;
         this.jobSessionDao = jobSessionDao;
         this.achievementCertificateDao = achievementCertificateDao;
@@ -62,12 +65,13 @@ public class DatabaseSeeder implements
         this.enrollmentDao = enrollmentDao;
         this.offerService = offerService;
         this.translateService = translateService;
-        this.travelJournalService = travelJournalService;
-        this.travelJournalDao = travelJournalDao;
-        this.tripReviewDao = tripReviewDao;
+        this.jobJournalService = jobJournalService;
+        this.jobJournalDao = jobJournalDao;
+        this.jobReviewDao = jobReviewDao;
         this.userReviewDao = userReviewDao;
         this.enrollmentService = enrollmentService;
         this.managerDao = managerDao;
+        this.adminDao = adminDao;
     }
 
     @Override
@@ -87,7 +91,7 @@ public class DatabaseSeeder implements
         } catch (NotAllowedException e) {
             e.printStackTrace();
         }
-        createTripReviews();
+        createJobReviews();
         createUserReviews();
     }
 
@@ -135,8 +139,6 @@ public class DatabaseSeeder implements
 
         //user Julia
         user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Julia","Lopez","july1331@gmail.com", "0023456789");
-        user.setRole(Role.USER);
-
         userDao.persist(user);
         address = new Address();
         address.setUser(user);
@@ -151,10 +153,23 @@ public class DatabaseSeeder implements
         System.out.println("Test user persist.");
 
         //admin Peter
-        Manager manager = new Manager(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Peter","Testovany","admin@gmail.com","420915455467","Telecom");
+        Admin admin = new Admin(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Peter","Testovany","admin@gmail.com");
+        adminDao.persist(admin);
+        address = new Address();
+        address.setUser(user);
+        address.setCountry("Slovakia");
+        address.setCity("Licartovce");
+        address.setStreet("Vranovska");
+        address.setHouseNumber(20);
+        address.setZipCode("05175");
+        addressDao.persist(address);
+        admin.setAddress(address);
+        adminDao.update(admin);
+        System.out.println("Test admin persist.");
+
+        //manager Peter
+        Manager manager = new Manager(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Jan","Kolar","manager@gmail.com","777 850 167","TestCompany, s.r.o");
         managerDao.persist(manager);
-        manager.setRole(Role.ADMIN);
-        userDao.persist(user);
         address = new Address();
         address.setUser(user);
         address.setCountry("Slovakia");
@@ -165,19 +180,19 @@ public class DatabaseSeeder implements
         addressDao.persist(address);
         manager.setAddress(address);
         managerDao.update(manager);
-        System.out.println("Test admin persist.");
+        System.out.println("Test manager persist.");
     }
 
     private void createUserReviews() {
         //1.userReview from Milan to Jan
-        Manager author = managerDao.findByEmail("admin@gmail.com");
+        Manager author = managerDao.findByEmail("manager@gmail.com");
         User user = userDao.findByEmail("jan@gmail.com");
         JobSession tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
         UserReview userReview = new UserReview("It was a pleasure to work with you, Jane :) ", LocalDateTime.now(), 5, user, author, tripSession);
         userReviewDao.persist(userReview);
 
         //2.userReview from Jan to Milan
-        author = managerDao.findByEmail("admin@gmail.com");
+        author = managerDao.findByEmail("manager@gmail.com");
         user = userDao.findByEmail("milan@gmail.com");
         tripSession = user.getTravel_journal().getEnrollments().get(0).getTripSession();
         userReview = new UserReview("You are a super fugu guy, Milane :) ", LocalDateTime.now(), 5, user, author, tripSession);
@@ -191,13 +206,13 @@ public class DatabaseSeeder implements
 //        userReviewDao.persist(userReview);
     }
 
-    private void createTripReviews() {
+    private void createJobReviews() {
         //1.tripReview from Milan
         User author = userDao.findByEmail("milan@gmail.com");
         if(author.getTravel_journal().getEnrollments().size() > 0) {
             Enrollment enrollment = author.getTravel_journal().getEnrollments().get(0);
-            TripReview tripReview = new TripReview("Really good offer, love it <3", LocalDateTime.now(), 5, author, enrollment.getTrip(),enrollment);
-            tripReviewDao.persist(tripReview);
+            JobReview tripReview = new JobReview("Really good offer, love it <3", LocalDateTime.now(), 5, author, enrollment.getTrip(),enrollment);
+            jobReviewDao.persist(tripReview);
             updateTripRating(tripReview.getTrip(), tripReview.getRating());
         }
 
@@ -205,8 +220,8 @@ public class DatabaseSeeder implements
         author = userDao.findByEmail("milan@gmail.com");
         if(author.getTravel_journal().getEnrollments().size() > 1) {
             Enrollment enrollment = author.getTravel_journal().getEnrollments().get(1);
-            TripReview tripReview = new TripReview("it was good, but the whether was really bad :( ", LocalDateTime.now(), 3, author, enrollment.getTrip(),enrollment);
-            tripReviewDao.persist(tripReview);
+            JobReview tripReview = new JobReview("it was good, but the whether was really bad :( ", LocalDateTime.now(), 3, author, enrollment.getTrip(),enrollment);
+            jobReviewDao.persist(tripReview);
             updateTripRating(tripReview.getTrip(), tripReview.getRating());
         }
 
@@ -214,8 +229,8 @@ public class DatabaseSeeder implements
         author = userDao.findByEmail("jan@gmail.com");
         if(author.getTravel_journal().getEnrollments().size() > 0) {
             Enrollment enrollment = author.getTravel_journal().getEnrollments().get(0);
-            TripReview tripReview = new TripReview("it was the best offer of my entire life! Don't be afraid to enrol ;) ", LocalDateTime.now(), 3, author, enrollment.getTrip(),enrollment);
-            tripReviewDao.persist(tripReview);
+            JobReview tripReview = new JobReview("it was the best offer of my entire life! Don't be afraid to enrol ;) ", LocalDateTime.now(), 3, author, enrollment.getTrip(),enrollment);
+            jobReviewDao.persist(tripReview);
             updateTripRating(tripReview.getTrip(), tripReview.getRating());
         }
     }
@@ -232,7 +247,7 @@ public class DatabaseSeeder implements
 
         //priklady tripov a user progressu medzi nimi 0
         description = "Tento zajezd bude mit cenu za dopravu a kurz, po absolvování se odemkne achievement ´kuchař ryb fugu´, pro absolvování je potřeba mít achievement ´Kuchtík´." ;
-        offer = new Offer("Kurz vaření ryb Fugu",10,description,"fugukurz",150,"Tokyo, Japan",1, managerDao.findByEmail("admin@gmail.com"));
+        offer = new Offer("Kurz vaření ryb Fugu",10,description,"fugukurz",150,"Tokyo, Japan",1, managerDao.findByEmail("manager@gmail.com"));
         //offer.addGainAchievement();
         //offer.addRequiredAchievement();
         offerDao.persist(offer);
@@ -249,7 +264,7 @@ public class DatabaseSeeder implements
 
         //1
         description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař ryb fugu´." ;
-        offer = new Offer("Vaření ryb Fugu, Praha",10,description,"fuguvar",120,"Praha, Česká republika",1, managerDao.findByEmail("admin@gmail.com"));
+        offer = new Offer("Vaření ryb Fugu, Praha",10,description,"fuguvar",120,"Praha, Česká republika",1, managerDao.findByEmail("manager@gmail.com"));
         offerDao.persist(offer);
 
         tripSession = new JobSession(offer, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 4);
@@ -283,7 +298,7 @@ public class DatabaseSeeder implements
 
         //2.offer "Kuchař na Pražském hradě"
         description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař´." ;
-        offer = new Offer("Kuchař na Pražském hradě",8,description,"prahradvar",110,"Praha, Česká republika",3, managerDao.findByEmail("admin@gmail.com"));
+        offer = new Offer("Kuchař na Pražském hradě",8,description,"prahradvar",110,"Praha, Česká republika",3, managerDao.findByEmail("manager@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 5);
         jobSessionDao.persist(tripSession);
@@ -298,7 +313,7 @@ public class DatabaseSeeder implements
 
         //3.offer "Kuchař menza Studentský dům, Praha"
         description = "Tento zajezd nevyzaduje zadne achievementy a po nem se nedaji ziskat specialni achievementy ale daji se ziskat achievementy jako jsou např. ´Kuchtík´, ´Kuchař´ apod. Odměna Xp je dost nízká aby se nedalo jednoduše dostat za tuhle práci na prestižnější místa jako pražský hrad, ale zároveň je možno si dopomoct s touto lehčí a dostupnější práci nahnat achievement kuchař, jestliže xp grind mám za sebou z jiných zájezdů." ;
-        offer = new Offer("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",140,"Praha, Česká republika",0, managerDao.findByEmail("admin@gmail.com"));
+        offer = new Offer("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",140,"Praha, Česká republika",0, managerDao.findByEmail("manager@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 2);
         jobSessionDao.persist(tripSession);
@@ -313,7 +328,7 @@ public class DatabaseSeeder implements
 
         //4.offer "projekt „Úsměv pro všechny“"
         description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
-        offer = new Offer("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0, managerDao.findByEmail("admin@gmail.com"));
+        offer = new Offer("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0, managerDao.findByEmail("manager@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3);
         jobSessionDao.persist(tripSession);
@@ -331,7 +346,7 @@ public class DatabaseSeeder implements
 
         //5. offer - bez sessions
         description = "Neaktivni offer. Nema aktivni sessions, je viditelny pouze Administratorem.";
-        offer = new Offer("Retired trip", 12, description, "retrip", 135, "London, Great Britain", 5, managerDao.findByEmail("admin@gmail.com"));
+        offer = new Offer("Retired trip", 12, description, "retrip", 135, "London, Great Britain", 5, managerDao.findByEmail("manager@gmail.com"));
         offerDao.persist(offer);
         //tripSession ma datum  ukonceni vcera
         tripSession = new JobSession(offer, LocalDate.now().minusDays(16), LocalDate.now().minusDays(1), 2);
@@ -341,7 +356,7 @@ public class DatabaseSeeder implements
 
         //6.offer "Animátor v českém krumlově"
         description = "Pojď animovat zábavní program pro účastníky zájezdů v Českém Krumlově! Zkušenosti nepotřebuješ jenom úsměv na rtech a odhodlání rozdávat radost." ;
-        offer = new Offer("Animátor v Českém Krumlově",6,description,"czekrum",180,"Český Krumlov, Česká republika",1, managerDao.findByEmail("admin@gmail.com"));
+        offer = new Offer("Animátor v Českém Krumlově",6,description,"czekrum",180,"Český Krumlov, Česká republika",1, managerDao.findByEmail("manager@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2018-08-06"), LocalDate.parse("2018-08-12"), 5); //0
         jobSessionDao.persist(tripSession);
@@ -540,7 +555,7 @@ public class DatabaseSeeder implements
         User user = userDao.findAll().get(0);
         Offer offer = offerDao.findAll().get(0);
         JobSession tripSession = offer.getSessions().get(0);
-        TravelJournal travelJournal;
+        JobJournal travelJournal;
 
         //test
         /*
@@ -602,30 +617,30 @@ public class DatabaseSeeder implements
         List<AchievementCategorized> categorized = achievementCategorizedDao.findAll();
         List<AchievementSpecial> special = achievementSpecialDao.findAll();
         List<AchievementCertificate> certificates = achievementCertificateDao.findAll();
-        TravelJournal travelJournal;
+        JobJournal travelJournal;
 
         //JAN Jansky
         travelJournal = users.get(0).getTravel_journal();
-        travelJournalService.addOwnedCategorizedAchievement(travelJournal, categorized.get(0)); //kuchtik
-        travelJournalService.addOwnedSpecialAchievement(travelJournal, special.get(1)); //kuchar ryb fugu
+        jobJournalService.addOwnedCategorizedAchievement(travelJournal, categorized.get(0)); //kuchtik
+        jobJournalService.addOwnedSpecialAchievement(travelJournal, special.get(1)); //kuchar ryb fugu
 
         //MILAN Milanovic
         travelJournal = users.get(1).getTravel_journal();
-        travelJournalService.addOwnedSpecialAchievement(travelJournal, special.get(1)); //kuchar ryb fugu
-        travelJournalService.addOwnedSpecialAchievement(travelJournal, special.get(3)); //horolezec
-        travelJournalService.addOwnedCertificates(travelJournal, certificates.get(0)); //anglictina b2
-        travelJournalService.addOwnedCertificates(travelJournal, certificates.get(1)); //spanielcina c1
+        jobJournalService.addOwnedSpecialAchievement(travelJournal, special.get(1)); //kuchar ryb fugu
+        jobJournalService.addOwnedSpecialAchievement(travelJournal, special.get(3)); //horolezec
+        jobJournalService.addOwnedCertificates(travelJournal, certificates.get(0)); //anglictina b2
+        jobJournalService.addOwnedCertificates(travelJournal, certificates.get(1)); //spanielcina c1
 
         //JULIA Julievna
         travelJournal = users.get(2).getTravel_journal();
-        travelJournalService.addOwnedCategorizedAchievement(travelJournal, categorized.get(0)); // kuchtik
+        jobJournalService.addOwnedCategorizedAchievement(travelJournal, categorized.get(0)); // kuchtik
 
         //ADMIN Adminovskyj
         //travelJournal = users.get(3).getTravel_journal();
     }
 
     private void signUpUserToExpiredEnrollmentsForTesting(User user) {
-        TravelJournal travelJournal = user.getTravel_journal();
+        JobJournal travelJournal = user.getTravel_journal();
 
         List<Enrollment> enrollments = travelJournal.getEnrollments();
         JobSession tripSession;
@@ -650,7 +665,7 @@ public class DatabaseSeeder implements
         enrollments.add(e);
         enrollmentDao.persist(e);
         travelJournal.setEnrollments(enrollments);
-        travelJournalDao.update(travelJournal);
+        jobJournalDao.update(travelJournal);
 
         //get animator trip
         offer = offerDao.findAll().get(6);
@@ -692,18 +707,18 @@ public class DatabaseSeeder implements
         enrollment.setTrip(tripSession.getTrip());
         enrollment.setState(EnrollmentState.ACTIVE);
         enrollment.setTripSession(tripSession);
-        enrollment.setTravelJournal(user.getTravel_journal());
+        enrollment.setJobJournal(user.getTravel_journal());
 
         return enrollment;
     }
 
     private void updateTripRating(Offer offer, double rating) {
         long noReviews;
-        if(offer.getTripReviews() == null) {
+        if(offer.getJobReviews() == null) {
             noReviews = 1;
         }
         else {
-            noReviews = offer.getTripReviews().size();
+            noReviews = offer.getJobReviews().size();
         }
         double currentRating = offer.getRating();
         offer.setRating((currentRating*(noReviews) + rating)/(noReviews+1));

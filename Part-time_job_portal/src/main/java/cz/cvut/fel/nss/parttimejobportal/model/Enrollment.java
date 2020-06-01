@@ -33,8 +33,8 @@ public class Enrollment extends AbstractEntity {
     private List<AchievementSpecial> recieved_achievements_special;
 
     @ManyToOne( optional = false)
-    @JoinColumn(name = "travelJournal_id", nullable = false)
-    private TravelJournal travelJournal;
+    @JoinColumn(name = "jobJournal_id", nullable = false)
+    private JobJournal jobJournal;
 
     @ManyToOne( optional = false)
     @JoinColumn(name = "trip_id", nullable = false)
@@ -46,7 +46,7 @@ public class Enrollment extends AbstractEntity {
 
 
     @OneToOne(mappedBy = "enrollment")
-    private TripReview tripReview;
+    private JobReview jobReview;
 
     public LocalDateTime getEnrollDate() {
         return enrollDate;
@@ -60,8 +60,8 @@ public class Enrollment extends AbstractEntity {
         return actual_xp_reward;
     }
 
-    public TravelJournal getTravelJournal() {
-        return travelJournal;
+    public JobJournal getJobJournal() {
+        return jobJournal;
     }
 
     public Offer getTrip() {
@@ -84,8 +84,8 @@ public class Enrollment extends AbstractEntity {
         this.actual_xp_reward = actual_xp_reward;
     }
 
-    public void setTravelJournal(TravelJournal travelJournal) {
-        this.travelJournal = travelJournal;
+    public void setJobJournal(JobJournal jobJournal) {
+        this.jobJournal = jobJournal;
     }
 
     public void setTrip(Offer trip) {
@@ -120,16 +120,16 @@ public class Enrollment extends AbstractEntity {
         return recieved_achievements_special;
     }
 
-    public TripReview getTripReview() {
-        return tripReview;
+    public JobReview getJobReview() {
+        return jobReview;
     }
 
-    public void setTripReview(TripReview tripReview) {
-        this.tripReview = tripReview;
+    public void setJobReview(JobReview jobReview) {
+        this.jobReview = jobReview;
     }
 
-    public boolean hasTripReview() {
-        return tripReview != null;
+    public boolean hasJobReview() {
+        return jobReview != null;
     }
 
     @Override
@@ -140,7 +140,7 @@ public class Enrollment extends AbstractEntity {
                 ", actual_xp_reward=" + actual_xp_reward +
                 ", state=" + state +
                 ", recieved_achievements_special=" + recieved_achievements_special +
-                ", travelJournal=" + travelJournal +
+                ", jobJournal=" + jobJournal +
                 ", trip=" + trip +
                 ", tripSession=" + tripSession +
                 "} " + super.toString();

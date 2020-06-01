@@ -66,7 +66,7 @@ public class JobSessionService {
         for (JobSession session:tripSessions) {
             List<RequestWrapperEnrollmentGet> enrollments = new ArrayList<RequestWrapperEnrollmentGet>();
             for (Enrollment enrollment :session.getEnrollments()) {
-                UserDto userDto = translateService.translateUser(enrollment.getTravelJournal().getUser());
+                UserDto userDto = translateService.translateUser(enrollment.getJobJournal().getUser());
                 EnrollmentDto enrollmentDto = translateService.translateEnrollment(enrollment);
                 enrollments.add(new RequestWrapperEnrollmentGet(enrollmentDto,userDto));
             }

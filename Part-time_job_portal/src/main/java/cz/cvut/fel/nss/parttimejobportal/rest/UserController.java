@@ -1,10 +1,12 @@
 package cz.cvut.fel.nss.parttimejobportal.rest;
 
+import cz.cvut.fel.nss.parttimejobportal.dto.AbstractUserDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.UserDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.RequestWrapper;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadPassword;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.exception.UnauthorizedException;
+import cz.cvut.fel.nss.parttimejobportal.model.JobJournal;
 import cz.cvut.fel.nss.parttimejobportal.model.User;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityConstants;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
@@ -41,15 +43,21 @@ public class UserController {
         return null;
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserDto> showAll() {
         return userService.findAll();
     }
 
 
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping(value= "/jobJournal", produces = MediaType.APPLICATION_JSON_VALUE)
+    public JobJournal getJobJournal() {
+        return userService.getJobJournal();
+    }
+
     @GetMapping(value= "/current", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDto showCurrentUser() throws UnauthorizedException {
+    public AbstractUserDto showCurrentUser() throws UnauthorizedException {
         return userService.showCurrentUser();
     }
 
@@ -61,7 +69,7 @@ public class UserController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @DeleteMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable long id) throws NotFoundException {
         userService.delete(id);

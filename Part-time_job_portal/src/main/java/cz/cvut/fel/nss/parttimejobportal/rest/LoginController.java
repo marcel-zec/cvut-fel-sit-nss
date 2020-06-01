@@ -1,5 +1,6 @@
 package cz.cvut.fel.nss.parttimejobportal.rest;
 
+import cz.cvut.fel.nss.parttimejobportal.dto.AbstractUserDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.UserDto;
 import cz.cvut.fel.nss.parttimejobportal.exception.AlreadyLoginException;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityConstants;
@@ -26,7 +27,7 @@ public class LoginController {
 
 
     @PostMapping(value = "/login",produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDto loginUser(@RequestBody HashMap<String,String> request) throws AlreadyLoginException {
+    public AbstractUserDto loginUser(@RequestBody HashMap<String,String> request) throws AlreadyLoginException {
 
         return service.login(request.get("email"),request.get("password"));
     }

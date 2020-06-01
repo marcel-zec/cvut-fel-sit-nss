@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
-public class TripReviewDto {
+public class JobReviewDto {
 
     @NotNull(message = "Id cannot be blank")
     private Long id;
@@ -28,7 +28,7 @@ public class TripReviewDto {
 
 
 
-    public TripReviewDto(@NotNull(message = "Id cannot be blank") Long id, @Size(max = 255, min = 0, message = "Max 255 characters.") String note,
+    public JobReviewDto(@NotNull(message = "Id cannot be blank") Long id, @Size(max = 255, min = 0, message = "Max 255 characters.") String note,
                          LocalDateTime date, @Min(value = 0, message = "Min 0") @Max(value = 5, message = "Max 5") double rating, String author) {
 
         this.id = id;
@@ -39,7 +39,7 @@ public class TripReviewDto {
     }
 
 
-    public TripReviewDto() {
+    public JobReviewDto() {
     }
 
 

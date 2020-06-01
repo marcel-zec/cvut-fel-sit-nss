@@ -87,7 +87,7 @@ public class UserReviewService {
     public void create(long enrollmentId, AbstractUser currentUser, Long tripSessionId, UserReview userReview) throws Exception {
 
         Enrollment enrollment = enrollmentDao.find(enrollmentId);
-        User user = enrollment.getTravelJournal().getUser();
+        User user = enrollment.getJobJournal().getUser();
         Manager current_user = managerDao.find(currentUser.getId());
         JobSession tripSession = jobSessionDao.find(tripSessionId);
 
@@ -105,7 +105,7 @@ public class UserReviewService {
         Enrollment enrollment = enrollmentDao.find(enrollmentId);
         if (enrollment == null) throw new NotFoundException();
 
-        User user = enrollment.getTravelJournal().getUser();
+        User user = enrollment.getJobJournal().getUser();
         Manager current_user = managerDao.find(currentUser.getId());
         JobSession tripSession = jobSessionDao.find(enrollment.getTripSession().getId());
         UserReview userReview = new UserReview();

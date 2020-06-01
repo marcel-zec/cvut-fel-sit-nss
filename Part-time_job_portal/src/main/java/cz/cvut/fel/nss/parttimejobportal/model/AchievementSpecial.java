@@ -16,7 +16,7 @@ public class AchievementSpecial extends Achievement {
         name = "achievement_special_owned_travel_journals",
         joinColumns = @JoinColumn(name = "achievement_special_id"),
         inverseJoinColumns = @JoinColumn(name = "traveljournal_id"))
-    private List<TravelJournal> owned_travel_journals;
+    private List<JobJournal> owned_travel_journals;
 
     @JsonIgnore
     @ManyToMany
@@ -35,11 +35,11 @@ public class AchievementSpecial extends Achievement {
         recieved_via_enrollments = new ArrayList<>();
     }
 
-    public List<TravelJournal> getOwned_travel_journals() {
+    public List<JobJournal> getOwned_travel_journals() {
         return owned_travel_journals;
     }
 
-    public void setOwned_travel_journals(List<TravelJournal> owned_travel_journals) {
+    public void setOwned_travel_journals(List<JobJournal> owned_travel_journals) {
         this.owned_travel_journals = owned_travel_journals;
     }
 
@@ -51,7 +51,7 @@ public class AchievementSpecial extends Achievement {
         this.recieved_via_enrollments = recieved_via_enrollments;
     }
 
-    public void addTravelJournal(TravelJournal travelJournal) {
-        this.owned_travel_journals.add(travelJournal);
+    public void addJobJournal(JobJournal jobJournal) {
+        this.owned_travel_journals.add(jobJournal);
     }
 }

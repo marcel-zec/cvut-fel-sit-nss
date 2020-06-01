@@ -33,14 +33,13 @@ public class Manager extends AbstractUser {
 
 
     public Manager() {
-        super(Role.ADMIN);
+        super(Role.MANAGER);
         userReviewsAuthor = new ArrayList<>();
         offers = new ArrayList<>();
     }
 
     public Manager(String password, String firstName, String lastName, String email, String phone_number, String company) {
-
-        super(password,firstName,lastName, email, Role.ADMIN);
+        super(password, firstName, lastName, email, Role.MANAGER);
         this.company = company;
         this.phone_number = phone_number;
         userReviewsAuthor = new ArrayList<>();

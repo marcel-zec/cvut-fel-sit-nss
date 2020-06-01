@@ -1,6 +1,7 @@
 package cz.cvut.fel.nss.parttimejobportal.dao;
 
 import cz.cvut.fel.nss.parttimejobportal.model.Offer;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;

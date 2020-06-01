@@ -1,5 +1,6 @@
 package cz.cvut.fel.nss.parttimejobportal.rest;
 
+import cz.cvut.fel.nss.parttimejobportal.dto.ManagerDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.UserDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.RequestWrapper;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadPassword;
@@ -40,14 +41,14 @@ public class AdminController {
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDto> showAll() {
+    public List<ManagerDto> showAll() {
         return adminService.findAll();
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public UserDto showAdminById(@PathVariable Long id) throws NotFoundException {
-        final UserDto adminDto = adminService.find(id);
+    public ManagerDto showAdminById(@PathVariable Long id) throws NotFoundException {
+        final ManagerDto adminDto = adminService.find(id);
         if (adminDto == null) {
             throw NotFoundException.create("Admin", id);
         }

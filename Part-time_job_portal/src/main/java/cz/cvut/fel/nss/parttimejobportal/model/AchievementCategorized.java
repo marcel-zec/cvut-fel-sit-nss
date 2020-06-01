@@ -24,15 +24,15 @@ public class AchievementCategorized extends Achievement {
             name = "achievement_categorized_owned_travel_journals",
             joinColumns = @JoinColumn(name = "achievement_categorized_id"),
             inverseJoinColumns = @JoinColumn(name = "traveljournal_id"))
-    private List<TravelJournal> owned_travel_journals;
+    private List<JobJournal> owned_travel_journals;
 
     public AchievementCategorized() {
-        owned_travel_journals = new ArrayList<TravelJournal>();
+        owned_travel_journals = new ArrayList<JobJournal>();
     }
 
     public AchievementCategorized(String name, String description, String icon) {
         super(name, description, icon);
-        owned_travel_journals = new ArrayList<TravelJournal>();
+        owned_travel_journals = new ArrayList<JobJournal>();
     }
 
     public Category getCategory() {
@@ -51,15 +51,15 @@ public class AchievementCategorized extends Achievement {
         this.limit = limit;
     }
 
-    public List<TravelJournal> getOwned_travel_journals() {
+    public List<JobJournal> getOwned_travel_journals() {
         return owned_travel_journals;
     }
 
-    public void setOwned_travel_journals(List<TravelJournal> owned_travel_journals) {
+    public void setOwned_travel_journals(List<JobJournal> owned_travel_journals) {
         this.owned_travel_journals = owned_travel_journals;
     }
 
-    public void addTravelJournal(TravelJournal travelJournal) {
-        this.owned_travel_journals.add(travelJournal);
+    public void addJobJournal(JobJournal jobJournal) {
+        this.owned_travel_journals.add(jobJournal);
     }
 }

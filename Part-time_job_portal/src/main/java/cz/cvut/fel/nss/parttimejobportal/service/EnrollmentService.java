@@ -2,7 +2,7 @@ package cz.cvut.fel.nss.parttimejobportal.service;
 
 import cz.cvut.fel.nss.parttimejobportal.dao.AchievementSpecialDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.EnrollmentDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.TravelJournalDao;
+import cz.cvut.fel.nss.parttimejobportal.dao.JobJournalDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.UserDao;
 import cz.cvut.fel.nss.parttimejobportal.dto.AchievementSpecialDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.EnrollmentDto;
@@ -30,16 +30,16 @@ public class EnrollmentService {
     private final AccessService accessService;
     private final UserDao userDao;
     private final AchievementSpecialDao achievementSpecialDao;
-    private final TravelJournalService travelJournalService;
+    private final JobJournalService jobJournalService;
 
     @Autowired
-    public EnrollmentService(EnrollmentDao enrollmentDao, TranslateService translateService, AccessService accessService, UserDao userDao, AchievementSpecialDao achievementSpecialDao, TravelJournalService travelJournalService, TravelJournalDao travelJournalDao) {
+    public EnrollmentService(EnrollmentDao enrollmentDao, TranslateService translateService, AccessService accessService, UserDao userDao, AchievementSpecialDao achievementSpecialDao, JobJournalService jobJournalService, JobJournalDao jobJournalDao) {
         this.enrollmentDao = enrollmentDao;
         this.translateService =  translateService;
         this.accessService = accessService;
         this.userDao = userDao;
         this.achievementSpecialDao = achievementSpecialDao;
-        this.travelJournalService = travelJournalService;
+        this.jobJournalService = jobJournalService;
     }
 
     private List<Enrollment> findAll(){
@@ -62,7 +62,7 @@ public class EnrollmentService {
         RequestWrapperEnrollmentGet wrapperEnrollmentGet = new RequestWrapperEnrollmentGet();
         if (findDto(enrollId).getState() != EnrollmentState.ACTIVE || findDto(enrollId).getTripSession().getTo_date().isAfter(ChronoLocalDate.from(LocalDateTime.now()))) throw new NotAllowedException();
         wrapperEnrollmentGet.setEnrollmentDto(translateService.translateEnrollment(find(enrollId)));
-        wrapperEnrollmentGet.setOwner(translateService.translateUser(userDao.find(find(enrollId).getTravelJournal().getUser().getId())));
+        wrapperEnrollmentGet.setOwner(translateService.translateUser(userDao.find(find(enrollId).getJobJournal().getUser().getId())));
         return wrapperEnrollmentGet;
     }
 
@@ -73,7 +73,7 @@ public class EnrollmentService {
         for (Enrollment e: findAllActiveEnded()) {
             RequestWrapperEnrollmentGet wrapperEnrollmentGet = new RequestWrapperEnrollmentGet();
             wrapperEnrollmentGet.setEnrollmentDto(translateService.translateEnrollment(e));
-            wrapperEnrollmentGet.setOwner(translateService.translateUser(e.getTravelJournal().getUser()));
+            wrapperEnrollmentGet.setOwner(translateService.translateUser(e.getJobJournal().getUser()));
             requestWrappers.add(wrapperEnrollmentGet);
         }
         return requestWrappers;
@@ -185,10 +185,10 @@ public class EnrollmentService {
         enrollment.setRecieved_achievements_special(achievementSpecials);
         enrollmentDao.update(enrollment);
 
-        travelJournalService.addXP(enrollment.getTravelJournal().getId(), enrollment.getActual_xp_reward());
-        travelJournalService.addTrip(enrollment.getTravelJournal().getId(), enrollment.getTrip().getId());
+        jobJournalService.addXP(enrollment.getJobJournal().getId(), enrollment.getActual_xp_reward());
+        jobJournalService.addTrip(enrollment.getJobJournal().getId(), enrollment.getTrip().getId());
         for(AchievementSpecial as : enrollment.getRecieved_achievements()) {
-            travelJournalService.addOwnedSpecialAchievement(enrollment.getTravelJournal(), as);
+            jobJournalService.addOwnedSpecialAchievement(enrollment.getJobJournal(), as);
         }
     }
 
@@ -205,10 +205,10 @@ public class EnrollmentService {
        // enrollment.setRecieved_achievements_special(achievementSpecials);
 
         enrollmentDao.update(enrollment);
-        travelJournalService.addXP(enrollment.getTravelJournal().getId(), enrollment.getActual_xp_reward());
-        travelJournalService.addTrip(enrollment.getTravelJournal().getId(), enrollment.getTrip().getId());
+        jobJournalService.addXP(enrollment.getJobJournal().getId(), enrollment.getActual_xp_reward());
+        jobJournalService.addTrip(enrollment.getJobJournal().getId(), enrollment.getTrip().getId());
         for(AchievementSpecial as : enrollment.getRecieved_achievements()) {
-            travelJournalService.addOwnedSpecialAchievement(enrollment.getTravelJournal(), as);
+            jobJournalService.addOwnedSpecialAchievement(enrollment.getJobJournal(), as);
         }
     }
 

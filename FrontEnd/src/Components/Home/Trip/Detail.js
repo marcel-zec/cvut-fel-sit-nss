@@ -2,7 +2,7 @@ import React from "react";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Row, Col, Container, Image, ListGroup } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import { Form, Modal } from "react-bootstrap";
@@ -185,9 +185,7 @@ class Detail extends React.Component {
     renderRating(rating) {
         let starsElement = [];
         if (rating == 0) {
-            return (
-                <span style={{ color: "black" }}>Trip has not any review</span>
-            );
+            return null;
         }
         for (var i = 1; i <= rating; i++) {
             starsElement.push(<FontAwesomeIcon key={i} icon="star" />);
@@ -267,7 +265,7 @@ class Detail extends React.Component {
             //setting sessions trip
             let options = null;
             let sessionBlock = null;
-            let dateTitle = "Date";
+            let dateTitle = "Dátum";
 
             //create list of options for select when more sessions(dates)
             let optionArray = [];
@@ -282,7 +280,7 @@ class Detail extends React.Component {
             if (this.state.trip.sessions == 0) {
                 options = <div>Trip nemá žádnou session</div>;
                 sessionBlock = (
-                    <div className="trip_price">Cannot be purchased</div>
+                    <div className="trip_price">Nemôžeš sa zapísať</div>
                 );
             } else if (this.context.user == null) {
                 options = (
@@ -306,7 +304,7 @@ class Detail extends React.Component {
                             Kč
                         </div>
                         <div>
-                            Only logged users can purchase.{" "}
+                            Zapísať sa môžu iba prihlásený uživatelia.{" "}
                             <Link to="/login">Login</Link>
                         </div>
                     </div>
@@ -339,17 +337,17 @@ class Detail extends React.Component {
                             onClick={(event) => this.validatePurchase(event)}
                         >
                             {" "}
-                            Purchase{" "}
+                            Zapísať sa{" "}
                         </Button>
                     </div>
                 );
             }
             //set correct date(s)
             if (this.state.trip.sessions.length > 1) {
-                dateTitle = "Dates";
+                dateTitle = "Dátumy";
             }
             //setting reviews
-            const reviews = this.state.trip.tripReviewDtos;
+            const reviews = this.state.trip.jobReviewDtos;
             const reviewsBlock = reviews.map((review) => (
                 <div className="review">
                     <Row>
@@ -374,7 +372,7 @@ class Detail extends React.Component {
             if (reviewsBlock.length == 0) {
                 reviewsBlock.push(
                     <Row className="d-flex justify-content-center">
-                        Trip has no reviews yet.
+                        Brigáda zatiaľ nemá žiadne hodnotenie.
                     </Row>
                 );
             }
@@ -402,14 +400,14 @@ class Detail extends React.Component {
                                         <Col>
                                             <Card.Title className="mb-2 text-muted">
                                                 <FontAwesomeIcon icon="map-marker-alt" />{" "}
-                                                Location
+                                                Miesto
                                             </Card.Title>
                                             <Card.Text>
                                                 {this.state.trip.location}
                                             </Card.Text>
                                             <Card.Title className="mb-2 text-muted">
                                                 <FontAwesomeIcon icon="map-signs" />{" "}
-                                                Points
+                                                Získaš skúsenosti
                                             </Card.Title>
                                             <Card.Text>
                                                 {
@@ -443,19 +441,16 @@ class Detail extends React.Component {
                         <Col className="col-4 trip_restriction">
                             <Card className="mb-3">
                                 <Card.Body>
-                                    <Card.Title>
-                                        Informations about trip
-                                    </Card.Title>
                                     <Card.Subtitle className="mb-2 text-muted">
                                         <FontAwesomeIcon icon="money-bill" />{" "}
-                                        Salary
+                                        Výplata
                                     </Card.Subtitle>
                                     <Card.Text>
                                         {this.state.trip.salary} Kč / hod
                                     </Card.Text>
                                     <Card.Subtitle className="mb-2 text-muted">
                                         {this.validLevel()}
-                                        Minimum level required
+                                        Požadovaný minimálny level
                                     </Card.Subtitle>
                                     <Card.Text>
                                         {this.state.trip.required_level}
@@ -465,13 +460,13 @@ class Detail extends React.Component {
                             <Card className="mb-3">
                                 <Card.Body>
                                     <Card.Title>
-                                        Required certifications
+                                        Požadované certifikáty
                                     </Card.Title>
                                     <ListGroup variant="flush">
                                         {this.renderAchievements(
                                             this.state.trip
                                                 .required_achievements_certificate,
-                                            "No certifications are required"
+                                            "Certifikáty nie sú požadované"
                                         )}
                                     </ListGroup>
                                 </Card.Body>
@@ -479,17 +474,17 @@ class Detail extends React.Component {
                             <Card className="mb-3">
                                 <Card.Body>
                                     <Card.Title>
-                                        Required achievements
+                                        Požadované achievementy
                                     </Card.Title>
                                     <ListGroup variant="flush">
                                         {this.renderAchievements(
                                             this.state.trip
                                                 .required_achievements_special,
-                                            "No achievements are required"
+                                            "Brigádnické achievementy nie sú požadované"
                                         )}
                                     </ListGroup>
                                     <Card.Subtitle className="subtitle">
-                                        Categorized:
+                                        Za brigády v kategórií:
                                     </Card.Subtitle>
                                     <ListGroup variant="flush">
                                         {this.renderAchievements(
@@ -501,12 +496,14 @@ class Detail extends React.Component {
                             </Card>
                             <Card className="mb-3">
                                 <Card.Body>
-                                    <Card.Title>Gain achievements</Card.Title>
+                                    <Card.Title>
+                                        Môžeš získať achievementy
+                                    </Card.Title>
                                     <ListGroup variant="flush">
                                         {this.renderAchievements(
                                             this.state.trip
                                                 .gain_achievements_special,
-                                            "No gain achievement"
+                                            "Nemôžeš získať žiaden achievement"
                                         )}
                                     </ListGroup>
                                 </Card.Body>
@@ -515,7 +512,7 @@ class Detail extends React.Component {
                         <Col className="col-8">
                             <Card className="mb-5">
                                 <Card.Body>
-                                    <Card.Title>Description</Card.Title>
+                                    <Card.Title>Popis brigády</Card.Title>
                                     <Card.Text>
                                         {this.state.trip.description}
                                     </Card.Text>
@@ -526,7 +523,7 @@ class Detail extends React.Component {
                                 className="mb-5 trip_reviews"
                             >
                                 <Card.Body>
-                                    <Card.Title>Reviews</Card.Title>
+                                    <Card.Title>Hodnotenia</Card.Title>
                                     {reviewsBlock}
                                 </Card.Body>
                             </Card>
@@ -542,10 +539,10 @@ class Detail extends React.Component {
                             >
                                 <FontAwesomeIcon icon="times"></FontAwesomeIcon>
                             </span>
-                            <h5>Trip validation summary</h5>
+                            <h5>Súhrn brigády</h5>
                             <Row>
                                 <Col className="alignLeft">
-                                    <Card.Title>Trip name</Card.Title>
+                                    <Card.Title>Meno</Card.Title>
                                     <Card.Body>
                                         {this.state.trip.name}
                                     </Card.Body>
@@ -553,13 +550,13 @@ class Detail extends React.Component {
                             </Row>
                             <Row>
                                 <Col className="alignLeft">
-                                    <Card.Title>Location</Card.Title>
+                                    <Card.Title>Miesto</Card.Title>
                                     <Card.Body>
                                         {this.state.trip.location}
                                     </Card.Body>
                                 </Col>
                                 <Col>
-                                    <Card.Title>Reward</Card.Title>
+                                    <Card.Title>Odmena</Card.Title>
                                     <Card.Body>
                                         {this.state.trip.possible_xp_reward} XP
                                     </Card.Body>
@@ -567,34 +564,27 @@ class Detail extends React.Component {
                             </Row>
                             <Row>
                                 <Col xs={6} className="alignLeft">
-                                    <Card.Title>
-                                        Selected trip session
-                                    </Card.Title>
+                                    <Card.Title>Dátum</Card.Title>
                                     <Card.Body>
                                         {this.state.selectedSession.from_date +
-                                            " - " +
+                                            " až " +
                                             this.state.selectedSession.to_date}
                                     </Card.Body>
                                 </Col>
+
                                 <Col>
-                                    <Card.Title>Price</Card.Title>
-                                    <Card.Body>
-                                        {this.state.selectedSession.price} Kč
-                                    </Card.Body>
-                                </Col>
-                                <Col>
-                                    <Card.Title>Salary</Card.Title>
+                                    <Card.Title>Výplata</Card.Title>
                                     <Card.Body>
                                         {this.state.trip.salary} Kč / hod
                                     </Card.Body>
                                 </Col>
                             </Row>
                             <div className="achievements">
-                                <h5>Requirements</h5>
+                                <h5>Požiadávky</h5>
                                 <Row>
                                     <Col className="alignLeft">
                                         <Card.Title>
-                                            Required certifications
+                                            Požadované certifikáty
                                         </Card.Title>
                                         <Card.Body className="flex">
                                             <AchievementListInline
@@ -610,13 +600,13 @@ class Detail extends React.Component {
                                                         : []
                                                 }
                                                 message={
-                                                    "No certifications are required"
+                                                    "Certifikáty nie sú požadované"
                                                 }
                                             />
                                         </Card.Body>
                                     </Col>
                                     <Col xs={4}>
-                                        <Card.Title>Minimum level</Card.Title>
+                                        <Card.Title>Minimálny level</Card.Title>
                                         <Card.Body>
                                             <span
                                                 style={{
@@ -636,7 +626,7 @@ class Detail extends React.Component {
                                 <Row>
                                     <Col className="alignLeft">
                                         <Card.Title>
-                                            Required achievements
+                                            Požadované achievementy
                                         </Card.Title>
 
                                         <Card.Body>
@@ -653,7 +643,7 @@ class Detail extends React.Component {
                                                         : []
                                                 }
                                                 message={
-                                                    "No achievements are required"
+                                                    "Brigádnícké achievementy nie sú požadované"
                                                 }
                                             />
                                         </Card.Body>
@@ -671,7 +661,7 @@ class Detail extends React.Component {
                                                         : []
                                                 }
                                                 message={
-                                                    "No categorized achievements are required"
+                                                    "Achievementy za brigády v kategórií nie sú požadované"
                                                 }
                                             />
                                         </Card.Body>
@@ -688,19 +678,20 @@ class Detail extends React.Component {
                                                 id="checkboxAgreement"
                                                 className="containerInput"
                                             >
-                                                I agree with GDPR conditions and
-                                                Travel&amp;Work&copy; conditions
+                                                Súhlasím so spracovaním osobných
+                                                údajov v súlade s pravidlami
+                                                GDPR a pravidlami spoločnosti
+                                                Part-time John, s.r.o
                                                 <input type="checkbox" />
                                                 <span className="checkmark"></span>
                                                 <div className="validate_error">
-                                                    You have to agreed with
-                                                    conditions!
+                                                    Musíš odsúhlasiť podmienky!
                                                 </div>
                                             </label>
                                             <div id="validationFalse">
-                                                We are sorry, you don't meet
-                                                conditions for purchase this
-                                                trip.
+                                                Je nám to ľúto ale nesplnáš
+                                                podmienky aby si sa mohol
+                                                zapísať na brigádu.
                                             </div>
                                         </Col>
                                     </Row>
@@ -713,7 +704,7 @@ class Detail extends React.Component {
                                                 variant="primary"
                                                 type="submit"
                                             >
-                                                Confirm purchase
+                                                Potvrdiť zápis
                                             </Button>
                                         </Col>
                                         <Col></Col>
@@ -728,4 +719,4 @@ class Detail extends React.Component {
     }
 }
 
-export default Detail;
+export default withRouter(Detail);

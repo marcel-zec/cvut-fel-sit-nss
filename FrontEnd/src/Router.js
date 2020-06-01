@@ -26,6 +26,7 @@ import CloseEnrollment from "./Components/Admin/Enrollment/Close";
 import { appContext } from "./appContext";
 import UserReview from "./Components/Profile/UserReview";
 import IndexFilter from "./Components/Home/Trip/IndexFilter";
+import Detail from "./Components/Admin/Trip/Detail";
 
 function Router(props) {
     const context = useContext(appContext);
@@ -44,12 +45,11 @@ function Router(props) {
 
     const allowAuthWithRole = (component, role) => {
         if (context.user != null) {
-            if (
-                context.user.role === role ||
-                (role === ROLE_ADMIN && context.user.role === ROLE_SUPERUSER)
-            ) {
-                return component;
+            if (Array.isArray(role)) {
+                if (role.includes(context.user.role)) return component;
+                return <Redirect to={{ pathname: "/" }} />;
             } else {
+                if (context.user.role === role) return component;
                 return <Redirect to={{ pathname: "/" }} />;
             }
         } else {
@@ -66,19 +66,18 @@ function Router(props) {
     };
 
     return (
-        
         <div>
             <Route
                 path="/profile"
                 render={() => {
-                    return allowAuthWithRole(<Profile />, ROLE_USER);
+                    return allowAuthWithRole(<Profile />, [ROLE_USER]);
                 }}
             />
             <Route path="/profile/details" component={ProfileDetails} />
             <Route path="/profile/achievments" component={ProfileAchievments} />
             <Route path="/profile/trips" component={ProfileTrips} />
             <Route path="/profile/trips/active" component={ActiveTrip} />
-            <Route path="/profile/reviews" component={UserReview} />
+            {/*<Route path="/profile/reviews" component={UserReview} />*/}
 
             <Switch>
                 {/*Global*/}
@@ -106,7 +105,12 @@ function Router(props) {
                 <Route path="/" exact={true} component={Home} />
                 <Route path="/trips" exact={true} component={IndexFilter} />
 
-                <Route path="/trips/:id" component={TripDetail} />
+                <Route
+                    path="/trips/:id"
+                    render={() => {
+                        return allowGuest(<TripDetail />);
+                    }}
+                />
                 {/*Admin*/}
                 <Route
                     path="/trip"
@@ -128,6 +132,14 @@ function Router(props) {
                     exact
                     render={() => {
                         return allowAuthWithRole(<EditTrip />, ROLE_ADMIN);
+                    }}
+                />
+
+                <Route
+                    path="/trip/:id/detail"
+                    exact
+                    render={() => {
+                        return allowAuthWithRole(<Detail />, ROLE_ADMIN);
                     }}
                 />
 
@@ -236,16 +248,4 @@ function Router(props) {
     );
 }
 
-function mapStateToProps(state) {
-    const { auth } = state;
-
-    return {
-        auth,
-    };
-}
-/*
-export default connect(
-    mapStateToProps
-)(Router);
-*/
 export default Router;
