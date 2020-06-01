@@ -49,7 +49,7 @@ public class OfferController {
     public List<OfferDto> getAll() {
 
         if(!SecurityUtils.isAuthenticatedAnonymously()) {
-            if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.SUPERUSER)) {
+            if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.MANAGER)) {
                 return offerService.findAllDto();
             }
         }
@@ -61,7 +61,7 @@ public class OfferController {
     public OfferDto get(@PathVariable String identificator) {
 
         if(!SecurityUtils.isAuthenticatedAnonymously()) {
-            if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.SUPERUSER)) {
+            if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.MANAGER)) {
                 return offerService.findByString(identificator);
             }
         }

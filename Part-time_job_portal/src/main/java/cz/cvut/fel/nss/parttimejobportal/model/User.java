@@ -26,10 +26,10 @@ public class User extends AbstractUser {
     private int level = 0;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private TravelJournal travel_journal;
+    private JobJournal travel_journal;
 
     @OneToMany(mappedBy = "author")
-    private List<TripReview> tripReviews;
+    private List<JobReview> tripReviews;
 
     @OneToMany(mappedBy = "user")
     private List<UserReview> userReviews;
@@ -37,7 +37,7 @@ public class User extends AbstractUser {
     public User() {
 
         super(Role.USER);
-        this.travel_journal = new TravelJournal();
+        this.travel_journal = new JobJournal();
         this.userReviews = new ArrayList<>();
         this.tripReviews = new ArrayList<>();
     }
@@ -46,32 +46,32 @@ public class User extends AbstractUser {
     public User(String password, String firstName, String lastName, String email, String phone_number) {
 
         super(password,firstName,lastName, email, Role.USER);
-        this.travel_journal = new TravelJournal();
+        this.travel_journal = new JobJournal();
         this.userReviews = new ArrayList<>();
         this.tripReviews = new ArrayList<>();
         this.phone_number = phone_number;
     }
 
 
-    public TravelJournal getTravel_journal() {
+    public JobJournal getTravel_journal() {
 
         return travel_journal;
     }
 
 
-    public void setTravel_journal(TravelJournal travel_journal) {
+    public void setTravel_journal(JobJournal travel_journal) {
 
         this.travel_journal = travel_journal;
     }
 
 
-    public List<TripReview> getTripReviews() {
+    public List<JobReview> getJobReviews() {
 
         return tripReviews;
     }
 
 
-    public void setTripReviews(List<TripReview> tripReviews) {
+    public void setJobReviews(List<JobReview> tripReviews) {
 
         this.tripReviews = tripReviews;
     }
@@ -88,7 +88,7 @@ public class User extends AbstractUser {
         this.userReviews = userReviews;
     }
 
-    public void addTripReview(TripReview tripReview) {
+    public void addJobReview(JobReview tripReview) {
         tripReviews.add(tripReview);
     }
 

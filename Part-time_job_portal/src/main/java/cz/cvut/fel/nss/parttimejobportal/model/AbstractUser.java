@@ -48,8 +48,6 @@ public abstract class AbstractUser extends AbstractEntity {
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
-
-
 //    public AbstractUser() {
 //        this.userReviews = new ArrayList<>();
 //        this.userReviewsAuthor = new ArrayList<>();
