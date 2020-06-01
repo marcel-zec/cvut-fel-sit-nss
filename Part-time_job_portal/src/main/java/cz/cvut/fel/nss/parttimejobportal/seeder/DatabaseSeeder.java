@@ -95,7 +95,7 @@ public class DatabaseSeeder implements
     private void createUsers(){
 
         //user Jan
-        User user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Jan","Testovany","jan@gmail.com");
+        User user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Jan","Testovany","jan@gmail.com", "123456789");
         user.setRole(Role.USER);
 
         userDao.persist(user);
@@ -116,7 +116,7 @@ public class DatabaseSeeder implements
         userDao.update(user);
 
         //user Milan
-        user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Milan","Netestovany","milan@gmail.com");
+        user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Milan","Netestovany","milan@gmail.com", "1234567449");
         user.setRole(Role.USER);
 
         userDao.persist(user);
@@ -134,7 +134,7 @@ public class DatabaseSeeder implements
 
 
         //user Julia
-        user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Julia","Lopez","july1331@gmail.com");
+        user = new User(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Julia","Lopez","july1331@gmail.com", "0023456789");
         user.setRole(Role.USER);
 
         userDao.persist(user);
@@ -151,7 +151,7 @@ public class DatabaseSeeder implements
         System.out.println("Test user persist.");
 
         //admin Peter
-        Manager manager = new Manager(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Peter","Testovany","admin@gmail.com");
+        Manager manager = new Manager(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Peter","Testovany","admin@gmail.com","420915455467","Telecom");
         managerDao.persist(manager);
         manager.setRole(Role.ADMIN);
         userDao.persist(user);
