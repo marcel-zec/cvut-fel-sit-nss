@@ -100,7 +100,7 @@ class TripHistory extends React.Component {
             let commentButton = null;
             //pokud user jeste nenapsal review
             if (
-                !this.state.enrollment.hasOwnProperty("tripReview") &&
+                !this.state.enrollment.hasOwnProperty("jobReview") &&
                 !this.state.show_review
             ) {
                 //comment icons for new comment
@@ -126,7 +126,7 @@ class TripHistory extends React.Component {
                 );
             } else if (
                 this.state.show_review &&
-                !this.state.enrollment.hasOwnProperty("tripReview")
+                !this.state.enrollment.hasOwnProperty("jobReview")
             ) {
                 commentButton = "Práve sa hodnotí";
             } else {
@@ -145,8 +145,8 @@ class TripHistory extends React.Component {
                             show={this.state.show_modal_review}
                             onHide={() => this.onHideModalHandler()}
                             title={this.state.enrollment.trip.name + " review"}
-                            stars={this.state.enrollment.tripReview.rating}
-                            description={this.state.enrollment.tripReview.note}
+                            stars={this.state.enrollment.jobReview.rating}
+                            description={this.state.enrollment.jobReview.note}
                             size="lg"
                         />
                     </>

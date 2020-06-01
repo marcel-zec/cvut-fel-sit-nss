@@ -2,7 +2,7 @@ import React from "react";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Row, Col, Container, Image, ListGroup } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import axios from "axios";
 import Spinner from "react-bootstrap/Spinner";
 import { Form, Modal } from "react-bootstrap";
@@ -347,7 +347,7 @@ class Detail extends React.Component {
                 dateTitle = "Dátumy";
             }
             //setting reviews
-            const reviews = this.state.trip.tripReviewDtos;
+            const reviews = this.state.trip.jobReviewDtos;
             const reviewsBlock = reviews.map((review) => (
                 <div className="review">
                     <Row>
@@ -719,4 +719,4 @@ class Detail extends React.Component {
     }
 }
 
-export default Detail;
+export default withRouter(Detail);

@@ -53,7 +53,7 @@ class UserReview extends React.Component {
                             <Row>
                                 <Col className="rev_author" xs={6}>
                                     <FontAwesomeIcon icon="user-alt" />
-                                    <span>Peter Testovany </span>
+
                                     <span>{review.author}</span>
                                     <span className="text-muted">sa</span>
                                 </Col>
