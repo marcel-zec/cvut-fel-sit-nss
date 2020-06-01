@@ -12,6 +12,7 @@ import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
 import cz.cvut.fel.nss.parttimejobportal.security.model.UserDetails;
 import cz.cvut.fel.nss.parttimejobportal.service.security.AccessService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +49,7 @@ public class OfferService {
         this.managerDao = managerDao;
     }
 
+    @Cacheable("offers")
     @Transactional
     public List<Offer> findAll() {
         return offerDao.findAll();
