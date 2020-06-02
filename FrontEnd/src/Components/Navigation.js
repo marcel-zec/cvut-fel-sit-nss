@@ -181,8 +181,9 @@ class Navigation extends React.Component {
                     <Navbar expand="lg">
                         <Col>
                             <Navbar.Brand>
-                                <img src={logo} className="logo" />
-                                <NavLink to="/">Travel&Work</NavLink>
+                                <NavLink to="/">
+                                    <img src={logo} className="logo" />
+                                </NavLink>
                             </Navbar.Brand>
                         </Col>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />

@@ -6,13 +6,24 @@ function AchievementInput(props) {
     return (
         <>
             <Form.Check.Label>
-                <Form.Check.Input
-                    type="checkbox"
-                    key={props.element.id}
-                    defaultValue={props.element.id}
-                    onChange={props.onChangeMethod}
-                    checked={props.selected}
-                />
+                {props.uneditable ? (
+                    <Form.Check.Input
+                        type="checkbox"
+                        key={props.element.id}
+                        defaultValue={props.element.id}
+                        checked={props.selected}
+                        disabled
+                    />
+                ) : (
+                    <Form.Check.Input
+                        type="checkbox"
+                        key={props.element.id}
+                        defaultValue={props.element.id}
+                        onChange={props.onChangeMethod}
+                        checked={props.selected}
+                    />
+                )}
+
                 <FontAwesomeIcon icon={props.element.icon} size="lg" />
                 {props.element.name}
             </Form.Check.Label>

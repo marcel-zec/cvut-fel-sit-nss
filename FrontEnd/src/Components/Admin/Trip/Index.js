@@ -18,7 +18,9 @@ import { BASE_API_URL } from "../../../App";
 
 class Index extends React.Component {
     static contextType = appContext;
+
     state = { trips: null };
+
     async componentDidMount() {
         await fetch(BASE_API_URL + "/trip", {
             method: "GET",
@@ -39,6 +41,10 @@ class Index extends React.Component {
             });
     }
 
+    isRole(role) {
+        return role == this.context.user.role;
+    }
+
     render() {
         if (this.state.trips === null) {
             return (
@@ -52,7 +58,70 @@ class Index extends React.Component {
                 this.state.trips.forEach((element) => {
                     let category = null;
                     if (element.category) category = element.category.name;
-                    console.log(element);
+
+                    let content = [];
+                    content.push(
+                        <OverlayTrigger
+                            key="participants"
+                            overlay={
+                                <Tooltip>Ukáž zapísaných uživateľov.</Tooltip>
+                            }
+                        >
+                            <Link
+                                className="p-3"
+                                to={
+                                    "trip/" +
+                                    element.short_name +
+                                    "/participants"
+                                }
+                            >
+                                <FontAwesomeIcon
+                                    icon="address-card"
+                                    size="lg"
+                                />
+                            </Link>
+                        </OverlayTrigger>
+                    );
+                    if (this.isRole("MANAGER")) {
+                        content.push(
+                            <OverlayTrigger
+                                key="edit"
+                                overlay={<Tooltip>Uprav brigádu.</Tooltip>}
+                            >
+                                <Link
+                                    className="p-3"
+                                    to={"trip/" + element.short_name + "/edit"}
+                                >
+                                    <FontAwesomeIcon icon="cog" size="lg" />
+                                </Link>
+                            </OverlayTrigger>
+                        );
+                        content.push(
+                            <Link className="p-3">
+                                <FontAwesomeIcon icon="trash-alt" />
+                            </Link>
+                        );
+                    } else if (this.isRole("ADMIN")) {
+                        content.push(
+                            <OverlayTrigger
+                                key="show"
+                                overlay={
+                                    <Tooltip>Zobraz detail o ponuke.</Tooltip>
+                                }
+                            >
+                                <Link
+                                    className="p-3"
+                                    to={
+                                        "trip/" + element.short_name + "/detail"
+                                    }
+                                >
+                                    <FontAwesomeIcon icon="search" size="lg" />
+                                </Link>
+                            </OverlayTrigger>
+                        );
+                    }
+                    let buttons = <td>{content}</td>;
+
                     tableRows.push(
                         <tr>
                             <td>{element.name}</td>
@@ -60,50 +129,7 @@ class Index extends React.Component {
                             <td>{element.required_level}</td>
                             <td>{element.possible_xp_reward}</td>
                             <td>{element.salary}</td>
-                            <td>
-                                <OverlayTrigger
-                                    key="participants"
-                                    overlay={
-                                        <Tooltip>
-                                            Ukáž zapísaných uživateľov.
-                                        </Tooltip>
-                                    }
-                                >
-                                    <Link
-                                        className="p-3"
-                                        to={
-                                            "trip/" +
-                                            element.short_name +
-                                            "/participants"
-                                        }
-                                    >
-                                        <FontAwesomeIcon
-                                            icon="address-card"
-                                            size="lg"
-                                        />
-                                    </Link>
-                                </OverlayTrigger>
-
-                                <OverlayTrigger
-                                    key="edit"
-                                    overlay={<Tooltip>Uprav brigádu.</Tooltip>}
-                                >
-                                    <Link
-                                        className="p-3"
-                                        to={
-                                            "trip/" +
-                                            element.short_name +
-                                            "/edit"
-                                        }
-                                    >
-                                        <FontAwesomeIcon icon="cog" size="lg" />
-                                    </Link>
-                                </OverlayTrigger>
-
-                                <Link className="p-3">
-                                    <FontAwesomeIcon icon="trash-alt" />
-                                </Link>
-                            </td>
+                            {buttons}
                         </tr>
                     );
                 });
@@ -122,13 +148,15 @@ class Index extends React.Component {
             }
 
             return (
-                <Container>
-                    <ButtonInRow
-                        variant="success"
-                        link="/trip/create"
-                        side="right"
-                        label="Pridať brigádu"
-                    />
+                <Container className="mt-3">
+                    {this.isRole("MANAGER") ? (
+                        <ButtonInRow
+                            variant="success"
+                            link="/trip/create"
+                            side="right"
+                            label="Pridať brigádu"
+                        />
+                    ) : null}
 
                     {alert}
 

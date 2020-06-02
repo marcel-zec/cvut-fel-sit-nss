@@ -41,6 +41,9 @@ class AchievementFormGroup extends React.Component {
                                 onChangeMethod={(event) =>
                                     this.props.onChangeMethod[key](event)
                                 }
+                                uneditable={
+                                    this.props.uneditable ? true : false
+                                }
                             />
                         );
                     });
@@ -74,6 +77,7 @@ class AchievementFormGroup extends React.Component {
                         onChangeMethod={(event) =>
                             this.props.onChangeMethod(event)
                         }
+                        uneditable={this.props.uneditable ? true : false}
                     />
                 );
             });

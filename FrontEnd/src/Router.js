@@ -24,9 +24,8 @@ import IndexUser from "./Components/Admin/User/Index";
 import IndexEnrollment from "./Components/Admin/Enrollment/Index";
 import CloseEnrollment from "./Components/Admin/Enrollment/Close";
 import { appContext } from "./appContext";
-import UserReview from "./Components/Profile/UserReview";
 import IndexFilter from "./Components/Home/Trip/IndexFilter";
-import Detail from "./Components/Admin/Trip/Detail";
+import Show from "./Components/Admin/Trip/Show";
 
 function Router(props) {
     const context = useContext(appContext);
@@ -126,10 +125,11 @@ function Router(props) {
                     path="/trip/create"
                     exact
                     render={() => {
-                        return allowAuthWithRole(<CreateTrip />, [
-                            ROLE_ADMIN,
-                            ROLE_MANAGER,
-                        ]);
+                        return allowAuthWithRole(
+                            <CreateTrip />,
+
+                            ROLE_MANAGER
+                        );
                     }}
                 />
 
@@ -137,10 +137,11 @@ function Router(props) {
                     path="/trip/:id/edit"
                     exact
                     render={() => {
-                        return allowAuthWithRole(<EditTrip />, [
-                            ROLE_ADMIN,
-                            ROLE_MANAGER,
-                        ]);
+                        return allowAuthWithRole(
+                            <EditTrip />,
+
+                            ROLE_MANAGER
+                        );
                     }}
                 />
 
@@ -148,7 +149,7 @@ function Router(props) {
                     path="/trip/:id/detail"
                     exact
                     render={() => {
-                        return allowAuthWithRole(<Detail />, ROLE_ADMIN);
+                        return allowAuthWithRole(<Show />, ROLE_ADMIN);
                     }}
                 />
 
