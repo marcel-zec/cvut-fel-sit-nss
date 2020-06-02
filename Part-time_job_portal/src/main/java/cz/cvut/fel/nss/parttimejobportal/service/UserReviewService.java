@@ -3,6 +3,7 @@ package cz.cvut.fel.nss.parttimejobportal.service;
 
 import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.dto.UserReviewDto;
+import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.exception.UnauthorizedException;
@@ -87,6 +88,9 @@ public class UserReviewService {
     public void create(long enrollmentId, AbstractUser currentUser, Long tripSessionId, UserReview userReview) throws Exception {
 
         Enrollment enrollment = enrollmentDao.find(enrollmentId);
+        if (enrollment == null) throw new NotFoundException();
+        if (!enrollment.getTrip().getAuthor().getId().equals(SecurityUtils.getCurrentUser().getId())) throw new NotAllowedException("Not for you");
+
         User user = enrollment.getJobJournal().getUser();
         Manager current_user = managerDao.find(currentUser.getId());
         JobSession tripSession = jobSessionDao.find(tripSessionId);
@@ -104,6 +108,8 @@ public class UserReviewService {
 
         Enrollment enrollment = enrollmentDao.find(enrollmentId);
         if (enrollment == null) throw new NotFoundException();
+        if (!enrollment.getTrip().getAuthor().getId().equals(SecurityUtils.getCurrentUser().getId())) throw new NotAllowedException("Not for you");
+
 
         User user = enrollment.getJobJournal().getUser();
         Manager current_user = managerDao.find(currentUser.getId());

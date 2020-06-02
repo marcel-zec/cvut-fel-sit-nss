@@ -60,7 +60,7 @@ public class EnrollmentService {
 
     @Transactional
     public RequestWrapperEnrollmentGet findActiveEndedWithUser(Long enrollId) throws NotAllowedException {
-        if (find(enrollId).getTrip().getAuthor().getId()!= SecurityUtils.getCurrentUser().getId()) throw new NotAllowedException("Not for you");
+        if (!find(enrollId).getTrip().getAuthor().getId().equals(SecurityUtils.getCurrentUser().getId())) throw new NotAllowedException("Not for you");
         RequestWrapperEnrollmentGet wrapperEnrollmentGet = new RequestWrapperEnrollmentGet();
 
         if (findDto(enrollId).getState() != EnrollmentState.ACTIVE || findDto(enrollId).getTripSession().getTo_date().isAfter(ChronoLocalDate.from(LocalDateTime.now()))) throw new NotAllowedException();
@@ -177,8 +177,10 @@ public class EnrollmentService {
     }
 
     @Transactional
-    public void close(EnrollmentDto enrollmentDto){
+    public void close(EnrollmentDto enrollmentDto) throws NotAllowedException {
         Enrollment enrollment = find(enrollmentDto.getId());
+        if (!enrollment.getTrip().getAuthor().getId().equals(SecurityUtils.getCurrentUser().getId())) throw new NotAllowedException("Not for you");
+
         enrollment.setState(EnrollmentState.FINISHED);
         enrollment.setDeposit_was_paid(true);
         enrollment.setActual_xp_reward(enrollmentDto.getActual_xp_reward());
@@ -199,8 +201,9 @@ public class EnrollmentService {
     }
 
     @Transactional
-    public void closeOk(Long id){
+    public void closeOk(Long id) throws NotAllowedException {
         Enrollment enrollment = find(id);
+        if (!enrollment.getTrip().getAuthor().getId().equals(SecurityUtils.getCurrentUser().getId())) throw new NotAllowedException("Not for you");
 
         List<AchievementSpecial> achievementSpecials = enrollment.getTrip().getGain_achievements_special();
         enrollment.setState(EnrollmentState.FINISHED);
