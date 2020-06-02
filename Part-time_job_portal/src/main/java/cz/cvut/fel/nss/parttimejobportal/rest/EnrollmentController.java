@@ -35,7 +35,7 @@ public class EnrollmentController {
         this.userReviewService = userReviewService;
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public EnrollmentDto get(@PathVariable Long id)  {
         return enrollmentService.findDto(id);
@@ -53,32 +53,32 @@ public class EnrollmentController {
         return enrollmentService.findAllOfUserActive(SecurityUtils.getCurrentUser());
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/complete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EnrollmentDto> getAllOfUserFinishedAdmin(@PathVariable Long id) throws NotAllowedException, NotFoundException {
         return enrollmentService.findAllOfUserFinished(id);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/active/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<EnrollmentDto> getAllOfUserActiveAndCancelAdmin(@PathVariable Long id) throws NotAllowedException, NotFoundException {
         return enrollmentService.findAllOfUserActive(id);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/close", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RequestWrapperEnrollmentGet> getAllActiveEnded() {
         return enrollmentService.findAllActiveEndedWithUser();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/setPayment", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> setPayment(@RequestBody RequestWrapperEnrollment requestWrapperEnrollment) throws  Exception {
         enrollmentService.setPayment(requestWrapperEnrollment.getEnrollmentDto());
         return null;
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @PatchMapping(value = "/close", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> close(@RequestBody RequestWrapperEnrollment requestWrapperEnrollment) throws Exception {
         enrollmentService.close(requestWrapperEnrollment.getEnrollmentDto());
@@ -89,26 +89,26 @@ public class EnrollmentController {
         return null;
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/close/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public RequestWrapperEnrollmentGet getWithUser(@PathVariable Long id) throws NotAllowedException {
         return enrollmentService.findActiveEndedWithUser(id);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @PostMapping(value = "/close/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void closeOk(@PathVariable Long id) throws Exception {
         enrollmentService.closeOk(id);
         userReviewService.create(id,SecurityUtils.getCurrentUser());
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
     @PostMapping(value = "cancel/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void cancel(@PathVariable Long id) throws Exception {
         enrollmentService.cancel(id);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
     @PostMapping(value = "changePayment/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void changePayment(@PathVariable Long id) throws Exception {
         enrollmentService.changePaymnet(id);
