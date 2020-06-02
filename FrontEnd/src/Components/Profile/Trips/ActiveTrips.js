@@ -120,7 +120,7 @@ class ActiveTrips extends React.Component {
 
                             <Card.Text>
                                 {this.state.state != "ACTIVE"
-                                    ? "Trip was canceled"
+                                    ? "Job was canceled"
                                     : !this.state.deposit_was_paid
                                     ? this.buttonToPay
                                     : ""}

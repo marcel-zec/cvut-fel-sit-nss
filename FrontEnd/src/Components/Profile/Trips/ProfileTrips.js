@@ -103,7 +103,7 @@ class ProfileTrips extends Profile {
                 }).then((response) => {
                     if (response.ok) {
                         window.setTimeout(function () {
-                            alert("Trip was cancelled");
+                            alert("Job was cancelled");
                         }, 500);
                     } else {
                         alert("Error witch cancel enrollment");
@@ -142,7 +142,7 @@ class ProfileTrips extends Profile {
             }).then((response) => {
                 if (response.ok) {
                     window.setTimeout(function () {
-                        alert("Trip was sucessfuly paid");
+                        alert("Job was sucessfuly paid");
                     }, 500);
                 } else {
                     alert("Error with paying");
@@ -306,8 +306,8 @@ function CancelTripForm(props) {
     console.log(props.enrollment);
     return (
         <div className="window radius pay_deposit customScroll">
-            <h5>Cancel trip</h5>
-            <p>Do you really want cancel the trip?</p>
+            <h5>Cancel job</h5>
+            <p>Do you really want cancel the job?</p>
             <p>This operation cannot be undone</p>
             <div>
                 <Button

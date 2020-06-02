@@ -59,12 +59,16 @@ class Detail extends React.Component {
                     else console.error(response.status);
                 })
                 .then((data) => {
+                    console.log("jaja");
                     this.setState({ job_journal: data });
                 })
                 .catch((error) => {
+                    console.log("nono");
                     console.error(error);
                 });
         }
+        console.log("AAAAAAAAAAAAAAAa");
+        console.log(this.state);
 
         this.setState({ trip: data });
         if (data.sessions.length > 0) {
@@ -107,7 +111,7 @@ class Detail extends React.Component {
             }).then((response) => {
                 if (response.ok) {
                     window.setTimeout(function () {
-                        alert("Trip was added to your travel journal");
+                        alert("Job was added to your travel journal");
                         document.location.reload();
                     }, 500);
                 }

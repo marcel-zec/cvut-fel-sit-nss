@@ -7,14 +7,21 @@ import Spinner from "react-bootstrap/Spinner";
 import { Link, withRouter } from "react-router-dom";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 import { BASE_API_URL } from "../../../App";
+import { appContext } from "../../../appContext";
 
 class Index extends React.Component {
+    static contextType = appContext;
+
     state = {
         categorized: null,
         certificate: null,
         special: null,
         type: null,
     };
+
+    isRole(role) {
+        return role == this.context.user.role;
+    }
 
     async componentDidMount() {
         console.log("location");
@@ -76,17 +83,17 @@ class Index extends React.Component {
             let categorizedRows = [];
             if (this.state.categorized.length > 0) {
                 this.state.categorized.forEach((element) => {
-                    categorizedRows.push(
-                        <tr>
-                            <td>{element.name}</td>
-                            <td>
-                                <FontAwesomeIcon
-                                    icon={element.icon}
-                                    size="3x"
-                                />
-                            </td>
-                            <td>{element.category.name}</td>
-                            <td>{element.limit}</td>
+                    let content = [];
+                    content.push(<td>{element.name}</td>);
+                    content.push(
+                        <td>
+                            <FontAwesomeIcon icon={element.icon} size="3x" />
+                        </td>
+                    );
+                    content.push(<td>{element.category.name}</td>);
+                    content.push(<td>{element.limit}</td>);
+                    if (this.isRole("ADMIN")) {
+                        content.push(
                             <td>
                                 <Link
                                     className="p-3"
@@ -105,23 +112,27 @@ class Index extends React.Component {
                                     <FontAwesomeIcon icon="trash-alt" />
                                 </Link>
                             </td>
-                        </tr>
-                    );
+                        );
+                    }
+                    categorizedRows.push(<tr>{content}</tr>);
                 });
             }
 
             let specialRows = [];
+
             if (this.state.special.length > 0) {
                 this.state.special.forEach((element) => {
-                    specialRows.push(
-                        <tr>
-                            <td>{element.name}</td>
-                            <td>
-                                <FontAwesomeIcon
-                                    icon={element.icon}
-                                    size="3x"
-                                />
-                            </td>
+                    let content = [];
+
+                    content.push(<td>{element.name}</td>);
+                    content.push(
+                        <td>
+                            <FontAwesomeIcon icon={element.icon} size="3x" />
+                        </td>
+                    );
+
+                    if (this.isRole("ADMIN")) {
+                        content.push(
                             <td>
                                 <Link
                                     className="p-3"
@@ -140,23 +151,25 @@ class Index extends React.Component {
                                     <FontAwesomeIcon icon="trash-alt" />
                                 </Link>
                             </td>
-                        </tr>
-                    );
+                        );
+                    }
+
+                    specialRows.push(<tr>{content}</tr>);
                 });
             }
 
             let certificateRows = [];
             if (this.state.certificate.length > 0) {
                 this.state.certificate.forEach((element) => {
-                    certificateRows.push(
-                        <tr>
-                            <td>{element.name}</td>
-                            <td>
-                                <FontAwesomeIcon
-                                    icon={element.icon}
-                                    size="3x"
-                                />
-                            </td>
+                    let content = [];
+                    content.push(<td>{element.name}</td>);
+                    content.push(
+                        <td>
+                            <FontAwesomeIcon icon={element.icon} size="3x" />
+                        </td>
+                    );
+                    if (this.isRole("ADMIN")) {
+                        content.push(
                             <td>
                                 <Link
                                     className="p-3"
@@ -175,8 +188,10 @@ class Index extends React.Component {
                                     <FontAwesomeIcon icon="trash-alt" />
                                 </Link>
                             </td>
-                        </tr>
-                    );
+                        );
+                    }
+
+                    certificateRows.push(<tr>{content}</tr>);
                 });
             }
 
@@ -193,12 +208,14 @@ class Index extends React.Component {
 
             return (
                 <Container>
-                    <ButtonInRow
-                        variant="success"
-                        link="/achievement/create"
-                        side="right"
-                        label="Pridať achievement"
-                    />
+                    {this.isRole("ADMIN") ? (
+                        <ButtonInRow
+                            variant="success"
+                            link="/achievement/create"
+                            side="right"
+                            label="Pridať achievement"
+                        />
+                    ) : null}
 
                     {alert}
 
@@ -214,7 +231,9 @@ class Index extends React.Component {
                                     <tr>
                                         <th>Meno</th>
                                         <th>Ikona</th>
-                                        <th></th>
+                                        {this.isRole("ADMIN") ? (
+                                            <th></th>
+                                        ) : null}
                                     </tr>
                                 </thead>
                                 <tbody>{specialRows}</tbody>
@@ -228,7 +247,9 @@ class Index extends React.Component {
                                         <th>Ikona</th>
                                         <th>Kategória</th>
                                         <th>Počet brigád</th>
-                                        <th></th>
+                                        {this.isRole("ADMIN") ? (
+                                            <th></th>
+                                        ) : null}
                                     </tr>
                                 </thead>
                                 <tbody>{categorizedRows}</tbody>
@@ -240,7 +261,9 @@ class Index extends React.Component {
                                     <tr>
                                         <th>Meno</th>
                                         <th>Ikona</th>
-                                        <th></th>
+                                        {this.isRole("ADMIN") ? (
+                                            <th></th>
+                                        ) : null}
                                     </tr>
                                 </thead>
                                 <tbody>{certificateRows}</tbody>
