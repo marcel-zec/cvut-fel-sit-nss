@@ -31,7 +31,7 @@ import Detail from "./Components/Admin/Trip/Detail";
 function Router(props) {
     const context = useContext(appContext);
 
-    const ROLE_SUPERUSER = "SUPERUSER";
+    const ROLE_MANAGER = "MANAGER";
     const ROLE_ADMIN = "ADMIN";
     const ROLE_USER = "USER";
 
@@ -70,7 +70,7 @@ function Router(props) {
             <Route
                 path="/profile"
                 render={() => {
-                    return allowAuthWithRole(<Profile />, [ROLE_USER]);
+                    return allowAuthWithRole(<Profile />, ROLE_USER);
                 }}
             />
             <Route path="/profile/details" component={ProfileDetails} />
@@ -108,7 +108,7 @@ function Router(props) {
                 <Route
                     path="/trips/:id"
                     render={() => {
-                        return allowGuest(<TripDetail />);
+                        return allowAuthWithRole(<TripDetail />, ROLE_USER);
                     }}
                 />
                 {/*Admin*/}
@@ -116,14 +116,20 @@ function Router(props) {
                     path="/trip"
                     exact
                     render={() => {
-                        return allowAuthWithRole(<IndexTrip />, ROLE_ADMIN);
+                        return allowAuthWithRole(<IndexTrip />, [
+                            ROLE_ADMIN,
+                            ROLE_MANAGER,
+                        ]);
                     }}
                 />
                 <Route
                     path="/trip/create"
                     exact
                     render={() => {
-                        return allowAuthWithRole(<CreateTrip />, ROLE_ADMIN);
+                        return allowAuthWithRole(<CreateTrip />, [
+                            ROLE_ADMIN,
+                            ROLE_MANAGER,
+                        ]);
                     }}
                 />
 
@@ -131,7 +137,10 @@ function Router(props) {
                     path="/trip/:id/edit"
                     exact
                     render={() => {
-                        return allowAuthWithRole(<EditTrip />, ROLE_ADMIN);
+                        return allowAuthWithRole(<EditTrip />, [
+                            ROLE_ADMIN,
+                            ROLE_MANAGER,
+                        ]);
                     }}
                 />
 
@@ -147,10 +156,10 @@ function Router(props) {
                     path="/trip/:id/participants"
                     exact
                     render={() => {
-                        return allowAuthWithRole(
-                            <IndexParticipants />,
-                            ROLE_ADMIN
-                        );
+                        return allowAuthWithRole(<IndexParticipants />, [
+                            ROLE_ADMIN,
+                            ROLE_MANAGER,
+                        ]);
                     }}
                 />
 
@@ -158,10 +167,10 @@ function Router(props) {
                     path="/achievement"
                     exact={true}
                     render={() => {
-                        return allowAuthWithRole(
-                            <IndexAchievement />,
-                            ROLE_ADMIN
-                        );
+                        return allowAuthWithRole(<IndexAchievement />, [
+                            ROLE_ADMIN,
+                            ROLE_MANAGER,
+                        ]);
                     }}
                 />
 
@@ -191,7 +200,10 @@ function Router(props) {
                     path="/category"
                     exact={true}
                     render={() => {
-                        return allowAuthWithRole(<IndexCategory />, ROLE_ADMIN);
+                        return allowAuthWithRole(<IndexCategory />, [
+                            ROLE_ADMIN,
+                            ROLE_MANAGER,
+                        ]);
                     }}
                 />
 
@@ -218,10 +230,10 @@ function Router(props) {
                     path="/close"
                     exact={true}
                     render={() => {
-                        return allowAuthWithRole(
-                            <IndexEnrollment />,
-                            ROLE_ADMIN
-                        );
+                        return allowAuthWithRole(<IndexEnrollment />, [
+                            ROLE_ADMIN,
+                            ROLE_MANAGER,
+                        ]);
                     }}
                 />
 
@@ -229,10 +241,10 @@ function Router(props) {
                     path="/close/:id"
                     exact={true}
                     render={() => {
-                        return allowAuthWithRole(
-                            <CloseEnrollment />,
-                            ROLE_ADMIN
-                        );
+                        return allowAuthWithRole(<CloseEnrollment />, [
+                            ROLE_ADMIN,
+                            ROLE_MANAGER,
+                        ]);
                     }}
                 />
 

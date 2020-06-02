@@ -45,7 +45,7 @@ class TripHistory extends React.Component {
             note: this.state.note,
             rating: this.state.rating,
         };
-        fetch(BASE_API_URL + "/trip_review/" + this.state.enrollment.id, {
+        fetch(BASE_API_URL + "/job_review/" + this.state.enrollment.id, {
             method: "POST",
             credentials: "include",
             headers: {

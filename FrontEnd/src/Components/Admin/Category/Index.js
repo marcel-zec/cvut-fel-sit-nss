@@ -6,11 +6,18 @@ import Spinner from "react-bootstrap/Spinner";
 import { Link } from "react-router-dom";
 import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 import { BASE_API_URL } from "../../../App";
+import { appContext } from "../../../appContext";
 
 class Index extends React.Component {
+    static contextType = appContext;
+
     state = {
         categories: null,
     };
+
+    isRole(role) {
+        return role == this.context.user.role;
+    }
 
     async componentDidMount() {
         const response = await fetch(BASE_API_URL + "/category", {
@@ -39,9 +46,9 @@ class Index extends React.Component {
             let tableRows = [];
             if (this.state.categories.length > 0) {
                 this.state.categories.forEach((element) => {
-                    tableRows.push(
-                        <tr>
-                            <td>{element.name}</td>
+                    let content = [<td>{element.name}</td>];
+                    if (this.isRole("ADMIN")) {
+                        content.push(
                             <td>
                                 <Link
                                     className="p-3"
@@ -54,25 +61,28 @@ class Index extends React.Component {
                                     <FontAwesomeIcon icon="trash-alt" />
                                 </Link>
                             </td>
-                        </tr>
-                    );
+                        );
+                    }
+                    tableRows.push(<tr>{content}</tr>);
                 });
             }
 
             return (
                 <Container>
-                    <ButtonInRow
-                        variant="success"
-                        link="/category/create"
-                        side="right"
-                        label="Pridať kategóriu"
-                    />
+                    {this.isRole("ADMIN") ? (
+                        <ButtonInRow
+                            variant="success"
+                            link="/category/create"
+                            side="right"
+                            label="Pridať kategóriu"
+                        />
+                    ) : null}
 
                     <Table striped bordered hover>
                         <thead>
                             <tr>
                                 <th>Meno</th>
-                                <th></th>
+                                {this.isRole("ADMIN") ? <th></th> : null}
                             </tr>
                         </thead>
                         <tbody>{tableRows}</tbody>

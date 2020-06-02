@@ -65,6 +65,7 @@ class Index extends React.Component {
             })
             .catch((error) => {
                 console.error(error);
+                this.setState({ items: [] });
             });
     };
 
