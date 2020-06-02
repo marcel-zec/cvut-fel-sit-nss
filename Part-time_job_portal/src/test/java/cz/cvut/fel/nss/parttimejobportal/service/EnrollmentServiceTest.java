@@ -3,6 +3,7 @@ package cz.cvut.fel.nss.parttimejobportal.service;
 import cz.cvut.fel.nss.parttimejobportal.dto.EnrollmentDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.JobSessionDto;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
+import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.environment.util.Generator;
 import org.junit.Assert;
@@ -103,7 +104,7 @@ public class EnrollmentServiceTest {
     @Test
     @Transactional
     @Rollback
-    public void findAllOfUserFinished() throws NotAllowedException {
+    public void findAllOfUserFinished() throws NotAllowedException, NotFoundException {
         enrollmentService.closeOk(user.getTravel_journal().getEnrollments().get(0).getId());
         enrollmentService.closeOk(user.getTravel_journal().getEnrollments().get(1).getId());
         for(EnrollmentDto e: enrollmentService.findAllOfUserFinished(user)){
