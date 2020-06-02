@@ -10,6 +10,7 @@ import cz.cvut.fel.nss.parttimejobportal.dto.RequestWrapperEnrollmentGet;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
+import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
 import cz.cvut.fel.nss.parttimejobportal.service.security.AccessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,7 +60,9 @@ public class EnrollmentService {
 
     @Transactional
     public RequestWrapperEnrollmentGet findActiveEndedWithUser(Long enrollId) throws NotAllowedException {
+        if (find(enrollId).getTrip().getAuthor()!= SecurityUtils.getCurrentUser()) throw new NotAllowedException("Not for you");
         RequestWrapperEnrollmentGet wrapperEnrollmentGet = new RequestWrapperEnrollmentGet();
+
         if (findDto(enrollId).getState() != EnrollmentState.ACTIVE || findDto(enrollId).getTripSession().getTo_date().isAfter(ChronoLocalDate.from(LocalDateTime.now()))) throw new NotAllowedException();
         wrapperEnrollmentGet.setEnrollmentDto(translateService.translateEnrollment(find(enrollId)));
         wrapperEnrollmentGet.setOwner(translateService.translateUser(userDao.find(find(enrollId).getJobJournal().getUser().getId())));
@@ -83,9 +86,12 @@ public class EnrollmentService {
     public List<Enrollment> findAllActiveEnded(){
         List<Enrollment> enrollments = findAll();
         List<Enrollment> newEnrollments = new ArrayList<>();
+
         for (Enrollment e: enrollments) {
             if (e.getState().equals(EnrollmentState.ACTIVE) && e.getTripSession().getTo_date().isBefore(ChronoLocalDate.from(LocalDateTime.now()))){
-                newEnrollments.add(e);
+                if ((SecurityUtils.getCurrentUser().getRole() == Role.MANAGER && SecurityUtils.getCurrentUser().equals(e.getTrip().getAuthor())) || SecurityUtils.getCurrentUser().getRole() == Role.ADMIN){
+                    newEnrollments.add(e);
+                }
             }
         }
         Collections.sort(newEnrollments, new Comparator<Enrollment>() {

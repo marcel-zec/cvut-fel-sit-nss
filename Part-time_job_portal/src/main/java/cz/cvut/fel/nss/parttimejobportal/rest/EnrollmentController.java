@@ -78,7 +78,7 @@ public class EnrollmentController {
         return null;
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PatchMapping(value = "/close", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> close(@RequestBody RequestWrapperEnrollment requestWrapperEnrollment) throws Exception {
         enrollmentService.close(requestWrapperEnrollment.getEnrollmentDto());
@@ -95,7 +95,7 @@ public class EnrollmentController {
         return enrollmentService.findActiveEndedWithUser(id);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PostMapping(value = "/close/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void closeOk(@PathVariable Long id) throws Exception {
         enrollmentService.closeOk(id);
