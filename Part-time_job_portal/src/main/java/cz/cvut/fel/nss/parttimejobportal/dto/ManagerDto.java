@@ -23,7 +23,7 @@ public class ManagerDto extends AbstractUserDto{
 
 
     public ManagerDto() {
-        super(Role.ADMIN);
+        super(Role.MANAGER);
         offers = new ArrayList<>();
         userReviewsAuthor = new ArrayList<>();
     }
@@ -33,7 +33,7 @@ public class ManagerDto extends AbstractUserDto{
                       @NotNull(message = "Last name cannot be blank") String lastName, @Email(message = "Email should be valid") @NotNull(message = "Email cannot be blank") String email, AddressDto address, @Size(max = 12, min = 9, message = "Phone number is in incorrect format.") @NotNull(message = "Phone number cannot be blank") String phone_number,
                       @Size(max = 255, min = 1, message = "Company is in incorrect format.") @NotNull(message = "Company cannot be blank") String company, List<UserReviewDto> userReviewsAuthor, List<OfferDto> offers) {
 
-        super(id, firstName, lastName, email, address, Role.ADMIN);
+        super(id, firstName, lastName, email, address, Role.MANAGER);
         this.phone_number = phone_number;
         this.company = company;
         this.userReviewsAuthor = userReviewsAuthor;
