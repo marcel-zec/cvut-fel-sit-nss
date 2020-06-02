@@ -69,7 +69,7 @@ class Index extends React.Component {
             }
 
             return (
-                <Container>
+                <Container className="mt-3">
                     <Table striped bordered hover>
                         <thead>
                             <tr>
