@@ -35,9 +35,10 @@ public class OfferService {
     private final EnrollmentDao enrollmentDao;
     private final JobJournalDao jobJournalDao;
     private final ManagerDao managerDao;
+    private final AdminDao adminDao;
 
     @Autowired
-    public OfferService(OfferDao offerDao, JobSessionDao jobSessionDao, JobReviewDao jobReviewDao, TranslateService translateService, AccessService accessService, UserDao userDao, EnrollmentDao enrollmentDao, JobJournalDao jobJournalDao, ManagerDao managerDao) {
+    public OfferService(OfferDao offerDao, JobSessionDao jobSessionDao, JobReviewDao jobReviewDao, TranslateService translateService, AccessService accessService, UserDao userDao, EnrollmentDao enrollmentDao, JobJournalDao jobJournalDao, ManagerDao managerDao, AdminDao adminDao) {
         this.offerDao = offerDao;
         this.jobSessionDao = jobSessionDao;
         this.jobReviewDao = jobReviewDao;
@@ -47,6 +48,7 @@ public class OfferService {
         this.enrollmentDao = enrollmentDao;
         this.jobJournalDao = jobJournalDao;
         this.managerDao = managerDao;
+        this.adminDao = adminDao;
     }
 
     @Cacheable("offers")
@@ -190,59 +192,64 @@ public class OfferService {
     }
 
     @Transactional
-    public void update(String stringId, Offer newTrip) throws BadDateException, NotFoundException, MissingVariableException {
-        Offer trip = offerDao.find(stringId);
+    public void update(String stringId, Offer newOffer) throws BadDateException, NotFoundException, MissingVariableException, NotAllowedException {
+        Offer offer = offerDao.find(stringId);
+        if (offer == null) throw new NotFoundException();
 
-        if (trip == null) throw new NotFoundException();
-        //todo pridat vynimku na rolu
+        Manager manager = managerDao.find(SecurityUtils.getCurrentUser().getId());
+        if (manager!=null && offer.getAuthor() != manager ) throw new NotAllowedException("You are not allowed to update this offer.");
 
-        newTrip.setId(trip.getId());
-        newTrip.setAuthor(managerDao.find(SecurityUtils.getCurrentUser().getId()));
+        newOffer.setId(offer.getId());
+        if (manager == null) newOffer.setAuthor(offer.getAuthor());
 
 //        newTrip.setReviews(trip.getReviews());
-        if (newTrip.getSessions().size()<=0) throw new MissingVariableException();
+        if (newOffer.getSessions().size()<=0) throw new MissingVariableException();
 
         //less new sessions
-        if (newTrip.getSessions().size() < trip.getSessions().size()){
-            for ( int i = newTrip.getSessions().size() ; i < trip.getSessions().size(); i++) {
-                jobSessionDao.remove(trip.getSessions().get(i));
+        if (newOffer.getSessions().size() < offer.getSessions().size()){
+            for ( int i = newOffer.getSessions().size() ; i < offer.getSessions().size(); i++) {
+                jobSessionDao.remove(offer.getSessions().get(i));
             }
         }
 
-        for (int i = 0; i < newTrip.getSessions().size() ; i++) {
-            JobSession newSession = newTrip.getSessions().get(i);
+        for (int i = 0; i < newOffer.getSessions().size() ; i++) {
+            JobSession newSession = newOffer.getSessions().get(i);
             if (newSession.getTo_date().isBefore(newSession.getFrom_date())) throw new BadDateException();
 
-            if (i <= trip.getSessions().size()-1 ){
-                JobSession oldSession = trip.getSessions().get(i);
+            if (i <= offer.getSessions().size()-1 ){
+                JobSession oldSession = offer.getSessions().get(i);
 
-                newTrip.getSessions().get(i).setId(oldSession.getId());
+                newOffer.getSessions().get(i).setId(oldSession.getId());
                 oldSession = newSession;
-                oldSession.setTrip(trip);
+                oldSession.setTrip(offer);
                 jobSessionDao.update(oldSession);
             } else {
-                newSession.setTrip(trip);
+                newSession.setTrip(offer);
                 jobSessionDao.persist(newSession);
             }
         }
-
-        trip=newTrip;
-        offerDao.update(trip);
+        offer=newOffer;
+        offerDao.update(offer);
     }
 
     @Transactional
-    public void delete(String stringId) throws NotFoundException {
+    public void delete(String stringId) throws NotFoundException, NotAllowedException {
 
-        Offer trip = offerDao.find(stringId);
-        if (trip == null) throw new NotFoundException();
+        Offer offer = offerDao.find(stringId);
+        Manager manager = null;
 
-        for (JobSession session :trip.getSessions()) {
+        if (SecurityUtils.getCurrentUser().getRole() == Role.MANAGER) manager = managerDao.find(SecurityUtils.getCurrentUser().getId());
+        if (offer == null) throw new NotFoundException();
+
+        if (manager!=null && offer.getAuthor() != manager ) throw new NotAllowedException("You are not allowed delete this offer.");
+
+        for (JobSession session :offer.getSessions()) {
             session.softDelete();
             jobSessionDao.update(session);
         }
 
-        trip.softDelete();
-        offerDao.update(trip);
+        offer.softDelete();
+        offerDao.update(offer);
     }
 
 

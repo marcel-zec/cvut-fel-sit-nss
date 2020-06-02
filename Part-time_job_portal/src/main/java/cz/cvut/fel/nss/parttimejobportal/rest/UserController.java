@@ -1,6 +1,7 @@
 package cz.cvut.fel.nss.parttimejobportal.rest;
 
 import cz.cvut.fel.nss.parttimejobportal.dto.AbstractUserDto;
+import cz.cvut.fel.nss.parttimejobportal.dto.JobJournalDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.UserDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.RequestWrapper;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadPassword;
@@ -52,7 +53,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value= "/jobJournal", produces = MediaType.APPLICATION_JSON_VALUE)
-    public JobJournal getJobJournal() {
+    public JobJournalDto getJobJournal() {
         return userService.getJobJournal();
     }
 

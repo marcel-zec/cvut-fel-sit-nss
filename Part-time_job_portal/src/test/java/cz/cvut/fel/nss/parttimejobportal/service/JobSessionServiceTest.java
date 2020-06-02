@@ -3,6 +3,7 @@ package cz.cvut.fel.nss.parttimejobportal.service;
 
 import cz.cvut.fel.nss.parttimejobportal.exception.BadDateException;
 import cz.cvut.fel.nss.parttimejobportal.exception.MissingVariableException;
+import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.model.Offer;
 import cz.cvut.fel.nss.parttimejobportal.model.JobSession;
@@ -70,7 +71,7 @@ public class JobSessionServiceTest {
     @Test
     @Transactional
     @Rollback
-    public void findAllInTrip_FindsAllTripSessions() throws NotFoundException, MissingVariableException, BadDateException {
+    public void findAllInTrip_FindsAllTripSessions() throws NotFoundException, MissingVariableException, BadDateException, NotAllowedException {
         JobSession tripSession1 = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(6),1500);
         JobSession tripSession2 = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(6),1500);
         JobSession tripSession3 = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(6),1500);
