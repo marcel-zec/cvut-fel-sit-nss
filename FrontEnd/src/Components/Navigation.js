@@ -37,7 +37,7 @@ class Navigation extends React.Component {
     };
 
     render() {
-        const ROLE_SUPERUSER = "SUPERUSER";
+        const ROLE_MANAGER = "MANAGER";
         const ROLE_ADMIN = "ADMIN";
         const ROLE_USER = "USER";
 
@@ -68,28 +68,6 @@ class Navigation extends React.Component {
 
         const userNavigation = (
             <>
-                {this.context.user != null ? (
-                    <NavDropdown.Item className="d-flex flex-column align-items-center">
-                        <span>
-                            {this.context.user.firstName +
-                                " " +
-                                this.context.user.lastName}
-                        </span>
-                        <span>
-                            {this.context.user.travel_journal
-                                ? this.context.user.travel_journal.level +
-                                  ". level"
-                                : null}
-                        </span>
-                        <span>
-                            {this.context.user.travel_journal
-                                ? this.context.user.travel_journal.xp_count +
-                                  " XP"
-                                : null}
-                        </span>
-                    </NavDropdown.Item>
-                ) : null}
-
                 <NavDropdown.Divider />
                 <NavDropdown.Item>
                     <NavLink
@@ -151,6 +129,25 @@ class Navigation extends React.Component {
             </>
         );
 
+        const managerNavigation = (
+            <>
+                <NavDropdown.Item>
+                    <NavLink to="/close">Uzatvaranie brigád</NavLink>
+                </NavDropdown.Item>
+                <NavDropdown.Item>
+                    <NavLink to="/trip">Brigády</NavLink>
+                </NavDropdown.Item>
+                <NavDropdown.Item>
+                    <NavLink to="/achievement">Achievementy</NavLink>
+                </NavDropdown.Item>
+                <NavDropdown.Item>
+                    <NavLink to="/category">Kategórie</NavLink>
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                {logoutItem}
+            </>
+        );
+
         const guestNavigation = (
             <>
                 <NavDropdown.Item>
@@ -174,6 +171,8 @@ class Navigation extends React.Component {
                 navigationItems = userNavigation;
             else if (this.context.user.role === ROLE_ADMIN)
                 navigationItems = adminNavigation;
+            else if (this.context.user.role === ROLE_MANAGER)
+                navigationItems = managerNavigation;
         }
 
         return (

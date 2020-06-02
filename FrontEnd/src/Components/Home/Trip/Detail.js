@@ -21,6 +21,7 @@ class Detail extends React.Component {
             to_date: null,
             price: null,
         },
+        job_journal: null,
     };
 
     formIsValid = false;
@@ -43,9 +44,27 @@ class Detail extends React.Component {
 
         const data = await response.json();
         console.log(data);
-        console.log(
-            this.context.user ? this.context.user.travel_journal : "neni user"
-        );
+
+        if (this.context.user != null) {
+            await fetch(BASE_API_URL + "/user/jobJournal", {
+                method: "GET",
+                mode: "cors",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((response) => {
+                    if (response.ok) return response.json();
+                    else console.error(response.status);
+                })
+                .then((data) => {
+                    this.setState({ job_journal: data });
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
 
         this.setState({ trip: data });
         if (data.sessions.length > 0) {
@@ -133,30 +152,26 @@ class Detail extends React.Component {
         specialValidate = req_ach_special.every((val) =>
             this.validateUserAchievement(
                 val,
-                this.context.user
-                    ? this.context.user.travel_journal.special
-                    : []
+                this.state.job_journal ? this.state.job_journal.special : []
             )
         );
         categorizedValidate = req_ach_categorized.every((val) =>
             this.validateUserAchievement(
                 val,
-                this.context.user
-                    ? this.context.user.travel_journal.categorized
-                    : []
+                this.state.job_journal ? this.state.job_journal.categorized : []
             )
         );
         certificateslValidate = req_cerf.every((val) =>
             this.validateUserAchievement(
                 val,
-                this.context.user
-                    ? this.context.user.travel_journal.certificates
+                this.state.job_journal
+                    ? this.state.job_journal.certificates
                     : []
             )
         );
         levelPassed =
-            (this.context.user
-                ? Number(this.context.user.travel_journal.level)
+            (this.state.job_journal
+                ? Number(this.state.job_journal.level)
                 : 0) >= minlevel;
 
         if (
@@ -206,8 +221,8 @@ class Detail extends React.Component {
      */
     validLevel() {
         if (
-            (this.context.user
-                ? Number(this.context.user.travel_journal.level)
+            (this.state.job_journal
+                ? Number(this.state.job_journal.level)
                 : 0) >= this.state.trip.required_level
         ) {
             return <FontAwesomeIcon className="checked" icon="check-circle" />;
@@ -593,9 +608,8 @@ class Detail extends React.Component {
                                                         .required_achievements_certificate
                                                 }
                                                 userList={
-                                                    this.context.user
-                                                        ? this.context.user
-                                                              .travel_journal
+                                                    this.state.job_journal
+                                                        ? this.state.job_journal
                                                               .certificates
                                                         : []
                                                 }
@@ -636,9 +650,8 @@ class Detail extends React.Component {
                                                         .required_achievements_special
                                                 }
                                                 userList={
-                                                    this.context.user
-                                                        ? this.context.user
-                                                              .travel_journal
+                                                    this.state.job_journal
+                                                        ? this.state.job_journal
                                                               .special
                                                         : []
                                                 }
@@ -654,9 +667,8 @@ class Detail extends React.Component {
                                                         .required_achievements_categorized
                                                 }
                                                 userList={
-                                                    this.context.user
-                                                        ? this.context.user
-                                                              .travel_journal
+                                                    this.state.job_journal
+                                                        ? this.state.job_journal
                                                               .categorized
                                                         : []
                                                 }
