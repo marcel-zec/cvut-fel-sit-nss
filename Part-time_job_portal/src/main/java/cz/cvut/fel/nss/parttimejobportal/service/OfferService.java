@@ -224,10 +224,10 @@ public class OfferService {
         if (offer == null) throw new NotFoundException();
 
         Manager manager = managerDao.find(SecurityUtils.getCurrentUser().getId());
-        if (manager!=null && offer.getAuthor() != manager ) throw new NotAllowedException("You are not allowed to update this offer.");
+        if (manager!=null && !offer.getAuthor().getId().equals(manager.getId())) throw new NotAllowedException("You are not allowed to update this offer.");
 
         newOffer.setId(offer.getId());
-        if (manager == null) newOffer.setAuthor(offer.getAuthor());
+        newOffer.setAuthor(manager);
 
 //        newTrip.setReviews(trip.getReviews());
         if (newOffer.getSessions().size()<=0) throw new MissingVariableException();
