@@ -40,7 +40,7 @@ public class AdminService {
         Objects.requireNonNull(manager);
         if (!manager.getPassword().equals(passwordAgain)) throw new BadPassword();
         manager.encodePassword();
-        manager.setRole(Role.ADMIN);
+        manager.setRole(Role.MANAGER);
         managerDao.persist(manager);
 
         if (manager.getAddress() != null){
@@ -55,7 +55,7 @@ public class AdminService {
     public ManagerDto find(Long id) {
         Objects.requireNonNull(id);
         Manager user = managerDao.find(id);
-        if(user != null && user.getRole() == Role.ADMIN) return translateService.translateManager(user);
+        if(user != null && user.getRole() == Role.MANAGER) return translateService.translateManager(user);
         else return null;
     }
 
@@ -78,7 +78,7 @@ public class AdminService {
         if (user == null) throw NotFoundException.create("Admin", newUser.getEmail());
 
         //pokud je prihlaseny user s roli ADMIN, tak ze vsech adminů muze upravovat jenom sebe
-        else if (current_user.getRole() == Role.ADMIN) {
+        else if (current_user.getRole() == Role.MANAGER) {
             user = current_user;
         }
 
