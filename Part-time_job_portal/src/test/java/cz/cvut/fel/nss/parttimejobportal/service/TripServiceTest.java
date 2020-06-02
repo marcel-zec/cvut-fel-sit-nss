@@ -83,7 +83,7 @@ public class TripServiceTest {
     @Test
     @Transactional
     @Rollback
-    public void update_TripUpdated() throws NotFoundException, MissingVariableException, BadDateException {
+    public void update_TripUpdated() throws NotFoundException, MissingVariableException, BadDateException, NotAllowedException {
         trip.setSalary(3000);
         offerService.update(trip.getShort_name(),trip);
         Assert.assertEquals(3000f,offerService.find(trip.getId()).getSalary(),0.001);
@@ -92,7 +92,7 @@ public class TripServiceTest {
     @Test
     @Transactional
     @Rollback
-    public void remove_TripRemoved() throws NotFoundException, BadPassword, UnauthorizedException, AlreadyExistsException {
+    public void remove_TripRemoved() throws NotFoundException, BadPassword, UnauthorizedException, AlreadyExistsException, NotAllowedException {
 
         User user = Generator.generateUser();
         JobReview jobReview = new JobReview();

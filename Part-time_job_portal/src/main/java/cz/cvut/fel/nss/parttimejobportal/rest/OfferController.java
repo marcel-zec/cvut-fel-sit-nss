@@ -75,10 +75,10 @@ public class OfferController {
         offerService.create(offer);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PatchMapping(value = "/{identificator}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable String identificator, @RequestBody Offer offer) throws BadDateException, NotFoundException, MissingVariableException {
+    public void update(@PathVariable String identificator, @RequestBody Offer offer) throws BadDateException, NotFoundException, MissingVariableException, NotAllowedException {
 
         offerService.update(identificator, offer);
         LOG.info("Offer {} updated.", identificator);
@@ -87,7 +87,7 @@ public class OfferController {
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @DeleteMapping(value = "/{identificator}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable String identificator) throws NotFoundException {
+    public void delete(@PathVariable String identificator) throws NotFoundException, NotAllowedException {
 
         offerService.delete(identificator);
         LOG.info("Offer {} deleted.", identificator);

@@ -2,6 +2,7 @@ package cz.cvut.fel.nss.parttimejobportal.service;
 
 import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.dto.AbstractUserDto;
+import cz.cvut.fel.nss.parttimejobportal.dto.JobJournalDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.UserDto;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadPassword;
@@ -72,9 +73,10 @@ public class UserService {
         return translateService.translateManager(managerDao.find(SecurityUtils.getCurrentUser().getId()));
     }
 
+
     @Transactional
-    public JobJournal getJobJournal(){
-         return dao.find(SecurityUtils.getCurrentUser().getId()).getTravel_journal();
+    public JobJournalDto getJobJournal() {
+        return translateService.translateJobJournal(dao.find(SecurityUtils.getCurrentUser().getId()).getTravel_journal());
     }
 
     @Transactional
