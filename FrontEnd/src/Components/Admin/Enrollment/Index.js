@@ -8,8 +8,11 @@ import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 import ModalCentered from "../../SmartGadgets/ModalCentered";
 import MyAlert from "../../SmartGadgets/MyAlert";
 import { BASE_API_URL } from "../../../App";
+import { appContext } from "../../../appContext";
 
 class Index extends React.Component {
+    static contextType = appContext;
+
     state = {
         items: null,
         modal: {
@@ -22,6 +25,10 @@ class Index extends React.Component {
             },
         },
     };
+
+    isRole(role) {
+        return role == this.context.user.role;
+    }
 
     submitHandler = async (event, enrollment) => {
         await fetch(BASE_API_URL + "/enrollment/close/" + enrollment.id, {
@@ -133,50 +140,50 @@ class Index extends React.Component {
                             </td>
                             <td>{item.enrollmentDto.tripSession.from_date}</td>
                             <td>{item.enrollmentDto.tripSession.to_date}</td>
-                            <td>
-                                <OverlayTrigger
-                                    key="set-end"
-                                    overlay={
-                                        <Tooltip>
-                                            Ukončenie s možnosťou upraviť odmenu
-                                            a ohodnotiť účastníka.
-                                        </Tooltip>
-                                    }
-                                >
-                                    <Link
-                                        className="p-3"
-                                        to={"close/" + item.enrollmentDto.id}
-                                    >
-                                        <FontAwesomeIcon icon="cog" />
-                                    </Link>
-                                </OverlayTrigger>
-
-                                <OverlayTrigger
-                                    key="end"
-                                    overlay={
-                                        <Tooltip>
-                                            Ukončiť s plnou odmenou a plným
-                                            hodnotením účastníka.
-                                        </Tooltip>
-                                    }
-                                >
-                                    <Link
-                                        className="p-3"
-                                        onClick={() =>
-                                            this.endClickHandler(
-                                                item.enrollmentDto,
-                                                item.owner
-                                            )
+                            {this.isRole("MANAGER") ? (
+                                <td>
+                                    <OverlayTrigger
+                                        key="set-end"
+                                        overlay={
+                                            <Tooltip>
+                                                Ukončenie s možnosťou upraviť
+                                                odmenu a ohodnotiť účastníka.
+                                            </Tooltip>
                                         }
                                     >
-                                        <FontAwesomeIcon icon="check-circle" />
-                                    </Link>
-                                </OverlayTrigger>
+                                        <Link
+                                            className="p-3"
+                                            to={
+                                                "close/" + item.enrollmentDto.id
+                                            }
+                                        >
+                                            <FontAwesomeIcon icon="cog" />
+                                        </Link>
+                                    </OverlayTrigger>
 
-                                <Link className="p-3">
-                                    <FontAwesomeIcon icon="trash-alt" />
-                                </Link>
-                            </td>
+                                    <OverlayTrigger
+                                        key="end"
+                                        overlay={
+                                            <Tooltip>
+                                                Ukončiť s plnou odmenou a plným
+                                                hodnotením účastníka.
+                                            </Tooltip>
+                                        }
+                                    >
+                                        <Link
+                                            className="p-3"
+                                            onClick={() =>
+                                                this.endClickHandler(
+                                                    item.enrollmentDto,
+                                                    item.owner
+                                                )
+                                            }
+                                        >
+                                            <FontAwesomeIcon icon="check-circle" />
+                                        </Link>
+                                    </OverlayTrigger>
+                                </td>
+                            ) : null}
                         </tr>
                     );
                 });
