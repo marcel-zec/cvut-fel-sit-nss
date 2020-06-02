@@ -5,6 +5,7 @@ import cz.cvut.fel.nss.parttimejobportal.dto.*;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.dao.CategoryDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.OfferDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ public class TranslateService {
     private final OfferDao offerDao;
     private final CategoryDao categoryDao;
 
+    @Autowired
     public TranslateService(JobJournalDao jobJournalDao, OfferDao offerDao, CategoryDao categoryDao) {
         this.jobJournalDao = jobJournalDao;
         this.offerDao = offerDao;

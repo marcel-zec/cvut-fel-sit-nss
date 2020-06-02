@@ -69,7 +69,7 @@ public class OfferController {
         return offerService.findByStringFiltered(identificator);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public void create(@RequestBody Offer offer) throws BadDateException, MissingVariableException {
         offerService.create(offer);

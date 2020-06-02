@@ -1,10 +1,14 @@
 package cz.cvut.fel.nss.parttimejobportal.service;
 
 
+import cz.cvut.fel.nss.parttimejobportal.dao.AddressDao;
+import cz.cvut.fel.nss.parttimejobportal.dao.ManagerDao;
+import cz.cvut.fel.nss.parttimejobportal.dto.ManagerDto;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadDateException;
 import cz.cvut.fel.nss.parttimejobportal.exception.MissingVariableException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
+import cz.cvut.fel.nss.parttimejobportal.model.Address;
 import cz.cvut.fel.nss.parttimejobportal.model.Manager;
 import cz.cvut.fel.nss.parttimejobportal.model.Offer;
 import cz.cvut.fel.nss.parttimejobportal.model.JobSession;
@@ -13,6 +17,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -31,17 +36,31 @@ public class JobSessionServiceTest {
 
     private JobSession tripSession;
     private Offer trip;
+    private Manager manager;
 
     @Autowired
     private JobSessionService jobSessionService;
     private OfferService offerService;
+    private ManagerDao managerDao;
+    private AddressDao addressDao;
 //    @Autowired
 //    private AchievementService achievementService;
 
 
     @Before
     public void prepare() throws BadDateException, MissingVariableException {
-        trip = new Offer("test2",11,"Description","shortName1",1000,"Hawaii",2,new Manager());
+        manager = new Manager(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Jan","Kolar","manager@gmail.com","777 850 167","TestCompany, s.r.o");
+
+        Address address = new Address();
+        address.setUser(manager);
+        address.setCountry("Slovakia");
+        address.setCity("Licartovce");
+        address.setStreet("Vranovska");
+        address.setHouseNumber(20);
+        address.setZipCode("05175");
+        manager.setAddress(address);
+
+        trip = new Offer("test2",11,"Description","shortName1",1000,"Hawaii",2,manager);
         tripSession = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(7),2000);
 
         ArrayList<JobSession> s = new ArrayList<JobSession>() {{add(tripSession);}};
