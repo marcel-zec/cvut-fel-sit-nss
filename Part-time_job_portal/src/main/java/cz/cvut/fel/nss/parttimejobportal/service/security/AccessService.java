@@ -7,8 +7,6 @@ import cz.cvut.fel.nss.parttimejobportal.exception.BadPassword;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

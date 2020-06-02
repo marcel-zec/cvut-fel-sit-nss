@@ -2,9 +2,11 @@ package cz.cvut.fel.nss.parttimejobportal.dto;
 
 import javax.persistence.Basic;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
-public class CategoryDto {
+public class CategoryDto implements Serializable
+{
 
     @NotNull(message = "Id cannot be blank")
     private Long id;

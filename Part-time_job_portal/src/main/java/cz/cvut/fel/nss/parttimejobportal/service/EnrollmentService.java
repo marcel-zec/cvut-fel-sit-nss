@@ -60,7 +60,7 @@ public class EnrollmentService {
 
     @Transactional
     public RequestWrapperEnrollmentGet findActiveEndedWithUser(Long enrollId) throws NotAllowedException {
-        if (find(enrollId).getTrip().getAuthor()!= SecurityUtils.getCurrentUser()) throw new NotAllowedException("Not for you");
+        if (find(enrollId).getTrip().getAuthor().getId()!= SecurityUtils.getCurrentUser().getId()) throw new NotAllowedException("Not for you");
         RequestWrapperEnrollmentGet wrapperEnrollmentGet = new RequestWrapperEnrollmentGet();
 
         if (findDto(enrollId).getState() != EnrollmentState.ACTIVE || findDto(enrollId).getTripSession().getTo_date().isAfter(ChronoLocalDate.from(LocalDateTime.now()))) throw new NotAllowedException();

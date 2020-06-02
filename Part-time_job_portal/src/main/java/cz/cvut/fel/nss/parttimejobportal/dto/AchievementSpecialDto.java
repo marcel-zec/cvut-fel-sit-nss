@@ -2,9 +2,10 @@ package cz.cvut.fel.nss.parttimejobportal.dto;
 
 import javax.persistence.Basic;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
-public class AchievementSpecialDto extends AchievementDto {
+public class AchievementSpecialDto extends AchievementDto{
     @NotNull(message = "Id cannot be blank")
     private Long id;
 

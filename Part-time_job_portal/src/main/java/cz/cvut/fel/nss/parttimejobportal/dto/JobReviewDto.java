@@ -5,9 +5,10 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class JobReviewDto {
+public class JobReviewDto implements Serializable {
 
     @NotNull(message = "Id cannot be blank")
     private Long id;

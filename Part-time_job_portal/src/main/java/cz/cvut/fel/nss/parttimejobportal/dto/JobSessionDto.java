@@ -6,9 +6,10 @@ import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class JobSessionDto {
+public class JobSessionDto implements Serializable {
 
     private Long id;
 

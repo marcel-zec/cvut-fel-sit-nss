@@ -1,5 +1,6 @@
 package cz.cvut.fel.nss.parttimejobportal.service;
 
+import com.hazelcast.core.HazelcastInstance;
 import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.dto.OfferDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.JobSessionDto;
@@ -8,9 +9,12 @@ import cz.cvut.fel.nss.parttimejobportal.exception.BadDateException;
 import cz.cvut.fel.nss.parttimejobportal.exception.MissingVariableException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
+import cz.cvut.fel.nss.parttimejobportal.rest.OfferController;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
 import cz.cvut.fel.nss.parttimejobportal.security.model.UserDetails;
 import cz.cvut.fel.nss.parttimejobportal.service.security.AccessService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -19,13 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class OfferService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(OfferService.class);
     private final OfferDao offerDao;
     private final JobSessionDao jobSessionDao;
     private final JobReviewDao jobReviewDao;
@@ -36,9 +40,11 @@ public class OfferService {
     private final JobJournalDao jobJournalDao;
     private final ManagerDao managerDao;
     private final AdminDao adminDao;
+    private final HazelcastInstance cacheInstance;
+    private Map<Long, OfferDto> cache;
 
     @Autowired
-    public OfferService(OfferDao offerDao, JobSessionDao jobSessionDao, JobReviewDao jobReviewDao, TranslateService translateService, AccessService accessService, UserDao userDao, EnrollmentDao enrollmentDao, JobJournalDao jobJournalDao, ManagerDao managerDao, AdminDao adminDao) {
+    public OfferService(OfferDao offerDao, JobSessionDao jobSessionDao, JobReviewDao jobReviewDao, TranslateService translateService, AccessService accessService, UserDao userDao, EnrollmentDao enrollmentDao, JobJournalDao jobJournalDao, ManagerDao managerDao, AdminDao adminDao, HazelcastInstance hazelcastInstance) {
         this.offerDao = offerDao;
         this.jobSessionDao = jobSessionDao;
         this.jobReviewDao = jobReviewDao;
@@ -49,9 +55,11 @@ public class OfferService {
         this.jobJournalDao = jobJournalDao;
         this.managerDao = managerDao;
         this.adminDao = adminDao;
+        this.cacheInstance = hazelcastInstance;
+        this.cache = cacheInstance.getMap("offers");
     }
 
-    @Cacheable("offers")
+
     @Transactional
     public List<Offer> findAll() {
         return offerDao.findAll();
@@ -60,7 +68,6 @@ public class OfferService {
     @Transactional
     public List<OfferDto> findAllDto() {
         List<OfferDto> offerDtos = new ArrayList<>();
-
         for (Offer offer:offerDao.findAll()) {
             if (SecurityUtils.getCurrentUser().getRole() == Role.MANAGER && offer.getAuthor().getId().equals(SecurityUtils.getCurrentUser().getId())) offerDtos.add(translateService.translateTrip(offer));
             else if (SecurityUtils.getCurrentUser().getRole() == Role.ADMIN) offerDtos.add(translateService.translateTrip(offer));
@@ -69,16 +76,29 @@ public class OfferService {
     }
 
     @Transactional
-    public List<OfferDto> findAllDtoFiltered() {
-        List<OfferDto> tripDtos = new ArrayList<>();
+    public Collection<OfferDto> findAllDtoFiltered() {
 
-        for (Offer trip:offerDao.findAll()) {
-            if(isTripActive(trip)) {
-                tripDtos.add(translateService.translateTrip(trip));
-            }
-        }
-        return tripDtos;
+        if(cache.isEmpty()) offersToCache();
+
+        removeOldOffersFromCache();
+        return cache.values();
     }
+
+    private void offersToCache(){
+        LOG.info("Putting offers to empty cache.");
+        List<OfferDto> offerDtos = new ArrayList<>();
+        for (Offer offer:offerDao.findAll()) offerDtos.add(translateService.translateTrip(offer));
+        offerDtos.removeIf(offerDto -> !isTripActive(offerDto));
+        for(OfferDto offer: offerDtos) cache.put(offer.getId(),offer);
+    }
+
+    private void removeOldOffersFromCache(){
+        int sizeBefore = cache.size();
+        cache.values().removeIf(offerDto -> !isTripActive(offerDto));
+        int sizeAfter = cache.size();
+        if (sizeAfter < sizeBefore) LOG.info("Removed "+ (sizeBefore - sizeAfter) + " offers from cache.");
+    }
+
 
     @Transactional
     public OfferDto find(Long id) {
@@ -145,6 +165,12 @@ public class OfferService {
             jobSessionDao.persist(session);
         }
         offerDao.update(offer);
+        addOfferToCache(translateService.translateTrip(offer));
+    }
+
+    private void addOfferToCache(OfferDto offerDto) {
+        cache.put(offerDto.getId(),offerDto);
+        LOG.info("Putting new offer (ID: " + offerDto.getId() + ") to cache");
     }
 
     @Transactional
@@ -300,9 +326,9 @@ public class OfferService {
         return true;
     }
 
-    private boolean isTripActive(Offer trip) {
-        for(JobSession tripSession : trip.getSessions()) {
-            if(tripSession.isNotDeleted() && tripSession.getTo_date().isAfter(LocalDate.now()) && tripSession.getFrom_date().isAfter(LocalDate.now())) {
+    private boolean isTripActive(OfferDto trip) {
+        for(JobSessionDto tripSession : trip.getSessions()) {
+            if(tripSession.getTo_date().isAfter(LocalDate.now()) && tripSession.getFrom_date().isAfter(LocalDate.now())) {
                 return true;
             }
         }

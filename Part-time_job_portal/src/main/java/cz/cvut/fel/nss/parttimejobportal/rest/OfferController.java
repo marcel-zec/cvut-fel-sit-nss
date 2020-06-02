@@ -19,6 +19,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Collection;
 import java.util.List;
 
 @CrossOrigin(origins = SecurityConstants.ORIGIN_URI)
@@ -46,7 +48,7 @@ public class OfferController {
     }
 
     @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<OfferDto> getAll() {
+    public Collection<OfferDto> getAll() {
 
         if(!SecurityUtils.isAuthenticatedAnonymously()) {
             if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.MANAGER)) {

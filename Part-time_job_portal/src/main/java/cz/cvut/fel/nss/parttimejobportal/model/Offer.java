@@ -281,6 +281,7 @@ public class Offer extends AbstractEntity {
     }
 
     public List<JobReview> getJobReviews() {
+        if (jobReviews == null) jobReviews = new ArrayList<>();
         return jobReviews;
     }
 
