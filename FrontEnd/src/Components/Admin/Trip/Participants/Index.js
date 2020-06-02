@@ -70,20 +70,6 @@ class Index extends React.Component {
                                     <td>
                                         {enrollment.owner.travel_journal.level}
                                     </td>
-                                    <td>
-                                        {enrollment.enrollmentDto
-                                            .deposit_was_paid ? (
-                                            <FontAwesomeIcon
-                                                icon="check"
-                                                size="lg"
-                                            />
-                                        ) : (
-                                            <FontAwesomeIcon
-                                                icon="times"
-                                                size="lg"
-                                            />
-                                        )}
-                                    </td>
                                 </tr>
                             );
                         });
@@ -101,7 +87,6 @@ class Index extends React.Component {
                                         <th>Email</th>
                                         <th>Country</th>
                                         <th>Level</th>
-                                        <th>Deposit paid</th>
                                     </tr>
                                 </thead>
                                 <tbody>{rows}</tbody>
@@ -124,7 +109,7 @@ class Index extends React.Component {
             }
 
             return (
-                <Container>
+                <Container className="mt-3">
                     <Tabs
                         defaultActiveKey={
                             this.state.sessions.length > 0

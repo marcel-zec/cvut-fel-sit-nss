@@ -148,13 +148,15 @@ class Index extends React.Component {
             }
 
             return (
-                <Container>
-                    <ButtonInRow
-                        variant="success"
-                        link="/trip/create"
-                        side="right"
-                        label="Pridať brigádu"
-                    />
+                <Container className="mt-3">
+                    {this.isRole("MANAGER") ? (
+                        <ButtonInRow
+                            variant="success"
+                            link="/trip/create"
+                            side="right"
+                            label="Pridať brigádu"
+                        />
+                    ) : null}
 
                     {alert}
 

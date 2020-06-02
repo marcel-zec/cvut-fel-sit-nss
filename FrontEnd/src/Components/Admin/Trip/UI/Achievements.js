@@ -34,6 +34,7 @@ function Achievements(props) {
                             "required_achievements_certificate"
                         ),
                 }}
+                uneditable={props.uneditable ? true : false}
             />
         );
         gainAchievements = (
@@ -45,6 +46,7 @@ function Achievements(props) {
                 onChangeMethod={(event) =>
                     props.onChangeMethod(event, "gain_achievements_special")
                 }
+                uneditable={props.uneditable ? true : false}
             />
         );
     }
