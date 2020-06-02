@@ -167,7 +167,7 @@ public class DatabaseSeeder implements
         adminDao.update(admin);
         System.out.println("Test admin persist.");
 
-        //manager Peter
+        //manager Jan
         Manager manager = new Manager(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Jan","Kolar","manager@gmail.com","777 850 167","TestCompany, s.r.o");
         managerDao.persist(manager);
         address = new Address();
@@ -181,6 +181,21 @@ public class DatabaseSeeder implements
         manager.setAddress(address);
         managerDao.update(manager);
         System.out.println("Test manager persist.");
+
+        //manager Igor
+        manager = new Manager(BCrypt.hashpw("hesloo",BCrypt.gensalt()),"Igor","Valaska","manager1@gmail.com","777 850 120","TestCompany, s.r.o");
+        managerDao.persist(manager);
+        address = new Address();
+        address.setUser(user);
+        address.setCountry("Slovakia");
+        address.setCity("Petrovany");
+        address.setStreet("Oranzova");
+        address.setHouseNumber(20);
+        address.setZipCode("05175");
+        addressDao.persist(address);
+        manager.setAddress(address);
+        managerDao.update(manager);
+        System.out.println("Test manager1 persist.");
     }
 
     private void createUserReviews() {
@@ -328,7 +343,7 @@ public class DatabaseSeeder implements
 
         //4.offer "projekt „Úsměv pro všechny“"
         description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
-        offer = new Offer("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0, managerDao.findByEmail("manager@gmail.com"));
+        offer = new Offer("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0, managerDao.findByEmail("manager1@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3);
         jobSessionDao.persist(tripSession);
@@ -346,7 +361,7 @@ public class DatabaseSeeder implements
 
         //5. offer - bez sessions
         description = "Neaktivni offer. Nema aktivni sessions, je viditelny pouze Administratorem.";
-        offer = new Offer("Retired trip", 12, description, "retrip", 135, "London, Great Britain", 5, managerDao.findByEmail("manager@gmail.com"));
+        offer = new Offer("Retired trip", 12, description, "retrip", 135, "London, Great Britain", 5, managerDao.findByEmail("manager1@gmail.com"));
         offerDao.persist(offer);
         //tripSession ma datum  ukonceni vcera
         tripSession = new JobSession(offer, LocalDate.now().minusDays(16), LocalDate.now().minusDays(1), 2);
@@ -356,7 +371,7 @@ public class DatabaseSeeder implements
 
         //6.offer "Animátor v českém krumlově"
         description = "Pojď animovat zábavní program pro účastníky zájezdů v Českém Krumlově! Zkušenosti nepotřebuješ jenom úsměv na rtech a odhodlání rozdávat radost." ;
-        offer = new Offer("Animátor v Českém Krumlově",6,description,"czekrum",180,"Český Krumlov, Česká republika",1, managerDao.findByEmail("manager@gmail.com"));
+        offer = new Offer("Animátor v Českém Krumlově",6,description,"czekrum",180,"Český Krumlov, Česká republika",1, managerDao.findByEmail("manager1@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2018-08-06"), LocalDate.parse("2018-08-12"), 5); //0
         jobSessionDao.persist(tripSession);
