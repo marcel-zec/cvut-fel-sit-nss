@@ -1,9 +1,9 @@
 package cz.cvut.fel.nss.parttimejobportal.service;
 
+import cz.cvut.fel.nss.parttimejobportal.dao.JobJournalDao;
 import cz.cvut.fel.nss.parttimejobportal.dto.*;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.dao.CategoryDao;
-import cz.cvut.fel.nss.parttimejobportal.dao.JobJournalDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.OfferDao;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,31 +42,41 @@ public class TranslateService {
         if (user.getTravel_journal() != null) {
             JobJournalDto jobJournalDto = translateJobJournal(user.getTravel_journal());
             return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getEmail(),
-                    translateAddress(user.getAddress()),jobJournalDto,jobReviewDtos, user.getRole(),userReviewDtos);
+                    translateAddress(user.getAddress()), user.getPhone_number(), jobJournalDto,jobReviewDtos,userReviewDtos);
         }
 
        return new UserDto(user.getId(),user.getFirstName(),user.getLastName(),user.getEmail(),
-                translateAddress(user.getAddress()),null,jobReviewDtos, user.getRole(),userReviewDtos);
+                translateAddress(user.getAddress()), user.getPhone_number(), null, jobReviewDtos, userReviewDtos);
     }
 
     @Transactional
-    public UserDto translateManager(Manager manager) {
+    public ManagerDto translateManager(Manager manager) {
         System.out.println(manager.toString());
         Objects.requireNonNull(manager);
-        List<JobReviewDto> jobReviewDtos = new ArrayList<>();
         List<UserReviewDto> userReviewDtos = new ArrayList<>();
+        List<OfferDto> offersDto = new ArrayList<>();
         List<UserReview> userReviews =  manager.getUserReviewsAuthor();
+        List<Offer> offers =  manager.getOffers();
 
 
         if (userReviews.size() > 0){
             userReviews.forEach(review-> userReviewDtos.add(translateUserReview(review)));
         }
 
+        if (offers.size() > 0){
+            offers.forEach(offer-> offersDto.add(translateTrip(offer)));
+        }
 
-        return new UserDto(manager.getId(),manager.getFirstName(),manager.getLastName(),manager.getEmail(),
-                translateAddress(manager.getAddress()),null,jobReviewDtos, manager.getRole(),userReviewDtos);
+
+        return new ManagerDto(manager.getId(),manager.getFirstName(),manager.getLastName(),manager.getEmail(),
+                translateAddress(manager.getAddress()), manager.getPhone_number(),manager.getCompany(), userReviewDtos, offersDto );
     }
 
+    @Transactional
+    public AbstractUserDto translateAdmin(Admin admin){
+        Objects.requireNonNull(admin);
+        return new AbstractUserDto(admin.getId(),admin.getFirstName(), admin.getLastName(), admin.getEmail(), translateAddress(admin.getAddress()), Role.ADMIN);
+    }
 
     @Transactional
     public AddressDto translateAddress(Address address) {

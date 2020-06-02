@@ -22,7 +22,7 @@ public class TripSessionParticipantController {
         this.jobSessionService = jobSessionService;
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/{trip_short_name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RequestWrapperTripSessionsParticipants> findAllParticipants(@PathVariable String trip_short_name) {
         return jobSessionService.findAllParticipants(trip_short_name);

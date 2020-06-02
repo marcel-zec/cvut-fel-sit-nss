@@ -29,7 +29,7 @@ public class TripSessionController {
         return jobSessionService.findAllInTrip(trip_short_name);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @PostMapping(value = "/{trip_short_name}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void create(@PathVariable String trip_short_name, @RequestBody JobSession tripSession) throws Exception {
         jobSessionService.create(trip_short_name, tripSession);

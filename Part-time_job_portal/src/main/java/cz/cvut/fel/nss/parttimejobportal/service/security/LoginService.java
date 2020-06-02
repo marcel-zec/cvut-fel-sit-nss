@@ -2,6 +2,7 @@ package cz.cvut.fel.nss.parttimejobportal.service.security;
 
 import cz.cvut.fel.nss.parttimejobportal.dao.AdminDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.ManagerDao;
+import cz.cvut.fel.nss.parttimejobportal.dto.AbstractUserDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.UserDto;
 import cz.cvut.fel.nss.parttimejobportal.model.Manager;
 import cz.cvut.fel.nss.parttimejobportal.model.Role;
@@ -36,7 +37,7 @@ public class LoginService {
 
 
     @Transactional(readOnly = true)
-    public UserDto login(/*String username*/ String email, String password) throws AlreadyLoginException {
+    public AbstractUserDto login(/*String username*/ String email, String password) throws AlreadyLoginException {
 
         if (SecurityUtils.getCurrentUserDetails() != null) throw new AlreadyLoginException();
         Authentication auth = new UsernamePasswordAuthenticationToken(/*username*/ email, password);

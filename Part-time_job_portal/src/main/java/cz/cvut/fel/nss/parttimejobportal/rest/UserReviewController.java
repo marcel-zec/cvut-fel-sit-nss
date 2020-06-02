@@ -24,13 +24,13 @@ public class UserReviewController {
         this.userReviewService = userReviewService;
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserReviewDto> showAll() {
         return userReviewService.findAll();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value= "/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserReviewDto> showReviewsOfUser(Long userId) throws NotFoundException {
         return userReviewService.findAllOfUser(userId);

@@ -2,7 +2,6 @@ package cz.cvut.fel.nss.parttimejobportal.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +18,6 @@ public class User extends AbstractUser {
     @Size(max = 12, min = 9, message = "Phone number is in incorrect format.")
     @NotBlank(message = "Phone number cannot be blank")
     private String phone_number;
-
-    @Basic(optional = false)
-    @Column(nullable = false)
-    @NotNull
-    private int level = 0;
 
     @OneToOne(cascade = CascadeType.ALL)
     private JobJournal travel_journal;
@@ -109,14 +103,4 @@ public class User extends AbstractUser {
     }
 
 
-    public int getLevel() {
-
-        return level;
-    }
-
-
-    public void setLevel(int level) {
-
-        this.level = level;
-    }
 }

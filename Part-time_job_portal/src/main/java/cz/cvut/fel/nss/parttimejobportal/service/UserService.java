@@ -1,6 +1,7 @@
 package cz.cvut.fel.nss.parttimejobportal.service;
 
 import cz.cvut.fel.nss.parttimejobportal.dao.*;
+import cz.cvut.fel.nss.parttimejobportal.dto.AbstractUserDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.UserDto;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadPassword;
@@ -65,10 +66,15 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto showCurrentUser() throws UnauthorizedException {
+    public AbstractUserDto showCurrentUser() throws UnauthorizedException {
         if (SecurityUtils.isAuthenticatedAnonymously()) throw new UnauthorizedException();
         if(SecurityUtils.getCurrentUser().getRole().equals(Role.USER)) return translateService.translateUser(dao.find(SecurityUtils.getCurrentUser().getId()));
         return translateService.translateManager(managerDao.find(SecurityUtils.getCurrentUser().getId()));
+    }
+
+    @Transactional
+    public JobJournal getJobJournal(){
+         return dao.find(SecurityUtils.getCurrentUser().getId()).getTravel_journal();
     }
 
     @Transactional
