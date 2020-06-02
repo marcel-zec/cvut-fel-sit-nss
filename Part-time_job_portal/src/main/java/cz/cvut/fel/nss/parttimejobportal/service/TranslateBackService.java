@@ -1,12 +1,12 @@
 package cz.cvut.fel.nss.parttimejobportal.service;
 
-import cz.cvut.fel.nss.parttimejobportal.dto.AddressDto;
-import cz.cvut.fel.nss.parttimejobportal.dto.UserDto;
-import cz.cvut.fel.nss.parttimejobportal.model.Address;
-import cz.cvut.fel.nss.parttimejobportal.model.AbstractUser;
 import cz.cvut.fel.nss.parttimejobportal.dao.AddressDao;
 import cz.cvut.fel.nss.parttimejobportal.dao.UserDao;
+import cz.cvut.fel.nss.parttimejobportal.dto.AddressDto;
+import cz.cvut.fel.nss.parttimejobportal.dto.UserDto;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
+import cz.cvut.fel.nss.parttimejobportal.model.AbstractUser;
+import cz.cvut.fel.nss.parttimejobportal.model.Address;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

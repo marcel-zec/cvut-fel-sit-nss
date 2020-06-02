@@ -36,6 +36,7 @@ public class UserReviewController {
         return userReviewService.findAllOfUser(userId);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value= "/current", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserReviewDto> showReviewsOfCurrentUser() throws UnauthorizedException, NotFoundException {
         return userReviewService.findAllOfUser();
