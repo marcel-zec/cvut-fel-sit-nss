@@ -27,6 +27,7 @@ class SessionGroup extends React.Component {
                         onChangeMethod={this.props.onChangeMethod}
                         forDeleteSession={this.props.forDeleteSession}
                         session={sessions[i]}
+                        uneditable={this.props.uneditable ? true : false}
                     />
                 );
             }
@@ -35,12 +36,14 @@ class SessionGroup extends React.Component {
         return (
             <>
                 <Form.Row>
-                    <ButtonInRow
-                        variant="success"
-                        side="left"
-                        label="Add session"
-                        onClickMethod={() => this.addNewSessionHandler()}
-                    />
+                    {this.props.uneditable ? null : (
+                        <ButtonInRow
+                            variant="success"
+                            side="left"
+                            label="Add session"
+                            onClickMethod={() => this.addNewSessionHandler()}
+                        />
+                    )}
                 </Form.Row>
                 {arraySessions}
             </>

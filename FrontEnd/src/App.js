@@ -54,6 +54,7 @@ import {
     faRedo,
     faHammer,
     faSmileWink,
+    faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { faStar as emptyStar } from "@fortawesome/free-regular-svg-icons";
 import { appContext } from "./appContext";
@@ -108,7 +109,8 @@ library.add(
     faCheck,
     faRedo,
     faHammer,
-    faSmileWink
+    faSmileWink,
+    faSearch
 );
 
 class App extends React.Component {

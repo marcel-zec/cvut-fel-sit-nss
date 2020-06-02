@@ -72,14 +72,23 @@ class SessionInput extends React.Component {
                     className="d-flex flex-column"
                 >
                     <Form.Label>Date from</Form.Label>
-                    <DatePicker
-                        className="form-control"
-                        selected={this.state.from_date}
-                        dateFormat="dd-MM-yyyy"
-                        onChange={(date) =>
-                            this.dateChangeHandler(date, "from_date")
-                        }
-                    />
+                    {this.props.uneditable ? (
+                        <DatePicker
+                            className="form-control"
+                            selected={this.state.from_date}
+                            dateFormat="dd-MM-yyyy"
+                            disabled
+                        />
+                    ) : (
+                        <DatePicker
+                            className="form-control"
+                            selected={this.state.from_date}
+                            dateFormat="dd-MM-yyyy"
+                            onChange={(date) =>
+                                this.dateChangeHandler(date, "from_date")
+                            }
+                        />
+                    )}
                 </Form.Group>
 
                 <Form.Group
@@ -88,41 +97,62 @@ class SessionInput extends React.Component {
                     className="d-flex flex-column"
                 >
                     <Form.Label>Date to</Form.Label>
-                    <DatePicker
-                        className="form-control"
-                        selected={this.state.to_date}
-                        dateFormat="dd-MM-yyyy"
-                        onChange={(date) =>
-                            this.dateChangeHandler(date, "to_date")
-                        }
-                    />
+                    {this.props.uneditable ? (
+                        <DatePicker
+                            className="form-control"
+                            selected={this.state.to_date}
+                            dateFormat="dd-MM-yyyy"
+                            disabled
+                        />
+                    ) : (
+                        <DatePicker
+                            className="form-control"
+                            selected={this.state.to_date}
+                            dateFormat="dd-MM-yyyy"
+                            onChange={(date) =>
+                                this.dateChangeHandler(date, "to_date")
+                            }
+                        />
+                    )}
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formGridShortName">
                     <Form.Label>Capacity</Form.Label>
-                    <Form.Control
-                        placeholder=""
-                        value={this.state.capacity}
-                        onChange={(event) =>
-                            this.inputUpdateHandler(event, "capacity")
-                        }
-                    />
+                    {this.props.uneditable ? (
+                        <Form.Control
+                            placeholder=""
+                            value={this.state.capacity}
+                            disabled
+                        />
+                    ) : (
+                        <Form.Control
+                            placeholder=""
+                            value={this.state.capacity}
+                            onChange={(event) =>
+                                this.inputUpdateHandler(event, "capacity")
+                            }
+                        />
+                    )}
                 </Form.Group>
-                <Form.Group className="d-flex flex-column justify-content-end mb-4">
-                    <Button
-                        variant="danger"
-                        size="sm"
-                        onClick={() => this.props.forDeleteSession(this.state)}
-                    >
-                        <FontAwesomeIcon
-                            icon="times"
-                            size="lg"
+                {this.props.uneditable ? null : (
+                    <Form.Group className="d-flex flex-column justify-content-end mb-4">
+                        <Button
+                            variant="danger"
+                            size="sm"
                             onClick={() =>
                                 this.props.forDeleteSession(this.state)
                             }
-                        />
-                    </Button>
-                </Form.Group>
+                        >
+                            <FontAwesomeIcon
+                                icon="times"
+                                size="lg"
+                                onClick={() =>
+                                    this.props.forDeleteSession(this.state)
+                                }
+                            />
+                        </Button>
+                    </Form.Group>
+                )}
             </Form.Row>
         );
     }
