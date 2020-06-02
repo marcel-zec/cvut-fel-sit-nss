@@ -654,7 +654,7 @@ public class DatabaseSeeder implements
         //travelJournal = users.get(3).getTravel_journal();
     }
 
-    private void signUpUserToExpiredEnrollmentsForTesting(User user) {
+    private void signUpUserToExpiredEnrollmentsForTesting(User user) throws NotAllowedException {
         JobJournal travelJournal = user.getTravel_journal();
 
         List<Enrollment> enrollments = travelJournal.getEnrollments();
