@@ -4,6 +4,8 @@ import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.dto.JobSessionDto;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
+import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
+import cz.cvut.fel.nss.parttimejobportal.security.model.UserDetails;
 import cz.cvut.fel.nss.parttimejobportal.service.EnrollmentService;
 import cz.cvut.fel.nss.parttimejobportal.service.JobJournalService;
 import cz.cvut.fel.nss.parttimejobportal.service.TranslateService;
@@ -697,20 +699,20 @@ public class DatabaseSeeder implements
         e.setState(EnrollmentState.ACTIVE);
         enrollmentDao.update(e);
 
-        enrollmentService.closeOk(e.getId());
+       // enrollmentService.closeOk(e.getId());
 
         e = user.getTravel_journal().getEnrollments().get(1);
         e.setDeposit_was_paid(false);
         e.setState(EnrollmentState.ACTIVE);
         enrollmentDao.update(e);
-        enrollmentService.closeOk(e.getId());
+//        enrollmentService.closeOk(e.getId());
 
         for(int i = 5; i < 9; i++) {
             e = user.getTravel_journal().getEnrollments().get(i);
             e.setDeposit_was_paid(true);
             e.setState(EnrollmentState.ACTIVE);
             enrollmentDao.update(e);
-            enrollmentService.closeOk(e.getId());
+           // enrollmentService.closeOk(e.getId());
         }
     }
 

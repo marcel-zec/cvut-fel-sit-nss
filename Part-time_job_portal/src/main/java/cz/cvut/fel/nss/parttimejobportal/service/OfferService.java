@@ -170,7 +170,7 @@ public class OfferService {
 
     private void addOfferToCache(OfferDto offerDto) {
         cache.put(offerDto.getId(),offerDto);
-        LOG.info("Putting new offer (ID: " + offerDto.getId() + ") to cache");
+        LOG.info("Putting new offer (ID: " + offerDto.getId() + ") to cache.");
     }
 
     @Transactional
