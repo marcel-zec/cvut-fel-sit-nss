@@ -25,7 +25,7 @@ class SessionInput extends React.Component {
                       toDate.getTime() + toDate.getTimezoneOffset() * 60000
                   )
                 : null,
-            price: this.props.session.price,
+            capacity: this.props.session.capacity,
         };
         console.log("constructor");
         console.log(this.props);
@@ -99,12 +99,12 @@ class SessionInput extends React.Component {
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formGridShortName">
-                    <Form.Label>Price</Form.Label>
+                    <Form.Label>Capacity</Form.Label>
                     <Form.Control
                         placeholder=""
-                        value={this.state.price}
+                        value={this.state.capacity}
                         onChange={(event) =>
-                            this.inputUpdateHandler(event, "price")
+                            this.inputUpdateHandler(event, "capacity")
                         }
                     />
                 </Form.Group>

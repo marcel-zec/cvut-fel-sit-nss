@@ -34,10 +34,10 @@ class Create extends React.Component {
                     valid: false,
                     validationRules: rules.trip.short_name,
                 },
-                deposit: {
+                salary: {
                     touched: false,
                     valid: false,
-                    validationRules: rules.trip.deposit,
+                    validationRules: rules.trip.salary,
                 },
                 required_level: {
                     touched: false,
@@ -74,7 +74,7 @@ class Create extends React.Component {
         trip: {
             name: null,
             short_name: null,
-            deposit: null,
+            salary: null,
             required_level: null,
             possible_xp_reward: null,
             category: null,
@@ -99,7 +99,7 @@ class Create extends React.Component {
         const stringProperties = [
             "name",
             "short_name",
-            "deposit",
+            "salary",
             "required_level",
             "possible_xp_reward",
             "location",
@@ -287,35 +287,40 @@ class Create extends React.Component {
                             "Missing 'to' date at " + index + ". session. ";
                     sessionValid = false;
                 }
-                if (session.price == null) {
+                if (session.capacity == null) {
                     if (newState.elements.sessions.feedback)
                         newState.elements.sessions.feedback +=
-                            "Missing 'price' at " + index + ". session.";
+                            "Missing 'capacity' at " + index + ". session.";
                     else
                         newState.elements.sessions.feedback =
-                            "Missing 'price' date at " + index + ". session.";
+                            "Missing 'capacity' date at " +
+                            index +
+                            ". session.";
                     sessionValid = false;
-                } else if (session.price.trim() == "" || isNaN(session.price)) {
+                } else if (
+                    session.capacity.trim() == "" ||
+                    isNaN(session.capacity)
+                ) {
                     if (newState.elements.sessions.feedback)
                         newState.elements.sessions.feedback +=
-                            "Price at " +
+                            "Capacity at " +
                             index +
                             ". session needs to be number. ";
                     else
                         newState.elements.sessions.feedback =
-                            "Price at " +
+                            "Capacity at " +
                             index +
                             ". session needs to be number. ";
                     sessionValid = false;
-                } else if (session.price < 0 || session.price > 99999) {
+                } else if (session.capacity < 0 || session.capacity > 99999) {
                     if (newState.elements.sessions.feedback)
                         newState.elements.sessions.feedback +=
-                            "Price at " +
+                            "Capacity at " +
                             index +
                             ". session needs to be at range 0 - 99 999. ";
                     else
                         newState.elements.sessions.feedback =
-                            "Price at " +
+                            "Capacity at " +
                             index +
                             ". session needs to be at range 0 - 99 999. ";
                 }
@@ -496,24 +501,21 @@ class Create extends React.Component {
                             </Form.Group>
                         </Form.Row>
                         <Form.Row>
-                            <Form.Group as={Col} controlId="formGridDeposit">
+                            <Form.Group as={Col} controlId="formGridsalary">
                                 <Form.Label>Salary (per hour)</Form.Label>
                                 <Form.Control
                                     placeholder="Enter salary per hour"
                                     onChange={(event) =>
-                                        this.inputUpdateHandler(
-                                            event,
-                                            "deposit"
-                                        )
+                                        this.inputUpdateHandler(event, "salary")
                                     }
                                     className={validationClassName(
-                                        "deposit",
+                                        "salary",
                                         this.state.form
                                     )}
                                 />
                                 <div class="invalid-feedback">
                                     {validationFeedback(
-                                        "deposit",
+                                        "salary",
                                         this.state.form
                                     )}
                                 </div>

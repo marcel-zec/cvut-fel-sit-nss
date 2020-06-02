@@ -18,8 +18,9 @@ a.submit svg {
     color: #fff !important;
     margin-left: 7px;
 }
-.dropdown-item.active, .dropdown-item:active{
-    background-color: #ccc!important;
+.dropdown-item.active,
+.dropdown-item:active {
+    background-color: #ccc !important;
 }
 a.submit {
     margin: auto;
@@ -312,7 +313,7 @@ header + div {
     padding-top: 67px;
 }
 header img.logo {
-    width: 60px;
+    width: 180px;
 }
 header .navbar {
     padding: 0px;
@@ -791,14 +792,14 @@ header .nav-link a {
 #tripsElementBlock .archiveTrips {
     display: none;
 }
-#tripsElementBlock .react-datepicker-wrapper{
+#tripsElementBlock .react-datepicker-wrapper {
     width: 120px;
 }
-#tripsElementBlock .activeTrips.active ,
+#tripsElementBlock .activeTrips.active,
 #tripsElementBlock .archiveTrips.active {
     display: block;
 }
-#tripsElementBlock button.submit.createReview svg{
+#tripsElementBlock button.submit.createReview svg {
     color: #fff;
     margin-left: 10px;
 }
@@ -897,52 +898,51 @@ header .nav-link a {
     padding: 0%;
 }
 /*Trip Search*/
-.searchTrip{
-
+.searchTrip {
 }
-.searchTrips a{
+.searchTrips a {
     color: #252525;
 }
-.searchTrips a:hover{
+.searchTrips a:hover {
     color: #101010;
 }
-.searchTrips a:hover h4{
+.searchTrips a:hover h4 {
     text-decoration: underline;
 }
-.searchTrips a:hover{
-    text-decoration: none!important;
+.searchTrips a:hover {
+    text-decoration: none !important;
 }
-.searchTrip .card-body{
+.searchTrip .card-body {
     padding: 0px;
 }
-.searchTrip .card-body .col-5{
-    padding-left: 0px!important;
+.searchTrip .card-body .col-5 {
+    padding-left: 0px !important;
     padding-right: 0px;
 }
-.searchTrip .card-body .col-7{
+.searchTrip .card-body .col-7 {
     padding: 1.25em;
 }
-.searchTrip h4{
+.searchTrip h4 {
     text-align: left;
     font-size: 20px;
 }
-.searchTrip h4+span{
+.searchTrip h4 + span {
     height: 50px;
     overflow: hidden;
     display: block;
     text-overflow: ellipsis;
 }
-.filter .card{
+.filter .card {
     padding: 15px;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, .1), 0 1px 10px rgba(0, 0, 0, .15);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 1px 10px rgba(0, 0, 0, 0.15);
 }
-.filter .form-group{
+.filter .form-group {
     margin-bottom: 0px;
 }
-.filter form .submit{
+.filter form .submit {
     width: 180px;
 }
-.filter form label{
+.filter form label {
     margin-bottom: 0px;
     display: inline-block;
     vertical-align: middle;
@@ -950,35 +950,37 @@ header .nav-link a {
     margin-right: 10px;
     font-weight: 500;
 }
-.filter form .react-datepicker-wrapper{
+.filter form .react-datepicker-wrapper {
     display: inline-block;
     vertical-align: middle;
     margin-right: 5px;
 }
-.range-slider__wrap{
-    width:100%;
+.range-slider__wrap {
+    width: 100%;
 }
-.filter input[type=range].range-slider.range-slider--primary::-webkit-slider-thumb {
+.filter
+    input[type="range"].range-slider.range-slider--primary::-webkit-slider-thumb {
     background-color: #ff6666;
 }
-.addReviewForm input[type=range].range-slider.range-slider--primary::-webkit-slider-thumb {
+.addReviewForm
+    input[type="range"].range-slider.range-slider--primary::-webkit-slider-thumb {
     background-color: #ff6666;
 }
-.topLine img{
+.topLine img {
     width: 100%;
     padding-left: 40px;
     padding-right: 28px;
 }
-.topLine h4{
+.topLine h4 {
     width: 100%;
     padding-left: 50px;
     padding-right: 28px;
     text-align: left;
 }
-.addReviewForm{
+.addReviewForm {
     width: 650px;
-    margin:auto;
+    margin: auto;
 }
-.addReviewForm .closeButton{
+.addReviewForm .closeButton {
     float: right;
 }

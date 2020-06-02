@@ -9,7 +9,7 @@ class SessionGroup extends React.Component {
             index: null,
             date_from: null,
             date_to: null,
-            price: null,
+            capacity: null,
         };
         this.props.onChangeMethod(session);
     };
