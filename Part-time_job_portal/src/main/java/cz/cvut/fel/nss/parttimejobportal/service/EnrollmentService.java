@@ -201,8 +201,9 @@ public class EnrollmentService {
     }
 
     @Transactional
-    public void closeOk(Long id) throws NotAllowedException {
+    public void closeOk(Long id) throws NotAllowedException, NotFoundException {
         Enrollment enrollment = find(id);
+        if (enrollment == null) throw new NotFoundException();
         if (!enrollment.getTrip().getAuthor().getId().equals(SecurityUtils.getCurrentUser().getId())) throw new NotAllowedException("Not for you");
 
         List<AchievementSpecial> achievementSpecials = enrollment.getTrip().getGain_achievements_special();

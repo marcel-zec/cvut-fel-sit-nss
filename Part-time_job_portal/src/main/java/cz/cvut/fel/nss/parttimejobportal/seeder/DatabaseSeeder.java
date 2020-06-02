@@ -2,6 +2,7 @@ package cz.cvut.fel.nss.parttimejobportal.seeder;
 
 import cz.cvut.fel.nss.parttimejobportal.dao.*;
 import cz.cvut.fel.nss.parttimejobportal.dto.JobSessionDto;
+import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.model.*;
 import cz.cvut.fel.nss.parttimejobportal.service.EnrollmentService;
 import cz.cvut.fel.nss.parttimejobportal.service.JobJournalService;
@@ -88,7 +89,7 @@ public class DatabaseSeeder implements
         addAchievementsToUsers();
         try {
             signUsersToTrips();
-        } catch (NotAllowedException e) {
+        } catch (NotAllowedException | NotFoundException e) {
             e.printStackTrace();
         }
         createJobReviews();
@@ -565,7 +566,7 @@ public class DatabaseSeeder implements
     }
 
 
-    void signUsersToTrips() throws NotAllowedException {
+    void signUsersToTrips() throws NotAllowedException, NotFoundException {
         //JAN
         User user = userDao.findAll().get(0);
         Offer offer = offerDao.findAll().get(0);
@@ -654,7 +655,7 @@ public class DatabaseSeeder implements
         //travelJournal = users.get(3).getTravel_journal();
     }
 
-    private void signUpUserToExpiredEnrollmentsForTesting(User user) throws NotAllowedException {
+    private void signUpUserToExpiredEnrollmentsForTesting(User user) throws NotAllowedException, NotFoundException {
         JobJournal travelJournal = user.getTravel_journal();
 
         List<Enrollment> enrollments = travelJournal.getEnrollments();
