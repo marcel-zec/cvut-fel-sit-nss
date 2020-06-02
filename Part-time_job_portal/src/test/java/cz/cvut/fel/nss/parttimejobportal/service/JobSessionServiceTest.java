@@ -5,6 +5,7 @@ import cz.cvut.fel.nss.parttimejobportal.exception.BadDateException;
 import cz.cvut.fel.nss.parttimejobportal.exception.MissingVariableException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
+import cz.cvut.fel.nss.parttimejobportal.model.Manager;
 import cz.cvut.fel.nss.parttimejobportal.model.Offer;
 import cz.cvut.fel.nss.parttimejobportal.model.JobSession;
 import org.junit.Before;
@@ -40,7 +41,7 @@ public class JobSessionServiceTest {
 
     @Before
     public void prepare() throws BadDateException, MissingVariableException {
-        trip = new Offer("test2",11,"Description","shortName1",1000,"Hawaii",2,null);
+        trip = new Offer("test2",11,"Description","shortName1",1000,"Hawaii",2,new Manager());
         tripSession = new JobSession(trip, LocalDate.now(), LocalDate.now().plusDays(7),2000);
 
         ArrayList<JobSession> s = new ArrayList<JobSession>() {{add(tripSession);}};
