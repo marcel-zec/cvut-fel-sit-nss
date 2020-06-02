@@ -89,7 +89,7 @@ public class EnrollmentService {
 
         for (Enrollment e: enrollments) {
             if (e.getState().equals(EnrollmentState.ACTIVE) && e.getTripSession().getTo_date().isBefore(ChronoLocalDate.from(LocalDateTime.now()))){
-                if ((SecurityUtils.getCurrentUser().getRole() == Role.MANAGER && SecurityUtils.getCurrentUser().equals(e.getTrip().getAuthor())) || SecurityUtils.getCurrentUser().getRole() == Role.ADMIN){
+                if ((SecurityUtils.getCurrentUser().getRole() == Role.MANAGER && SecurityUtils.getCurrentUser().getId().equals(e.getTrip().getAuthor().getId())) || SecurityUtils.getCurrentUser().getRole() == Role.ADMIN){
                     newEnrollments.add(e);
                 }
             }
