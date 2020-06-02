@@ -80,6 +80,7 @@ public class OfferDto {
         this.gain_achievements_special = gain_achievements;
         this.sessions = sessions;
         this.jobReviewDtos = jobReviewDtos;
+        this.authorId = authorId;
     }
 
     public String getName() {
@@ -218,6 +219,7 @@ public class OfferDto {
         this.id = id;
     }
 
+
     @Override
     public String toString() {
         return "OfferDto{" +
@@ -230,7 +232,7 @@ public class OfferDto {
                 ", salary=" + salary +
                 ", location='" + location + '\'' +
                 ", required_level=" + required_level +
-
+                ", author=" + authorId +
                 ", required_achievements_certificate=" + required_achievements_certificate +
                 ", required_achievements_categorized=" + required_achievements_categorized +
                 ", required_achievements_special=" + required_achievements_special +

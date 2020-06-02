@@ -21,6 +21,7 @@ import java.util.Objects;
 public class UserService {
 
     private final UserDao dao;
+    private final AdminDao adminDao;
     private final ManagerDao managerDao;
     private final JobReviewDao jobReviewDao;
     private final JobJournalDao jobJournalDao;
@@ -30,8 +31,9 @@ public class UserService {
 
 
     @Autowired
-    public UserService(UserDao dao, ManagerDao managerDao, JobReviewDao jobReviewDao, JobJournalDao jobJournalDao, AddressDao addressDao, TranslateService translateService, cz.cvut.fel.nss.parttimejobportal.service.TranslateBackService translateBackService) {
+    public UserService(UserDao dao, AdminDao adminDao, ManagerDao managerDao, JobReviewDao jobReviewDao, JobJournalDao jobJournalDao, AddressDao addressDao, TranslateService translateService, TranslateBackService translateBackService) {
         this.dao = dao;
+        this.adminDao = adminDao;
         this.managerDao = managerDao;
         this.jobReviewDao = jobReviewDao;
         this.jobJournalDao = jobJournalDao;
@@ -70,6 +72,7 @@ public class UserService {
     public AbstractUserDto showCurrentUser() throws UnauthorizedException {
         if (SecurityUtils.isAuthenticatedAnonymously()) throw new UnauthorizedException();
         if(SecurityUtils.getCurrentUser().getRole().equals(Role.USER)) return translateService.translateUser(dao.find(SecurityUtils.getCurrentUser().getId()));
+        if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN)) return translateService.translateAdmin(adminDao.find(SecurityUtils.getCurrentUser().getId()));
         return translateService.translateManager(managerDao.find(SecurityUtils.getCurrentUser().getId()));
     }
 

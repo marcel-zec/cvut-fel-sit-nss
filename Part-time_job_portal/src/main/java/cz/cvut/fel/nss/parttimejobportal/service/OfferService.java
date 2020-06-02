@@ -59,12 +59,13 @@ public class OfferService {
 
     @Transactional
     public List<OfferDto> findAllDto() {
-        List<OfferDto> tripDtos = new ArrayList<>();
+        List<OfferDto> offerDtos = new ArrayList<>();
 
-        for (Offer trip:offerDao.findAll()) {
-            tripDtos.add(translateService.translateTrip(trip));
+        for (Offer offer:offerDao.findAll()) {
+            if (SecurityUtils.getCurrentUser().getRole() == Role.MANAGER && offer.getAuthor().getId().equals(SecurityUtils.getCurrentUser().getId())) offerDtos.add(translateService.translateTrip(offer));
+            else if (SecurityUtils.getCurrentUser().getRole() == Role.ADMIN) offerDtos.add(translateService.translateTrip(offer));
         }
-        return tripDtos;
+        return offerDtos;
     }
 
     @Transactional
@@ -133,6 +134,7 @@ public class OfferService {
 
         Objects.requireNonNull(offer);
         if (offer.getSessions().size()<=0) throw new MissingVariableException();
+        offer.setAuthor(managerDao.find(SecurityUtils.getCurrentUser().getId()));
         offerDao.persist(offer);
         for (JobSession session: offer.getSessions()) {
             if (session.getTo_date().isBefore(session.getFrom_date())) {
@@ -142,7 +144,6 @@ public class OfferService {
             session.setTrip(offer);
             jobSessionDao.persist(session);
         }
-        offer.setAuthor(managerDao.find(SecurityUtils.getCurrentUser().getId()));
         offerDao.update(offer);
     }
 
