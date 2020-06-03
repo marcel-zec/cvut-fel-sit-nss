@@ -53,13 +53,11 @@ public class OfferController {
 
         if(!SecurityUtils.isAuthenticatedAnonymously()) {
             if(SecurityUtils.getCurrentUser().getRole().equals(Role.ADMIN) || SecurityUtils.getCurrentUser().getRole().equals(Role.MANAGER)) {
-
                 return ResponseEntity.status(HttpStatus.OK).body(offerService.findAllDto());
             }
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(offerService.findAllDtoFiltered());
-
     }
 
     @GetMapping(value = "/{identificator}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -79,7 +77,7 @@ public class OfferController {
     public ResponseEntity<Void> create(@RequestBody Offer offer) throws BadDateException, MissingVariableException {
         offerService.create(offer);
         LOG.info("Offer {} created.", offer.getShort_name());
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PreAuthorize("hasRole('ROLE_MANAGER')")
