@@ -179,7 +179,7 @@ public class EnrollmentService {
 
 
     /**
-     * Get all EnrollmentsDto of current logged in user which are finished.
+     * Get all EnrollmentsDto of user and enrollments are finished.
      * @param current_user
      * @return  List<EnrollmentDto>
      * @throws NotAllowedException  if nobody is logged in.
@@ -197,7 +197,7 @@ public class EnrollmentService {
 
 
     /**
-     * Get all EnrollmentsDto of current logged in user which are active or canceled.
+     * Get all EnrollmentsDto of user and enrollments are active or canceled.
      * @param current_user
      * @return List<EnrollmentDto>
      * @throws NotAllowedException if nobody is logged in.
@@ -251,6 +251,12 @@ public class EnrollmentService {
         enrollmentDao.persist(enrollment);
     }
 
+
+    /**
+     * Closing enrollment when something went wrong and user gained less xp or achievements.
+     * @param enrollmentDto new enrollment with new xp and achievement parameters
+     * @throws NotAllowedException
+     */
     @Transactional
     public void close(EnrollmentDto enrollmentDto) throws NotAllowedException {
         Enrollment enrollment = find(enrollmentDto.getId());
@@ -275,6 +281,13 @@ public class EnrollmentService {
         }
     }
 
+
+    /**
+     * Closing enrollment by id when everything is ok and user gained all xp and achievements.
+     * @param id
+     * @throws NotAllowedException
+     * @throws NotFoundException
+     */
     @Transactional
     public void closeOk(Long id) throws NotAllowedException, NotFoundException {
         Enrollment enrollment = find(id);
@@ -297,6 +310,11 @@ public class EnrollmentService {
         }
     }
 
+
+    /**
+     * Cancel enrollment by id.
+     * @param id
+     */
     @Transactional
     public void cancel(Long id) {
         Enrollment enrollment = find(id);
@@ -304,6 +322,11 @@ public class EnrollmentService {
         enrollmentDao.update(enrollment);
     }
 
+
+    /**
+     * change payment of enrollment to paid
+     * @param id
+     */
     @Transactional
     public void changePaymnet(Long id) {
         Enrollment enrollment = find(id);

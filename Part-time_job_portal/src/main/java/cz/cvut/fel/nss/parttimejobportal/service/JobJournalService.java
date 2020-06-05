@@ -27,22 +27,34 @@ public class JobJournalService {
         this.achievementCategorizedService = achievementCategorizedService;
     }
 
+
+    /**
+     *
+     * @param jobJournalId
+     * @param offerId
+     */
     @Transactional
-    public void addTrip(Long jobJournalId, Long tripId) {
+    public void addTrip(Long jobJournalId, Long offerId) {
         Objects.requireNonNull(jobJournalId);
-        Objects.requireNonNull(tripId);
+        Objects.requireNonNull(offerId);
 
         JobJournal jobJournal = dao.find(jobJournalId);
-        Offer trip = offerDao.find(tripId);
-        Category category = categoryDao.find(trip.getCategory().getId());
+        Offer offer = offerDao.find(offerId);
+        Category category = categoryDao.find(offer.getCategory().getId());
 
-        System.out.println("ADDING TRIP" + category.getName());
+        System.out.println("ADDING OFFER" + category.getName());
 
-        jobJournal.addTrip(trip.getCategory().getId());
+        jobJournal.addTrip(offer.getCategory().getId());
         dao.update(jobJournal);
-        checkCategorizedAchievements(trip.getCategory(), jobJournal);
+        checkCategorizedAchievements(offer.getCategory(), jobJournal);
     }
 
+
+    /**
+     *
+     * @param jobJournal
+     * @param achievementCategorized
+     */
     @Transactional
     public void addOwnedCategorizedAchievement(JobJournal jobJournal, AchievementCategorized achievementCategorized) {
         Objects.requireNonNull(achievementCategorized);
@@ -51,6 +63,12 @@ public class JobJournalService {
         dao.update(jobJournal);
     }
 
+
+    /**
+     *
+     * @param jobJournal
+     * @param achievementCertificate
+     */
     @Transactional
     public void addOwnedCertificates(JobJournal jobJournal, AchievementCertificate achievementCertificate) {
         Objects.requireNonNull(jobJournal);
@@ -59,6 +77,12 @@ public class JobJournalService {
         dao.update(jobJournal);
     }
 
+
+    /**
+     *
+     * @param jobJournal
+     * @param achievementSpecial
+     */
     @Transactional
     public void addOwnedSpecialAchievement(JobJournal jobJournal, AchievementSpecial achievementSpecial) {
         Objects.requireNonNull(jobJournal);
@@ -67,8 +91,12 @@ public class JobJournalService {
         dao.update(jobJournal);
     }
 
-
     //this should be used after finalizing/closing the enrollment and adding new trip to hashmap in travel journal
+    /**
+     *
+     * @param category
+     * @param currentJobJournal
+     */
     @Transactional
     public void checkCategorizedAchievements(Category category, JobJournal currentJobJournal) {
         int numberOfTripsInCat = currentJobJournal.findAndGetCategoryValueIfExists(category.getId());
@@ -88,6 +116,12 @@ public class JobJournalService {
         dao.update(currentJobJournal);
     }
 
+
+    /**
+     * Add xp to users job Journal.
+     * @param jobJournalId
+     * @param actual_xp_reward
+     */
     @Transactional
     public void addXP(Long jobJournalId,int actual_xp_reward) {
         JobJournal jobJournal = dao.find(jobJournalId);
