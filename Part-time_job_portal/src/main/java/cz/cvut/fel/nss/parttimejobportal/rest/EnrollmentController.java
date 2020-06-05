@@ -36,36 +36,67 @@ public class EnrollmentController {
         this.userReviewService = userReviewService;
     }
 
+    /**
+     * Method find and return enrollent by id. Available only for user with ADMIN or MANAGER role.
+     * @param id
+     * @return response with EnrollmentDto
+     */
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EnrollmentDto> get(@PathVariable Long id)  {
         return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.findDto(id));
     }
 
+    /**
+     * Method find all completed enrollments of current user. Available only for user with USER role.
+     * @return response with list of EnrollmentDto
+     * @throws NotAllowedException
+     */
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/complete", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EnrollmentDto>> getAllOfUserFinished() throws NotAllowedException {
         return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.findAllOfUserFinished(SecurityUtils.getCurrentUser()));
     }
 
+    /**
+     * Method find all active enrollments of current user. Available only for user with USER role.
+     * @return response with list of EnrollmentDto
+     * @throws NotAllowedException
+     */
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EnrollmentDto>> getAllOfUserActiveAndCancel() throws NotAllowedException {
         return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.findAllOfUserActive(SecurityUtils.getCurrentUser()));
     }
 
+    /**
+     * Method find all completed enrollments of user by user id. Available only for user with MANAGER of ADMIN role.
+     * @return response with list of EnrollmentDto
+     * @throws NotAllowedException
+     * @throws NotFoundException
+     */
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/complete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EnrollmentDto>> getAllOfUserFinishedAdmin(@PathVariable Long id) throws NotAllowedException, NotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.findAllOfUserFinished(id));
     }
 
+    /**
+     * Method find all active enrollments of user by user id. Available only for user with MANAGER of ADMIN role.
+     * @return response with list of EnrollmentDto
+     * @throws NotAllowedException
+     * @throws NotFoundException
+     */
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/active/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EnrollmentDto>> getAllOfUserActiveAndCancelAdmin(@PathVariable Long id) throws NotAllowedException, NotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.findAllOfUserActive(id));
     }
 
+    /**
+     * Method find all enrollments and theirs owner after end_date that should be finished. Available only for user with MANAGER of ADMIN role.
+     * @return response with list of RequestWrapper (with EnrollmentDto and UserDto)
+     */
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/close", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RequestWrapperEnrollmentGet>> getAllActiveEnded() {
@@ -73,6 +104,12 @@ public class EnrollmentController {
     }
 
 
+    /**
+     * Close concrete enrollment with edited reward and make user review. Available only for user with MANAGER role.
+     * @param requestWrapperEnrollment - contains EnrollmentDto and UserDto
+     * @return response 204
+     * @throws Exception
+     */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PatchMapping(value = "/close", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> close(@RequestBody RequestWrapperEnrollment requestWrapperEnrollment) throws Exception {
@@ -83,12 +120,22 @@ public class EnrollmentController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    /**
+     * Method find enrollment by id and its owner after end_date that should be finished. Available only for user with MANAGER of ADMIN role.
+     * @return response with list of RequestWrapper (with EnrollmentDto and UserDto)
+     * @throws NotAllowedException
+     */
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/close/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RequestWrapperEnrollmentGet> getWithUser(@PathVariable Long id) throws NotAllowedException {
         return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.findActiveEndedWithUser(id));
     }
 
+    /**
+     * Close concrete enrollment by id with full reward. Available only for user with MANAGER role.
+     * @return response 204
+     * @throws Exception
+     */
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PostMapping(value = "/close/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> closeOk(@PathVariable Long id) throws Exception {
@@ -98,6 +145,12 @@ public class EnrollmentController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    /**
+     * Cancel enrollemt by id.
+     * @param id
+     * @return response 204
+     * @throws Exception
+     */
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
     @PostMapping(value = "cancel/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> cancel(@PathVariable Long id) throws Exception {
@@ -105,10 +158,11 @@ public class EnrollmentController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
-    @PostMapping(value = "changePayment/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> changePayment(@PathVariable Long id) throws Exception {
-        enrollmentService.changePaymnet(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+
+//    @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
+//    @PostMapping(value = "changePayment/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Void> changePayment(@PathVariable Long id) throws Exception {
+//        enrollmentService.changePaymnet(id);
+//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+//    }
 }
