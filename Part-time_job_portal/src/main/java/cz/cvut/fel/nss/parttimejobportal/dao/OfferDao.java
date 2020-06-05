@@ -39,7 +39,7 @@ public class OfferDao extends BaseDao<Offer> {
         }
     }
 
-    public List<Offer> findByFilter(String location, LocalDate from_date, LocalDate to_date, Double maxPrice, String[] search){
+    public List<Offer> findByFilter(String location, LocalDate from_date, LocalDate to_date, Double minPrice, String[] search){
 
         try {
                 List<Offer> filteredTrips = new ArrayList<>();
@@ -48,7 +48,7 @@ public class OfferDao extends BaseDao<Offer> {
                         .setParameter("location", location)
                         .setParameter("from_date", from_date)
                         .setParameter("to_date", to_date)
-                        .setParameter("maxPrice", maxPrice)
+                        .setParameter("minPrice", minPrice)
                         .getResultList();
 
                 List<Long> ids = new ArrayList<>();

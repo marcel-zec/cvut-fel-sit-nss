@@ -7,7 +7,7 @@ import javax.persistence.NoResultException;
 import java.util.Objects;
 
 @Repository
-public class AbstractUserDao extends BaseDao<AbstractUser> {
+public class  AbstractUserDao extends BaseDao<AbstractUser> {
 
     public AbstractUserDao(){super(AbstractUser.class);}
 

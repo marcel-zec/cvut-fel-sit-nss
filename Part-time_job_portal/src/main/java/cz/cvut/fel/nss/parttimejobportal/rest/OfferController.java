@@ -42,9 +42,9 @@ public class OfferController {
     public ResponseEntity<List<OfferDto>> getAllTripsByFilter(@RequestParam(required = false) String location,
                                                               @RequestParam(required = false) String from_date,
                                                               @RequestParam(required = false) String to_date,
-                                                              @RequestParam(value = "max_price", required = false) Double maxPrice,
+                                                              @RequestParam(value = "min_price", required = false) Double minPrice,
                                                               @RequestParam(value = "search", required = false) String[] search) {
-        return ResponseEntity.status(HttpStatus.OK).body(offerService.getAllTripsByFilter(location, from_date, to_date, maxPrice, search));
+        return ResponseEntity.status(HttpStatus.OK).body(offerService.getAllTripsByFilter(location, from_date, to_date, minPrice, search));
 
     }
 

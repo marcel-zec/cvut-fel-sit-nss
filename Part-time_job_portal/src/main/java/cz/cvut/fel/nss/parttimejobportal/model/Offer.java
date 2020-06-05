@@ -13,7 +13,7 @@ import java.util.List;
 
         @NamedQuery(name = "Offer.findByFilter", query = "SELECT DISTINCT t FROM Offer t JOIN t.sessions s WHERE (" +
                 "(:location is null OR t.location = :location) AND " +
-                "(:maxPrice is null OR t.salary <= :maxPrice) AND " +
+                "(:minPrice is null OR t.salary >= :minPrice) AND " +
                 "(s.from_date >= :from_date) AND " +
                 "(s.to_date <= :to_date))"),
 

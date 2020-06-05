@@ -281,7 +281,7 @@ public class OfferService {
 
 
     public List<OfferDto> getAllTripsByFilter(String location, String from_date, String to_date,
-                                             Double maxPrice, String[] search) {
+                                             Double minPrice, String[] search) {
 
         List<OfferDto> tripDtos = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -292,7 +292,7 @@ public class OfferService {
         LocalDate local_from_date = LocalDate.parse("1999-01-01", formatter);
         if(from_date != null){ local_from_date = LocalDate.parse(from_date, formatter); }
 
-        for (Offer trip : offerDao.findByFilter(location,  local_from_date, local_to_date, maxPrice, search)) {
+        for (Offer trip : offerDao.findByFilter(location,  local_from_date, local_to_date, minPrice, search)) {
             tripDtos.add(translateService.translateTrip(trip));
         }
 
