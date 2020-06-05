@@ -64,6 +64,19 @@ function Router(props) {
         }
     };
 
+    const allowGuestAndRole = (component, role) => {
+        if (context.user !== null) {
+            if (Array.isArray(role)) {
+                if (role.includes(context.user.role)) return component;
+                return <Redirect to={{ pathname: "/" }} />;
+            } else {
+                if (context.user.role === role) return component;
+                return <Redirect to={{ pathname: "/" }} />;
+            }
+        }
+        return component;
+    };
+
     return (
         <div>
             <Route
@@ -107,7 +120,7 @@ function Router(props) {
                 <Route
                     path="/trips/:id"
                     render={() => {
-                        return allowAuthWithRole(<TripDetail />, ROLE_USER);
+                        return allowGuestAndRole(<TripDetail />, ROLE_USER);
                     }}
                 />
                 {/*Admin*/}

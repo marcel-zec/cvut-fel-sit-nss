@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,29 +29,32 @@ public class CategoryController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Category> getAll() {
-        return categoryService.findAll();
+    public ResponseEntity<List<Category>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(categoryService.findAll());
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Category get(@PathVariable Long id) throws NotFoundException {
-        return categoryService.find(id);
+    public ResponseEntity<Category> get(@PathVariable Long id) throws NotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(categoryService.find(id));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody Category category){
+    public ResponseEntity<Void> create(@RequestBody Category category){
         categoryService.create(category);
         LOG.info("Category with ID:{} and name '{}' created.", category.getId(), category.getName());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable Long id, @RequestBody Category category) throws NotFoundException {
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Category category) throws NotFoundException {
         categoryService.update(id,category);
         LOG.info("Category with ID:{} and updated.", id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
     }
 
 

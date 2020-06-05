@@ -1,7 +1,6 @@
 package cz.cvut.fel.nss.parttimejobportal.rest;
 
 import cz.cvut.fel.nss.parttimejobportal.dto.ManagerDto;
-import cz.cvut.fel.nss.parttimejobportal.dto.UserDto;
 import cz.cvut.fel.nss.parttimejobportal.dto.RequestWrapper;
 import cz.cvut.fel.nss.parttimejobportal.exception.BadPassword;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,24 +26,26 @@ public class AchievementSpecialController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public AchievementSpecial get(@PathVariable Long id){
-        return achievementSpecialService.find(id);
+    public ResponseEntity<AchievementSpecial> get(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(achievementSpecialService.find(id));
     }
 
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody AchievementSpecial achievement){
+    public ResponseEntity<Void> update(@RequestBody AchievementSpecial achievement){
         achievementSpecialService.update(achievement);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<AchievementSpecial> getAll() {
-        return achievementSpecialService.findAll();
+    public ResponseEntity<List<AchievementSpecial>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(achievementSpecialService.findAll());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody AchievementSpecial achievement){
+    public ResponseEntity<Void> create(@RequestBody AchievementSpecial achievement){
         achievementSpecialService.create(achievement);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

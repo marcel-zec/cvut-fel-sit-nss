@@ -83,14 +83,14 @@ class TripHistory extends React.Component {
         } else {
             const achievments = [];
             console.log(this.state);
-            this.state.enrollment.trip.gain_achievements_special.forEach(
+            this.state.enrollment.recieved_achievements_special.forEach(
                 (element) => {
                     achievments.push(
                         <AchievmentModal
                             icon={element.icon}
-                            title={element.title}
+                            title={element.name}
                             description={element.description}
-                            key={element.title}
+                            key={element.name}
                         />
                     );
                 }

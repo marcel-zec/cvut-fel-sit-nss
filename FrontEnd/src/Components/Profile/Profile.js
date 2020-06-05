@@ -106,10 +106,21 @@ class Profile extends React.Component {
                                         <div className="progressInstance">
                                             <ProgressBar
                                                 now={
-                                                    this.state.user
-                                                        .travel_journal.xp_count
+                                                    ((this.state.user
+                                                        .travel_journal
+                                                        .xp_count %
+                                                        10) *
+                                                        100) /
+                                                    10
                                                 }
-                                                label="Iba 15 XP do ďalšieho levelu!"
+                                                label={
+                                                    10 -
+                                                    (this.state.user
+                                                        .travel_journal
+                                                        .xp_count %
+                                                        10) +
+                                                    " XP do ďalšieho levelu"
+                                                }
                                             />
                                         </div>
                                     </Col>

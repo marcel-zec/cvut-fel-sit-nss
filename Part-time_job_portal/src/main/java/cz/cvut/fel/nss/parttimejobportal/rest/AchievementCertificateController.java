@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,25 +27,27 @@ public class AchievementCertificateController {
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public AchievementCertificate get(@PathVariable Long id){
-        return achievementCertificateService.find(id);
+    public ResponseEntity<AchievementCertificate> get(@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(achievementCertificateService.find(id));
     }
 
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody AchievementCertificate achievement){
+    public ResponseEntity<Void> update(@RequestBody AchievementCertificate achievement){
         achievementCertificateService.update(achievement);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<AchievementCertificate> getAll() {
-        return achievementCertificateService.findAll();
+    public ResponseEntity<List<AchievementCertificate>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(achievementCertificateService.findAll());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody AchievementCertificate achievement){
+    public ResponseEntity<Void> create(@RequestBody AchievementCertificate achievement){
         achievementCertificateService.create(achievement);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
 
