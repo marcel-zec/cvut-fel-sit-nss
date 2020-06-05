@@ -23,10 +23,13 @@ public class AchievementController {
 
     @Autowired
     public AchievementController(AchievementService achievementService) {
-
         this.achievementService = achievementService;
     }
 
+    /**
+     * Method is looking for all achievements that current user gained.
+     * @return response with list of AchievementDto
+     */
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AchievementDto>> getAllOfUser() {

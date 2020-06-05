@@ -25,11 +25,21 @@ public class AchievementCategorizedController {
         this.achievementCategorizedService = achievementCategorizedService;
     }
 
+    /**
+     * method return AchievementCategorized by id
+     * @param id
+     * @return response with AchievementCategorized
+     */
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AchievementCategorized> get(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(achievementCategorizedService.find(id));
     }
 
+    /**
+     * update AchievementCategorized
+     * @param achievement - JSON representation of AchievementCategorized
+     * @return response 204
+     */
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> update(@RequestBody AchievementCategorized achievement){
@@ -37,11 +47,20 @@ public class AchievementCategorizedController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    /**
+     * method return list of AchievementCategorized
+     * @return response with list
+     */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AchievementCategorized>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(achievementCategorizedService.findAll());
     }
 
+    /**
+     * method create AchievementCategorized
+     * @param achievement - JSON representation of AchievementCategorized
+     * @return response 201
+     */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(@RequestBody AchievementCategorized achievement){

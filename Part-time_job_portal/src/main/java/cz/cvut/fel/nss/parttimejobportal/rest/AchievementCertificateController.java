@@ -26,11 +26,21 @@ public class AchievementCertificateController {
         this.achievementCertificateService = achievementCertificateService;
     }
 
+    /**
+     * method return AchievementCertificate by id
+     * @param id
+     * @return response with AchievementCertificate
+     */
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AchievementCertificate> get(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(achievementCertificateService.find(id));
     }
 
+    /**
+     * update AchievementCertificate
+     * @param achievement - JSON representation of AchievementCertificate
+     * @return response 204
+     */
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> update(@RequestBody AchievementCertificate achievement){
@@ -38,11 +48,20 @@ public class AchievementCertificateController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    /**
+     * method return list of AchievementCertificate
+     * @return response with list
+     */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AchievementCertificate>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(achievementCertificateService.findAll());
     }
 
+    /**
+     * method create AchievementCategorized
+     * @param achievement - JSON representation of AchievementCertificate
+     * @return response 201
+     */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(@RequestBody AchievementCertificate achievement){
