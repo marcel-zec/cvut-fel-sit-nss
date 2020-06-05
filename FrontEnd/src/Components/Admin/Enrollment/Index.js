@@ -219,7 +219,7 @@ class Index extends React.Component {
                                 <th>Uživateľ</th>
                                 <th>Začiatok</th>
                                 <th>Koniec</th>
-                                <th></th>
+                                {this.isRole("MANAGER") ? <th></th> : null}
                             </tr>
                         </thead>
                         <tbody>{tableRows}</tbody>

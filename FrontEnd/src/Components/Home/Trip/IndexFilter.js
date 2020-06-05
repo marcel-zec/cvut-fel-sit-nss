@@ -18,7 +18,7 @@ class IndexFilter extends React.Component {
         filter: {
             from: null,
             to: null,
-            price: 600,
+            price: 50,
             words: [],
         },
     };
@@ -83,9 +83,9 @@ class IndexFilter extends React.Component {
         }
         if (this.state.filter.price) {
             if (filter) {
-                filterUrl += "&max_price=" + this.state.filter.price;
+                filterUrl += "&min_price=" + this.state.filter.price;
             } else {
-                filterUrl += "max_price=" + this.state.filter.price;
+                filterUrl += "min_price=" + this.state.filter.price;
             }
             filter = true;
         }
@@ -160,7 +160,7 @@ class IndexFilter extends React.Component {
             filter: {
                 from: null,
                 to: null,
-                price: 6000,
+                price: 50,
                 words: this.state.filter.words,
             },
         });
@@ -228,8 +228,8 @@ class IndexFilter extends React.Component {
                                             <RangeSlider
                                                 value={this.state.filter.price}
                                                 min={0}
-                                                max={6000}
-                                                step={100}
+                                                max={300}
+                                                step={50}
                                                 tooltip="auto"
                                                 tooltipPlacement="top"
                                                 onChange={(event) =>

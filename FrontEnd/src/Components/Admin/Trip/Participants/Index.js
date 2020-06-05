@@ -110,6 +110,15 @@ class Index extends React.Component {
 
             return (
                 <Container className="mt-3">
+                    <ButtonInRow
+                        variant="danger"
+                        link={{
+                            pathname: "/trip",
+                        }}
+                        side="left"
+                        label=""
+                        back={true}
+                    />
                     <Tabs
                         defaultActiveKey={
                             this.state.sessions.length > 0
