@@ -27,6 +27,12 @@ public class LoginController {
     }
 
 
+    /**
+     * method login user to app
+     * @param request
+     * @return response of current AbstractUserDto
+     * @throws AlreadyLoginException
+     */
     @PostMapping(value = "/login",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AbstractUserDto> loginUser(@RequestBody HashMap<String,String> request) throws AlreadyLoginException {
 

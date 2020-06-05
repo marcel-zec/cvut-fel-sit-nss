@@ -24,6 +24,12 @@ public class JobSessionParticipantController {
         this.jobSessionService = jobSessionService;
     }
 
+
+    /**
+     * method returns all participants of jobSession
+     * @param trip_short_name
+     * @return response of list of RequestWrapperTripSessionsParticipants
+     */
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/{trip_short_name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RequestWrapperTripSessionsParticipants>> findAllParticipants(@PathVariable String trip_short_name) {
