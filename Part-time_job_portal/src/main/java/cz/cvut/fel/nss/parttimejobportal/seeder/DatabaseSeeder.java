@@ -264,8 +264,8 @@ public class DatabaseSeeder implements
         */JobSession tripSession;
 
         //priklady tripov a user progressu medzi nimi 0
-        description = "Tento zajezd bude mit cenu za dopravu a kurz, po absolvování se odemkne achievement ´kuchař ryb fugu´, pro absolvování je potřeba mít achievement ´Kuchtík´." ;
-        offer = new Offer("Kurz vaření ryb Fugu",10,description,"fugukurz",150,"Tokyo, Japan",1, managerDao.findByEmail("manager@gmail.com"));
+        description = "Na teto brigádě se po absolvování odemkne achievement ´kuchař ryb fugu´, pro absolvování je potřeba mít achievement ´Kuchtík´." ;
+        offer = new Offer("Vaření ryb Fugu",10,description,"fugukurz",150,"Olomouc",1, managerDao.findByEmail("manager@gmail.com"));
         //offer.addGainAchievement();
         //offer.addRequiredAchievement();
         offerDao.persist(offer);
@@ -281,8 +281,8 @@ public class DatabaseSeeder implements
         offerDao.update(offer);
 
         //1
-        description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař ryb fugu´." ;
-        offer = new Offer("Vaření ryb Fugu, Praha",10,description,"fuguvar",120,"Praha, Česká republika",1, managerDao.findByEmail("manager@gmail.com"));
+        description = "Pro absolvování tohoto zájezdu je potřeba mít achievement ´Kuchař ryb fugu´." ;
+        offer = new Offer("Vaření ryb Fugu 2, Praha",10,description,"fuguvar",120,"Praha, Česká republika",1, managerDao.findByEmail("manager@gmail.com"));
         offerDao.persist(offer);
 
         tripSession = new JobSession(offer, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 4);
@@ -315,7 +315,7 @@ public class DatabaseSeeder implements
         offerDao.update(offer);
 
         //2.offer "Kuchař na Pražském hradě"
-        description = "Tento zajezd bude mit zalohu, pro absolvování je potřeba mít achievement ´Kuchař´." ;
+        description = "Pro absolvování tohoto zájezdu je potřeba mít achievement ´Kuchař´." ;
         offer = new Offer("Kuchař na Pražském hradě",8,description,"prahradvar",110,"Praha, Česká republika",3, managerDao.findByEmail("manager@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2020-07-06"), LocalDate.parse("2020-07-12"), 5);
@@ -330,7 +330,7 @@ public class DatabaseSeeder implements
         offerDao.update(offer);
 
         //3.offer "Kuchař menza Studentský dům, Praha"
-        description = "Tento zajezd nevyzaduje zadne achievementy a po nem se nedaji ziskat specialni achievementy ale daji se ziskat achievementy jako jsou např. ´Kuchtík´, ´Kuchař´ apod. Odměna Xp je dost nízká aby se nedalo jednoduše dostat za tuhle práci na prestižnější místa jako pražský hrad, ale zároveň je možno si dopomoct s touto lehčí a dostupnější práci nahnat achievement kuchař, jestliže xp grind mám za sebou z jiných zájezdů." ;
+        description = "Tento zajezd nevyžaduje zadne achievementy a po něm se nedají získat specialni achievementy ale daji se ziskat achievementy jako jsou např. ´Kuchtík´, ´Kuchař´ apod. Odměna Xp je dost nízká aby se nedalo jednoduše dostat za tuhle práci na prestižnější místa jako pražský hrad, ale zároveň je možno si dopomoct s touto lehčí a dostupnější práci nahnat achievement kuchař, jestliže xp grind mám za sebou z jiných prací." ;
         offer = new Offer("Kuchař menza Studentský dům, Praha",3,description,"studumkuch",140,"Praha, Česká republika",0, managerDao.findByEmail("manager@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 2);
@@ -345,8 +345,8 @@ public class DatabaseSeeder implements
         offerDao.update(offer);
 
         //4.offer "projekt „Úsměv pro všechny“"
-        description = "Humanitární akce v imigračním táboře Ušivak v Bosně a Hercegovině. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
-        offer = new Offer("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Bosna a Hercegovina",0, managerDao.findByEmail("manager1@gmail.com"));
+        description = "Humanitární akce v imigračním táboře Ušivak v Brně. Potřeba znát základy javy, office a nebát se ušpinit si ruce při stavbě skleníku." ;
+        offer = new Offer("projekt „Úsměv pro všechny“",3,description,"usibos",200,"tábor Ušivak, Brno",0, managerDao.findByEmail("manager1@gmail.com"));
         offerDao.persist(offer);
         tripSession = new JobSession(offer, LocalDate.parse("2020-06-06"), LocalDate.parse("2020-06-12"), 3);
         jobSessionDao.persist(tripSession);
@@ -364,7 +364,7 @@ public class DatabaseSeeder implements
 
         //5. offer - bez sessions
         description = "Neaktivni offer. Nema aktivni sessions, je viditelny pouze Administratorem.";
-        offer = new Offer("Retired trip", 12, description, "retrip", 135, "London, Great Britain", 5, managerDao.findByEmail("manager1@gmail.com"));
+        offer = new Offer("Retired trip", 12, description, "retrip", 135, "Valašské Meziřičí", 5, managerDao.findByEmail("manager1@gmail.com"));
         offerDao.persist(offer);
         //tripSession ma datum  ukonceni vcera
         tripSession = new JobSession(offer, LocalDate.now().minusDays(16), LocalDate.now().minusDays(1), 2);
