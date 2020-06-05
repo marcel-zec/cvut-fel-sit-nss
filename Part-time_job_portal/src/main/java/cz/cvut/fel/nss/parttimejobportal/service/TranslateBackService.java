@@ -27,6 +27,12 @@ public class TranslateBackService {
     }
 
 
+    /**
+     * Translate object userDto to User
+     * @param userDto
+     * @return AbstractUser
+     * @throws NotFoundException
+     */
     @Transactional
     public AbstractUser translateUser(UserDto userDto) throws NotFoundException {
 
@@ -42,6 +48,12 @@ public class TranslateBackService {
         return user;
     }
 
+
+    /**
+     * Translate object addressDto to Address
+     * @param addressDto
+     * @return Address
+     */
     @Transactional
     public Address translateAddress(AddressDto addressDto) {
         Objects.requireNonNull(addressDto);

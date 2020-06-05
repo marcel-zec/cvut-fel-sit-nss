@@ -29,6 +29,12 @@ public class JobSessionService {
         this.translateService = translateService;
     }
 
+
+    /**
+     * Get all JobSessionsDto in trip.
+     * @param trip_short_name where I looking for job sessions
+     * @return  List<JobSessionDto>
+     */
     @Transactional
     public List<JobSessionDto> findAllInTrip(String trip_short_name) {
         List<JobSession> tripSessions = jobSessionDao.find(trip_short_name);
@@ -40,13 +46,28 @@ public class JobSessionService {
         return tripSessionDtos;
     }
 
+
+    /**
+     * Create new JobSession to offer.
+     * @param jobId
+     * @param jobSession
+     * @throws Exception if from_date is after after_date of session
+     */
     @Transactional
-    public void create(String tripId, JobSession tripSession) throws Exception {
-        if (tripSession.getTo_date().isBefore(tripSession.getFrom_date())) throw new Exception();
-        tripSession.setTrip(offerDao.find(tripId));
-        jobSessionDao.persist(tripSession);
+    public void create(String jobId, JobSession jobSession) throws Exception {
+        if (jobSession.getTo_date().isBefore(jobSession.getFrom_date())) throw new Exception();
+        jobSession.setTrip(offerDao.find(jobId));
+        jobSessionDao.persist(jobSession);
     }
 
+
+    /**
+     * Update JobSession.
+     * @param oldSession
+     * @param newSession
+     * @return JobSession
+     * @throws Exception
+     */
     @Transactional
     public JobSession update(JobSession oldSession, JobSession newSession) throws Exception {
         if (oldSession == null || newSession==null) throw new MissingVariableException();
@@ -59,6 +80,12 @@ public class JobSessionService {
         return oldSession;
     }
 
+
+    /**
+     * Get all participants of job session
+     * @param trip_short_name
+     * @return List<RequestWrapperTripSessionsParticipants>
+     */
     @Transactional
     public List<RequestWrapperTripSessionsParticipants> findAllParticipants(String trip_short_name){
         List<JobSession> tripSessions = jobSessionDao.find(trip_short_name);

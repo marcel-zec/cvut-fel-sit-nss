@@ -29,7 +29,7 @@ public class JobJournalService {
 
 
     /**
-     *
+     * Add offer to jobJournal.
      * @param jobJournalId
      * @param offerId
      */
@@ -51,7 +51,7 @@ public class JobJournalService {
 
 
     /**
-     *
+     * Add achievementsCategorized to jobJournal.
      * @param jobJournal
      * @param achievementCategorized
      */
@@ -65,7 +65,7 @@ public class JobJournalService {
 
 
     /**
-     *
+     * Add achievementsCertificate to jobJournal.
      * @param jobJournal
      * @param achievementCertificate
      */
@@ -79,7 +79,7 @@ public class JobJournalService {
 
 
     /**
-     *
+     * Add achievementsSpecial to jobJournal.
      * @param jobJournal
      * @param achievementSpecial
      */
@@ -91,9 +91,8 @@ public class JobJournalService {
         dao.update(jobJournal);
     }
 
-    //this should be used after finalizing/closing the enrollment and adding new trip to hashmap in travel journal
     /**
-     *
+     * It is used after finalizing/closing the enrollment and adding new offer to hashmap in job journal
      * @param category
      * @param currentJobJournal
      */

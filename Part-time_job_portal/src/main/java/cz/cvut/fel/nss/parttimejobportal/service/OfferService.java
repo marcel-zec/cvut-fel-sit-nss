@@ -60,11 +60,20 @@ public class OfferService {
     }
 
 
+    /**
+     * Get all Offers from database.
+     * @return <List<Offer>
+     */
     @Transactional
     public List<Offer> findAll() {
         return offerDao.findAll();
     }
 
+
+    /**
+     * Get all Offers.
+     * @return  List<OfferDto>
+     */
     @Transactional
     public List<OfferDto> findAllDto() {
         List<OfferDto> offerDtos = new ArrayList<>();
@@ -75,6 +84,11 @@ public class OfferService {
         return offerDtos;
     }
 
+
+    /**
+     * Get all active offers.
+     * @return Collection<OfferDto>
+     */
     @Transactional
     public Collection<OfferDto> findAllDtoFiltered() {
 
@@ -84,6 +98,10 @@ public class OfferService {
         return cache.values();
     }
 
+
+    /**
+     * Putting offers to empty cache.
+     */
     private void offersToCache(){
         LOG.info("Putting offers to empty cache.");
         List<OfferDto> offerDtos = new ArrayList<>();
@@ -92,6 +110,10 @@ public class OfferService {
         for(OfferDto offer: offerDtos) cache.put(offer.getId(),offer);
     }
 
+
+    /**
+     * Remove offers from cache.
+     */
     private void removeOldOffersFromCache(){
         int sizeBefore = cache.size();
         cache.values().removeIf(offerDto -> !isTripActive(offerDto));
@@ -100,6 +122,11 @@ public class OfferService {
     }
 
 
+    /**
+     * Get Offer by id.
+     * @param id
+     * @return OfferDto
+     */
     @Transactional
     public OfferDto find(Long id) {
         Offer trip = offerDao.find(id);
@@ -124,6 +151,12 @@ public class OfferService {
         return translateService.translateTrip(trip);
     }
 
+
+    /**
+     * Get offer by string id.
+     * @param stringId
+     * @return OfferDto
+     */
     @Transactional
     public OfferDto findByString(String stringId) {
         Offer trip = offerDao.find(stringId);
@@ -131,6 +164,12 @@ public class OfferService {
         return translateService.translateTrip(trip);
     }
 
+
+    /**
+     * Get offer by string id and active.
+     * @param stringId
+     * @return
+     */
     @Transactional
     public OfferDto findByStringFiltered(String stringId) {
         Offer trip = offerDao.find(stringId);
@@ -149,6 +188,13 @@ public class OfferService {
         return tripDto;
     }
 
+
+    /**
+     * Create new Offer.
+     * @param offer
+     * @throws BadDateException if to_date is before from_date
+     * @throws MissingVariableException if offer has not sessions
+     */
     @Transactional
     public void create(Offer offer) throws BadDateException, MissingVariableException {
 
@@ -168,15 +214,27 @@ public class OfferService {
         addOfferToCache(translateService.translateTrip(offer));
     }
 
+
+    /**
+     * add offer to cache
+     * @param offerDto
+     */
     private void addOfferToCache(OfferDto offerDto) {
         cache.put(offerDto.getId(),offerDto);
         LOG.info("Putting new offer (ID: " + offerDto.getId() + ") to cache.");
     }
 
+
+    /**
+     * Sign up current logged in user to trip.
+     * @param tripSessionDto
+     * @param current_user
+     * @throws NotAllowedException
+     */
     @Transactional
     public void signUpToTrip(JobSessionDto tripSessionDto, AbstractUser current_user) throws NotAllowedException {
         JobSession tripSession = jobSessionDao.find(tripSessionDto.getId());
-//      TODO odkomentovat ked bude otestovane ukoncovanie tripov
+//      TODO odkomentovat ked bude nasadene na produkcny server
 //       if (tripSession.getFrom_date().isBefore(ChronoLocalDate.from(LocalDateTime.now()))) throw new NotAllowedException();
         User user = userDao.find(current_user.getId());
 
@@ -202,6 +260,13 @@ public class OfferService {
         }
     }
 
+
+    /**
+     * Get all offer that user can afford by level.
+     * @param current_user
+     * @return List<Offer>
+     * @throws NotAllowedException
+     */
     @Transactional
     public List<Offer> findAfford(AbstractUser current_user) throws NotAllowedException {
         if (current_user == null) throw new NotAllowedException();
@@ -211,6 +276,13 @@ public class OfferService {
         return  offerDao.find(level);
     }
 
+
+    /**
+     *  Get all offer that user can not afford by level.
+     * @param current_user
+     * @return List<Offer>
+     * @throws NotAllowedException
+     */
     @Transactional
     public List<Offer> findNotAfford(AbstractUser current_user) throws NotAllowedException {
         List<Offer> trips = offerDao.findAll();
@@ -218,6 +290,16 @@ public class OfferService {
         return trips;
     }
 
+
+    /**
+     * Update offer.
+     * @param stringId offer string id
+     * @param newOffer new updated offer
+     * @throws BadDateException if to_date is before from_date
+     * @throws NotFoundException if offer doesnt exist
+     * @throws MissingVariableException if offer has not sessions
+     * @throws NotAllowedException if own manager is not logged in
+     */
     @Transactional
     public void update(String stringId, Offer newOffer) throws BadDateException, NotFoundException, MissingVariableException, NotAllowedException {
         Offer offer = offerDao.find(stringId);
@@ -259,6 +341,13 @@ public class OfferService {
         offerDao.update(offer);
     }
 
+
+    /**
+     * Delete offer by string id.
+     * @param stringId
+     * @throws NotFoundException
+     * @throws NotAllowedException
+     */
     @Transactional
     public void delete(String stringId) throws NotFoundException, NotAllowedException {
 
@@ -280,6 +369,15 @@ public class OfferService {
     }
 
 
+    /**
+     * Filter offers by location, from_date, to_date, price
+     * @param location
+     * @param from_date
+     * @param to_date
+     * @param minPrice
+     * @param search
+     * @return
+     */
     public List<OfferDto> getAllTripsByFilter(String location, String from_date, String to_date,
                                              Double minPrice, String[] search) {
 
@@ -299,6 +397,13 @@ public class OfferService {
         return tripDtos;
     }
 
+
+    /**
+     * Checking whether user own enough achievements to sign up to offer
+     * @param usersJournal
+     * @param trip
+     * @return boolean
+     */
     public boolean checkOwnedAchievements(JobJournal usersJournal, Offer trip) {
         List<AchievementCategorized> ownedCat = usersJournal.getEarnedAchievementsCategorized();
         List<AchievementCertificate> ownedCer = usersJournal.getCertificates();
@@ -326,8 +431,14 @@ public class OfferService {
         return true;
     }
 
-    private boolean isTripActive(OfferDto trip) {
-        for(JobSessionDto tripSession : trip.getSessions()) {
+
+    /**
+     * Whether offer is active or not.
+     * @param offer
+     * @return boolean
+     */
+    private boolean isTripActive(OfferDto offer) {
+        for(JobSessionDto tripSession : offer.getSessions()) {
             if(tripSession.getTo_date().isAfter(LocalDate.now()) && tripSession.getFrom_date().isAfter(LocalDate.now())) {
                 return true;
             }

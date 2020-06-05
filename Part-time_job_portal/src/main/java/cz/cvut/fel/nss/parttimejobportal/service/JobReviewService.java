@@ -32,16 +32,36 @@ public class JobReviewService {
         this.enrollmentDao = enrollmentDao;
     }
 
+
+    /**
+     * Get all JobReviews from database.
+     * @return List<JobReview>
+     */
     @Transactional
     public List<JobReview> findAll() {
         return jobReviewDao.findAll();
     }
 
+
+    /**
+     * Get JobReview by id.
+     * @param id
+     * @return JobReview
+     */
     @Transactional
     public JobReview find(Long id) {
         return jobReviewDao.find(id);
     }
 
+
+    /**
+     * Create new JobReview to enrollment.
+     * @param jobReview new JobReview
+     * @param enrollmentId
+     * @throws AlreadyExistsException if enrollment has alreadz job review
+     * @throws UnauthorizedException if nobody is logged in
+     * @throws NotFoundException if enrollment doesnt exist
+     */
     @Transactional
     public void create(JobReview jobReview, Long enrollmentId) throws AlreadyExistsException, UnauthorizedException, NotFoundException {
         Objects.requireNonNull(jobReview);
@@ -63,6 +83,11 @@ public class JobReviewService {
         offerDao.update(trip);
     }
 
+
+    /**
+     * Update JobReview.
+     * @param jobReview
+     */
     @Transactional
     public void update(JobReview jobReview) {
         Objects.requireNonNull(jobReview);

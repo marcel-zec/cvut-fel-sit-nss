@@ -42,6 +42,13 @@ public class UserService {
         this.translateBackService = translateBackService;
     }
 
+
+    /**
+     * Create new User.
+     * @param user new user
+     * @param passwordAgain control of password
+     * @throws BadPassword if password and passwordAgain is not same.
+     */
     @Transactional
     public void createUser(User user, String passwordAgain) throws BadPassword {
         Objects.requireNonNull(user);
@@ -63,11 +70,23 @@ public class UserService {
         dao.update(user);
     }
 
+
+    /**
+     * Whether exist user with login email.
+     * @param login
+     * @return boolean
+     */
     @Transactional(readOnly = true)
     public boolean exists(String login) {
         return dao.findByEmail(login) != null;
     }
 
+
+    /**
+     * Get current logged in user.
+     * @return AbstractUserDto
+     * @throws UnauthorizedException
+     */
     @Transactional
     public AbstractUserDto showCurrentUser() throws UnauthorizedException {
         if (SecurityUtils.isAuthenticatedAnonymously()) throw new UnauthorizedException();
@@ -77,11 +96,21 @@ public class UserService {
     }
 
 
+    /**
+     * Get JobJournal of current logged in user.
+     * @return JobJournalDto
+     */
     @Transactional
     public JobJournalDto getJobJournal() {
         return translateService.translateJobJournal(dao.find(SecurityUtils.getCurrentUser().getId()).getTravel_journal());
     }
 
+
+    /**
+     * Delete user.
+     * @param id
+     * @throws NotFoundException
+     */
     @Transactional
     public void delete(Long id) throws NotFoundException {
 
@@ -106,6 +135,13 @@ public class UserService {
         dao.update(user);
     }
 
+
+    /**
+     * Update user.
+     * @param userDto new object of updated user
+     * @param current_user which user I want updated
+     * @throws NotFoundException
+     */
     @Transactional
     public void update(UserDto userDto, AbstractUser current_user) throws NotFoundException {
         Objects.requireNonNull(userDto);
@@ -136,17 +172,35 @@ public class UserService {
         dao.update(user);
     }
 
+
+    /**
+     * Get user by id.
+     * @param id
+     * @return UserDto
+     */
     @Transactional
     public UserDto find(Long id) {
         Objects.requireNonNull(id);
         return translateService.translateUser(dao.find(id));
     }
+
+
+    /**
+     * Get user by email.
+     * @param email
+     * @return UserDto
+     */
     @Transactional
     public UserDto findByEmail(String email) {
         Objects.requireNonNull(email);
         return translateService.translateUser(dao.findByEmail(email));
     }
 
+
+    /**
+     * Get all users.
+     * @return List<UserDto>
+     */
     @Transactional
     public List<UserDto> findAll() {
         List<UserDto> userDtos = new ArrayList<>();
@@ -156,14 +210,16 @@ public class UserService {
         return userDtos;
     }
 
+
+    /**
+     * Whether user exists.
+     * @param id
+     * @return boolean
+     */
     @Transactional
     public boolean exists(Long id) {
         Objects.requireNonNull(id);
         return dao.exists(id);
     }
 
-    @Transactional
-    public List<User> findAllUsers() {
-        return dao.findAll();
-    }
 }

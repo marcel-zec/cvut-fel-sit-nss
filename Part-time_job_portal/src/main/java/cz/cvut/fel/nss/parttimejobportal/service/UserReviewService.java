@@ -38,12 +38,23 @@ public class UserReviewService {
         this.managerDao = managerDao;
     }
 
+
+    /**
+     * Get UserReview by id.
+     * @param id
+     * @return UserReviewDto
+     */
     @Transactional
     public UserReviewDto find(Long id) {
         Objects.requireNonNull(id);
         return translateService.translateUserReview(userReviewDao.find(id));
     }
 
+
+    /**
+     * Get all UserReviews.
+     * @return List<UserReviewDto>
+     */
     @Transactional
     public List<UserReviewDto> findAll() {
         List<UserReviewDto> userReviewDtos = new ArrayList<>();
@@ -54,6 +65,13 @@ public class UserReviewService {
         return userReviewDtos;
     }
 
+
+    /**
+     * Get all UserReviews which own user by his id.
+     * @param userId
+     * @return  List<UserReviewDto>
+     * @throws NotFoundException if user doesnt exist.
+     */
     @Transactional
     public List<UserReviewDto> findAllOfUser(Long userId) throws NotFoundException {
         User user = userDao.find(userId);
@@ -68,6 +86,13 @@ public class UserReviewService {
         return userReviewDtos;
     }
 
+
+    /**
+     * Get all UserReviews which own current logged in user.
+     * @return List<UserReviewDto>
+     * @throws UnauthorizedException
+     * @throws NotFoundException
+     */
     @Transactional
     public List<UserReviewDto> findAllOfUser() throws UnauthorizedException, NotFoundException {
         if (SecurityUtils.isAuthenticatedAnonymously()) throw new UnauthorizedException();
@@ -84,6 +109,15 @@ public class UserReviewService {
         return userReviewDtos;
     }
 
+
+    /**
+     * Create new UserReview from currentUser manager.
+     * @param enrollmentId enrollment of user whom review I create.
+     * @param currentUser
+     * @param tripSessionId offerSession id where was user.
+     * @param userReview
+     * @throws Exception
+     */
     @Transactional
     public void create(long enrollmentId, AbstractUser currentUser, Long tripSessionId, UserReview userReview) throws Exception {
 
@@ -103,6 +137,13 @@ public class UserReviewService {
         userReviewDao.persist(userReview);
     }
 
+
+    /**
+     * Create new UserReview from currentUser manager of full rating.
+     * @param enrollmentId enrollment of user whom review I create.
+     * @param currentUser
+     * @throws Exception
+     */
     @Transactional
     public void create(long enrollmentId, AbstractUser currentUser) throws Exception {
 

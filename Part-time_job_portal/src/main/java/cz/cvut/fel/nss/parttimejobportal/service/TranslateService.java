@@ -24,6 +24,12 @@ public class TranslateService {
         this.categoryDao = categoryDao;
     }
 
+
+    /**
+     * Translate object User to UserDTo
+     * @param user
+     * @return UserDTO
+     */
     @Transactional
     public UserDto translateUser(User user) {
         System.out.println(user.toString());
@@ -51,6 +57,12 @@ public class TranslateService {
                 translateAddress(user.getAddress()), user.getPhone_number(), null, jobReviewDtos, userReviewDtos);
     }
 
+
+    /**
+     * Translate object Manager to ManagerDto
+     * @param manager
+     * @return ManagerDto
+     */
     @Transactional
     public ManagerDto translateManager(Manager manager) {
         System.out.println(manager.toString());
@@ -74,12 +86,24 @@ public class TranslateService {
                 translateAddress(manager.getAddress()), manager.getPhone_number(),manager.getCompany(), userReviewDtos, offersDto );
     }
 
+
+    /**
+     * Translate object Admin to AbstractUserDto
+     * @param admin
+     * @return AbstractUserDto
+     */
     @Transactional
     public AbstractUserDto translateAdmin(Admin admin){
         Objects.requireNonNull(admin);
         return new AbstractUserDto(admin.getId(),admin.getFirstName(), admin.getLastName(), admin.getEmail(), translateAddress(admin.getAddress()), Role.ADMIN);
     }
 
+
+    /**
+     * Translate object Address to AddressDto
+     * @param address
+     * @return AddressDto
+     */
     @Transactional
     public AddressDto translateAddress(Address address) {
         Objects.requireNonNull(address);
@@ -88,16 +112,22 @@ public class TranslateService {
                 address.getCountry(),address.getUser().getId());
     }
 
+
+    /**
+     * Translate object Offer to OfferDto
+     * @param offer
+     * @return OfferDto
+     */
     @Transactional
-    public OfferDto translateTrip(Offer trip) {
-        Objects.requireNonNull(trip);
+    public OfferDto translateTrip(Offer offer) {
+        Objects.requireNonNull(offer);
         List<JobSessionDto> sessions = new ArrayList<>();
         List<AchievementCertificateDto> required_certificates = new ArrayList<>();
         List<AchievementCategorizedDto> required_achievements_categorized = new ArrayList<>();
         List<AchievementSpecialDto> required_achievements_special = new ArrayList<>();
         List<AchievementSpecialDto> gain_achievements = new ArrayList<>();
         List<JobReviewDto> jobReviews = new ArrayList<>();
-        Offer trip1 = offerDao.find(trip.getId());
+        Offer trip1 = offerDao.find(offer.getId());
 
         trip1.getRequired_achievements_certificate().forEach(achievementCertificate -> required_certificates.add(translateAchievementCertificate(achievementCertificate)));
         trip1.getRequired_achievements_categorized().forEach(achievementCategorized -> required_achievements_categorized.add(translateAchievementCategorized(achievementCategorized)));
@@ -106,17 +136,29 @@ public class TranslateService {
         trip1.getJobReviews().forEach(review -> jobReviews.add(translateJobReview(review)));
         trip1.getSessions().forEach(session-> sessions.add(translateSession(session)));
 
-        return new OfferDto(trip.getId(),trip.getName(),trip.getShort_name(),trip.getPossible_xp_reward(),
-                trip.getDescription(),trip.getRating(),trip.getSalary(),trip.getLocation(), trip.getRequired_level(),
-                translateCategory(trip.getCategory()),trip.getAuthor().getId(), required_certificates, required_achievements_categorized, required_achievements_special, gain_achievements, sessions, jobReviews);
+        return new OfferDto(offer.getId(),offer.getName(),offer.getShort_name(),offer.getPossible_xp_reward(),
+                offer.getDescription(),offer.getRating(),offer.getSalary(),offer.getLocation(), offer.getRequired_level(),
+                translateCategory(offer.getCategory()),offer.getAuthor().getId(), required_certificates, required_achievements_categorized, required_achievements_special, gain_achievements, sessions, jobReviews);
     }
 
+
+    /**
+     * Translate object JobSession to JobSessionDto
+     * @param jobSession
+     * @return JobSessionDto
+     */
     @Transactional
-    public JobSessionDto translateSession(JobSession tripSession) {
-        Objects.requireNonNull(tripSession);
-        return new JobSessionDto(tripSession.getId(),tripSession.getFrom_date(),tripSession.getTo_date(),tripSession.getCapacity(),tripSession.getTrip().getId());
+    public JobSessionDto translateSession(JobSession jobSession) {
+        Objects.requireNonNull(jobSession);
+        return new JobSessionDto(jobSession.getId(),jobSession.getFrom_date(),jobSession.getTo_date(),jobSession.getCapacity(),jobSession.getTrip().getId());
     }
 
+
+    /**
+     * Translate object AchievementCertificate to AchievementCertificateDto
+     * @param achievementCertificate
+     * @return AchievementCertificateDto
+     */
     @Transactional
     public AchievementCertificateDto translateAchievementCertificate(AchievementCertificate achievementCertificate){
         Objects.requireNonNull(achievementCertificate);
@@ -130,6 +172,12 @@ public class TranslateService {
                 trips,owned_travel_journals);
     }
 
+
+    /**
+     * Translate object AchievementSpecial to AchievementSpecialDto
+     * @param achievementSpecial
+     * @return AchievementSpecialDto
+     */
     @Transactional
     public AchievementSpecialDto translateAchievementSpecial(AchievementSpecial achievementSpecial){
         Objects.requireNonNull(achievementSpecial);
@@ -143,6 +191,12 @@ public class TranslateService {
                 trips,owned_travel_journals);
     }
 
+
+    /**
+     * Translate object AchievementCategorized to AchievementCategorizedDto
+     * @param achievementCategorized
+     * @return AchievementCategorizedDto
+     */
     @Transactional
     public AchievementCategorizedDto translateAchievementCategorized(AchievementCategorized achievementCategorized){
         Objects.requireNonNull(achievementCategorized);
@@ -156,6 +210,12 @@ public class TranslateService {
                 trips,owned_travel_journals, achievementCategorized.getLimit(), achievementCategorized.getCategory().getId());
     }
 
+
+    /**
+     * Translate object JobJournal to JobJournalDto
+     * @param jobJournal
+     * @return JobJournalDto
+     */
     @Transactional
     public JobJournalDto translateJobJournal(JobJournal jobJournal){
         Objects.requireNonNull(jobJournal);
@@ -178,12 +238,24 @@ public class TranslateService {
         return new JobJournalDto(jobJournal.getId(), jobJournal.getXp_count(), trip_counter,jobJournal.getUser().getId(), certificateDtos, categorizedDtos, specialDtos, countLevel(jobJournal.getXp_count()));
     }
 
+
+    /**
+     * Translate object Category to CategoryDto
+     * @param category
+     * @return CategoryDto
+     */
     @Transactional
     public CategoryDto translateCategory(Category category){
 
         return category == null ? null : new CategoryDto(category.getId(),category.getName());
     }
 
+
+    /**
+     * Translate object Enrollment to EnrollmentDto
+     * @param enrollment
+     * @return EnrollmentDto
+     */
     @Transactional
     public EnrollmentDto translateEnrollment(Enrollment enrollment){
         Objects.requireNonNull(enrollment);
@@ -196,6 +268,12 @@ public class TranslateService {
                 recieved_achievements_special,enrollment.getJobJournal().getId(),translateTrip(enrollment.getTrip()),translateSession(enrollment.getTripSession()),jobReviewDto);
     }
 
+
+    /**
+     * Translate object JobReview to JobReviewDto
+     * @param jobReview
+     * @return JobReviewDto
+     */
     @Transactional
     public JobReviewDto translateJobReview(JobReview jobReview){
         Objects.requireNonNull(jobReview);
@@ -204,6 +282,12 @@ public class TranslateService {
                 jobReview.getRating(),jobReview.getAuthor().getFirstName() + " " +jobReview.getAuthor().getLastName());
     }
 
+
+    /**
+     * Translate object UserReview to UserReviewDto
+     * @param userReview
+     * @return UserReviewDto
+     */
     @Transactional
     public UserReviewDto translateUserReview(UserReview userReview){
         Objects.requireNonNull(userReview);
@@ -212,6 +296,12 @@ public class TranslateService {
                 userReview.getRating(),userReview.getUser().getId(),userReview.getAuthor().getId(),translateSession(userReview.getTripSession()));
     }
 
+
+    /**
+     * Counting level from xp
+     * @param xp
+     * @return int of level
+     */
     @Transactional
     public int countLevel(int xp){
         return xp/10 ;
