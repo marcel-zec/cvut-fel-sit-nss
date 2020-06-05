@@ -25,6 +25,7 @@ import NumericInput from "react-numeric-input";
 import RangeSlider from "react-bootstrap-range-slider";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import { BASE_API_URL } from "../../../App";
+import ButtonInRow from "../../SmartGadgets/ButtonInRow";
 
 class Close extends React.Component {
     state = {
@@ -300,6 +301,15 @@ class Close extends React.Component {
             return (
                 <>
                     <Container className="mt-3">
+                        <ButtonInRow
+                            variant="danger"
+                            link={{
+                                pathname: "/close",
+                            }}
+                            side="left"
+                            label=""
+                            back={true}
+                        />
                         <Card /*style={{ width: "18rem" }}*/>
                             <Card.Body>
                                 <Card.Subtitle className="text-muted mb-3">
