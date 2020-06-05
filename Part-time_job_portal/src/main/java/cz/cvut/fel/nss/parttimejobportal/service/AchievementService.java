@@ -48,6 +48,11 @@ public class AchievementService {
     }
 
 
+    /**
+     * Get all Achievements of User.
+     * @param user
+     * @return List<AchievementDto>
+     */
     @Transactional
     public List<AchievementDto> findAllOfUser(User user){
         Objects.requireNonNull(user);

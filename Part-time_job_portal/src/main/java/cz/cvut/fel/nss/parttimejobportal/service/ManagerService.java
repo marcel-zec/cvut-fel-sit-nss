@@ -20,14 +20,14 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-public class AdminService {
+public class ManagerService {
 
     private final ManagerDao managerDao;
     private final AddressDao addressDao;
     private final AbstractUserDao abstractUserDao;
     private final TranslateService translateService;
 
-    public AdminService(ManagerDao managerDao, AddressDao addressDao, AbstractUserDao abstractUserDao, TranslateService translateService) {
+    public ManagerService(ManagerDao managerDao, AddressDao addressDao, AbstractUserDao abstractUserDao, TranslateService translateService) {
         this.managerDao = managerDao;
         this.addressDao = addressDao;
         this.abstractUserDao = abstractUserDao;
@@ -35,6 +35,12 @@ public class AdminService {
     }
 
 
+    /**
+     * Create new manager.
+     * @param manager is manager who I want to create
+     * @param passwordAgain verification if password is correct.
+     * @throws BadPassword exception, if password and password again is not same.
+     */
     @Transactional
     public void create(Manager manager, String passwordAgain) throws BadPassword {
         Objects.requireNonNull(manager);
@@ -51,6 +57,12 @@ public class AdminService {
         managerDao.update(manager);
     }
 
+
+    /**
+     * Get Manager by id.
+     * @param id
+     * @return ManagerDto
+     */
     @Transactional
     public ManagerDto find(Long id) {
         Objects.requireNonNull(id);
@@ -59,6 +71,11 @@ public class AdminService {
         else return null;
     }
 
+
+    /**
+     * Get all Managers from database.
+     * @return List<ManagerDto>
+     */
     @Transactional
     public List<ManagerDto> findAll() {
         List<ManagerDto> managerDtos = new ArrayList<>();
@@ -69,8 +86,14 @@ public class AdminService {
     }
 
     // predpokladam, ze admina muze upravovat samotny admin a superuser
+    /**
+     * Update Manager.
+     * @param newUser is updated Manager.
+     * @param current_user is current logged in user.
+     * @throws NotFoundException if manager who I want to update doesnt exist.
+     */
     @Transactional
-    public void update(Manager newUser, AbstractUser current_user) throws NotFoundException, UnauthorizedException {
+    public void update(Manager newUser, AbstractUser current_user) throws NotFoundException{
         Objects.requireNonNull(newUser);
         current_user = managerDao.find(current_user.getId());
         AbstractUser user = managerDao.findByEmail(newUser.getEmail());

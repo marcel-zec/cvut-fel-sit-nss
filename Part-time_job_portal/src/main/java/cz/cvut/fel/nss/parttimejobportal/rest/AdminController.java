@@ -9,7 +9,7 @@ import cz.cvut.fel.nss.parttimejobportal.model.AbstractUser;
 import cz.cvut.fel.nss.parttimejobportal.model.Manager;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityConstants;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
-import cz.cvut.fel.nss.parttimejobportal.service.AdminService;
+import cz.cvut.fel.nss.parttimejobportal.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,30 +24,30 @@ import java.util.List;
 @CrossOrigin(origins = SecurityConstants.ORIGIN_URI, allowCredentials="true")
 public class AdminController {
 
-    private final AdminService adminService;
+    private final ManagerService managerService;
 
     @Autowired
-    public AdminController(AdminService adminService) {
-        this.adminService = adminService;
+    public AdminController(ManagerService managerService) {
+        this.managerService = managerService;
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> registerAdmin(@RequestBody RequestWrapper requestWrapper) throws BadPassword {
-        adminService.create((Manager) requestWrapper.getUser(), requestWrapper.getPassword_control());
+        managerService.create((Manager) requestWrapper.getUser(), requestWrapper.getPassword_control());
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ManagerDto> showAll() {
-        return adminService.findAll();
+        return managerService.findAll();
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPERUSER')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ManagerDto showAdminById(@PathVariable Long id) throws NotFoundException {
-        final ManagerDto adminDto = adminService.find(id);
+        final ManagerDto adminDto = managerService.find(id);
         if (adminDto == null) {
             throw NotFoundException.create("Admin", id);
         }
@@ -57,7 +57,7 @@ public class AdminController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPERUSER')")
     @PatchMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody AbstractUser user) throws NotFoundException, UnauthorizedException {
-        adminService.update((Manager) user, SecurityUtils.getCurrentUser());
+        managerService.update((Manager) user, SecurityUtils.getCurrentUser());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
