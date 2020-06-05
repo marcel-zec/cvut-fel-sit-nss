@@ -7,6 +7,7 @@ import cz.cvut.fel.nss.parttimejobportal.exception.NotAllowedException;
 import cz.cvut.fel.nss.parttimejobportal.exception.NotFoundException;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityConstants;
 import cz.cvut.fel.nss.parttimejobportal.security.SecurityUtils;
+import cz.cvut.fel.nss.parttimejobportal.service.EnrollmentFacade;
 import cz.cvut.fel.nss.parttimejobportal.service.EnrollmentService;
 import cz.cvut.fel.nss.parttimejobportal.service.UserReviewService;
 import org.slf4j.Logger;
@@ -26,14 +27,13 @@ import java.util.List;
 public class EnrollmentController {
 
     private static final Logger LOG = LoggerFactory.getLogger(EnrollmentController.class);
-    private final EnrollmentService enrollmentService;
-    private final UserReviewService userReviewService;
+    private final EnrollmentFacade enrollmentFacade;
+
 
 
     @Autowired
-    public EnrollmentController(EnrollmentService enrollmentService, UserReviewService userReviewService) {
-        this.enrollmentService = enrollmentService;
-        this.userReviewService = userReviewService;
+    public EnrollmentController(EnrollmentFacade enrollmentFacade) {
+        this.enrollmentFacade = enrollmentFacade;
     }
 
     /**
@@ -44,7 +44,7 @@ public class EnrollmentController {
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EnrollmentDto> get(@PathVariable Long id)  {
-        return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.findDto(id));
+        return ResponseEntity.status(HttpStatus.OK).body(enrollmentFacade.get(id));
     }
 
     /**
@@ -55,19 +55,9 @@ public class EnrollmentController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value = "/complete", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EnrollmentDto>> getAllOfUserFinished() throws NotAllowedException {
-        return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.findAllOfUserFinished(SecurityUtils.getCurrentUser()));
+        return ResponseEntity.status(HttpStatus.OK).body(enrollmentFacade.getAllFinished());
     }
 
-    /**
-     * Method find all active enrollments of current user. Available only for user with USER role.
-     * @return response with list of EnrollmentDto
-     * @throws NotAllowedException
-     */
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<EnrollmentDto>> getAllOfUserActiveAndCancel() throws NotAllowedException {
-        return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.findAllOfUserActive(SecurityUtils.getCurrentUser()));
-    }
 
     /**
      * Method find all completed enrollments of user by user id. Available only for user with MANAGER of ADMIN role.
@@ -78,7 +68,18 @@ public class EnrollmentController {
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/complete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EnrollmentDto>> getAllOfUserFinishedAdmin(@PathVariable Long id) throws NotAllowedException, NotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.findAllOfUserFinished(id));
+        return ResponseEntity.status(HttpStatus.OK).body(enrollmentFacade.getAllFinished(id));
+    }
+
+    /**
+     * Method find all active enrollments of current user. Available only for user with USER role.
+     * @return response with list of EnrollmentDto
+     * @throws NotAllowedException
+     */
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping(value = "/active", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<EnrollmentDto>> getAllOfUserActiveAndCancel() throws NotAllowedException {
+        return ResponseEntity.status(HttpStatus.OK).body(enrollmentFacade.getAllActiveAndCancel());
     }
 
     /**
@@ -90,7 +91,7 @@ public class EnrollmentController {
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/active/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<EnrollmentDto>> getAllOfUserActiveAndCancelAdmin(@PathVariable Long id) throws NotAllowedException, NotFoundException {
-        return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.findAllOfUserActive(id));
+        return ResponseEntity.status(HttpStatus.OK).body(enrollmentFacade.getAllActiveAndCancel(id));
     }
 
     /**
@@ -100,7 +101,7 @@ public class EnrollmentController {
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/close", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RequestWrapperEnrollmentGet>> getAllActiveEnded() {
-        return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.findAllActiveEndedWithUser());
+        return ResponseEntity.status(HttpStatus.OK).body(enrollmentFacade.getAllWithUserToClose());
     }
 
 
@@ -113,10 +114,7 @@ public class EnrollmentController {
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PatchMapping(value = "/close", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> close(@RequestBody RequestWrapperEnrollment requestWrapperEnrollment) throws Exception {
-        enrollmentService.close(requestWrapperEnrollment.getEnrollmentDto());
-        userReviewService.create(requestWrapperEnrollment.getEnrollmentDto().getId(), SecurityUtils.getCurrentUser(),
-                requestWrapperEnrollment.getTripSessionId(), requestWrapperEnrollment.getUserReview() );
-
+        enrollmentFacade.close(requestWrapperEnrollment);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
@@ -128,7 +126,7 @@ public class EnrollmentController {
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value = "/close/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RequestWrapperEnrollmentGet> getWithUser(@PathVariable Long id) throws NotAllowedException {
-        return ResponseEntity.status(HttpStatus.OK).body(enrollmentService.findActiveEndedWithUser(id));
+        return ResponseEntity.status(HttpStatus.OK).body(enrollmentFacade.getWithUserToClose(id));
     }
 
     /**
@@ -139,9 +137,7 @@ public class EnrollmentController {
     @PreAuthorize("hasRole('ROLE_MANAGER')")
     @PostMapping(value = "/close/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> closeOk(@PathVariable Long id) throws Exception {
-        enrollmentService.closeOk(id);
-        userReviewService.create(id,SecurityUtils.getCurrentUser());
-
+        enrollmentFacade.closeFull(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
@@ -154,7 +150,7 @@ public class EnrollmentController {
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN')")
     @PostMapping(value = "cancel/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> cancel(@PathVariable Long id) throws Exception {
-        enrollmentService.cancel(id);
+        enrollmentFacade.cancel(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

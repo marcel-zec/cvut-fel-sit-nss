@@ -166,4 +166,5 @@ public class UserReviewService {
         userReview.setTripSession(tripSession);
         userReviewDao.persist(userReview);
     }
+
 }

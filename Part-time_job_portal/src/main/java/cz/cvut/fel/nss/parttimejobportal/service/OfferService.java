@@ -437,7 +437,7 @@ public class OfferService {
      * @param offer
      * @return boolean
      */
-    private boolean isTripActive(OfferDto offer) {
+    public boolean isTripActive(OfferDto offer) {
         for(JobSessionDto tripSession : offer.getSessions()) {
             if(tripSession.getTo_date().isAfter(LocalDate.now()) && tripSession.getFrom_date().isAfter(LocalDate.now())) {
                 return true;
