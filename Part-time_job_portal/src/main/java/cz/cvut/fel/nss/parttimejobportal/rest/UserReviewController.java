@@ -26,18 +26,37 @@ public class UserReviewController {
         this.userReviewService = userReviewService;
     }
 
+
+    /**
+     * method returns all user reviews
+     * @return response of list UserReviewDto
+     */
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserReviewDto>> showAll() {
         return ResponseEntity.status(HttpStatus.OK).body(userReviewService.findAll());
     }
 
+
+    /**
+     * method returns user review of concrete user
+     * @param userId
+     * @return response of list UserReviewDto
+     * @throws NotFoundException
+     */
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(value= "/user/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserReviewDto>> showReviewsOfUser(Long userId) throws NotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(userReviewService.findAllOfUser(userId));
     }
 
+
+    /**
+     *  method returns user review of current user
+     * @return response of list UserReviewDto
+     * @throws UnauthorizedException
+     * @throws NotFoundException
+     */
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value= "/current", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserReviewDto>> showReviewsOfCurrentUser() throws UnauthorizedException, NotFoundException {

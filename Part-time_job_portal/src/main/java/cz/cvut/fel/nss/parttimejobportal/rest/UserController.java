@@ -35,6 +35,13 @@ public class UserController {
         this.userService = userService;
     }
 
+
+    /**
+     * method create user
+     * @param requestWrapper - JSON representation of User and password control
+     * @return response Void
+     * @throws BadPassword
+     */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> register(@RequestBody RequestWrapper requestWrapper) throws BadPassword {
         userService.createUser((User) requestWrapper.getUser(), requestWrapper.getPassword_control());
@@ -43,6 +50,11 @@ public class UserController {
 
     }
 
+
+    /**
+     * method return list of UserDto for manager and admin
+     * @return response of list userDto
+     */
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<UserDto>> showAll() {
@@ -50,17 +62,34 @@ public class UserController {
     }
 
 
+    /**
+     * method return jobJournal of current user
+     * @return response of JobJournalDto
+     */
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value= "/jobJournal", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JobJournalDto> getJobJournal() {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getJobJournal());
     }
 
+
+    /**
+     * method return current logged in user
+     * @return response of AbstractUserDto
+     * @throws UnauthorizedException
+     */
     @GetMapping(value= "/current", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AbstractUserDto> showCurrentUser() throws UnauthorizedException {
         return ResponseEntity.status(HttpStatus.OK).body(userService.showCurrentUser());
     }
 
+
+    /**
+     * method updated current user
+     * @param userDto
+     * @return void response
+     * @throws NotFoundException
+     */
     @PreAuthorize("hasRole('ROLE_USER')")
     @PatchMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update(@RequestBody UserDto userDto) throws NotFoundException {
@@ -70,6 +99,12 @@ public class UserController {
     }
 
 
+    /**
+     * method delete user
+     * @param id which user I want deleted
+     * @return void response
+     * @throws NotFoundException
+     */
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @DeleteMapping(value = "{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> delete(@PathVariable long id) throws NotFoundException {
