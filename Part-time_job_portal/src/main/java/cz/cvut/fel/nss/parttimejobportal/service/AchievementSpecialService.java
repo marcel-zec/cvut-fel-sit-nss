@@ -19,21 +19,42 @@ public class AchievementSpecialService {
         this.achievementSpecialDao = achievementSpecialDao;
     }
 
+
+    /**
+     * Get all AchievementsSpecial from database.
+     * @return  List<AchievementSpecial>
+     */
     @Transactional
     public List<AchievementSpecial> findAll() {
         return achievementSpecialDao.findAll();
     }
 
+
+    /**
+     * Get one AchievementSpecial by id.
+     * @param id
+     * @return AchievementSpecial
+     */
     @Transactional
     public AchievementSpecial find(Long id) {
         return achievementSpecialDao.find(id);
     }
 
+
+    /**
+     * Create new AchievementSpecial.
+     * @param achievement
+     */
     @Transactional
     public void create(AchievementSpecial achievement) {
         achievementSpecialDao.persist(achievement);
     }
 
+
+    /**
+     * Update AchievementSpecial.
+     * @param achievement
+     */
     @Transactional
     public void update(AchievementSpecial achievement) {
         Objects.requireNonNull(achievement);

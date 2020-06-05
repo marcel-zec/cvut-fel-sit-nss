@@ -20,11 +20,23 @@ public class AchievementCategorizedService {
         this.achievementCategorizedDao = achievementCategorizedDao;
     }
 
+
+    /**
+     * Get all AchievementCategorized from database.
+     * @return  List<AchievementCategorized>
+     */
+
     @Transactional
     public List<AchievementCategorized> findAll() {
         return achievementCategorizedDao.findAll();
     }
 
+
+    /**
+     * Get all AchievementCategorized by category.
+     * @param category
+     * @return  List<AchievementCategorized>
+     */
     @Transactional
     public List<AchievementCategorized> findAllInCategory(Category category) {
         List<AchievementCategorized> all = achievementCategorizedDao.findAll();
@@ -42,16 +54,32 @@ public class AchievementCategorizedService {
         return result;
     }
 
+
+    /**
+     * Get AchievementCategorized by id.
+     * @param id
+     * @return AchievementCategorized
+     */
     @Transactional
     public AchievementCategorized find(Long id) {
         return achievementCategorizedDao.find(id);
     }
 
+
+    /**
+     * Create new AchievementCategorized.
+     * @param achievement
+     */
     @Transactional
     public void create(AchievementCategorized achievement) {
         achievementCategorizedDao.persist(achievement);
     }
 
+
+    /**
+     * Update AchievementCategorized.
+     * @param achievement
+     */
     @Transactional
     public void update(AchievementCategorized achievement) {
         Objects.requireNonNull(achievement);

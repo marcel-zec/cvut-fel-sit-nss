@@ -43,10 +43,20 @@ public class EnrollmentService {
         this.jobJournalService = jobJournalService;
     }
 
+
+    /**
+     * Get all Enrollments from database.
+     * @return List<Enrollment>
+     */
     private List<Enrollment> findAll(){
         return enrollmentDao.findAll();
     }
 
+
+    /**
+     * Get all Enrollments from database as DTO.
+     * @return List<EnrollmentDto>
+     */
     @Transactional
     public List<EnrollmentDto> findAllDto(){
         List<EnrollmentDto> enrollmentDtos = new ArrayList<>();
@@ -58,6 +68,13 @@ public class EnrollmentService {
         return enrollmentDtos;
     }
 
+
+    /**
+     * Get active and expired enrollment and its owner by enrollment id.
+     * @param enrollId
+     * @return RequestWrapperEnrollmentGet is wrapper for returning enrollment and its owner.
+     * @throws NotAllowedException if logged in user is not creator of trip.
+     */
     @Transactional
     public RequestWrapperEnrollmentGet findActiveEndedWithUser(Long enrollId) throws NotAllowedException {
         if (!find(enrollId).getTrip().getAuthor().getId().equals(SecurityUtils.getCurrentUser().getId())) throw new NotAllowedException("Not for you");
@@ -69,6 +86,11 @@ public class EnrollmentService {
         return wrapperEnrollmentGet;
     }
 
+
+    /**
+     * Get active and expired enrollments and its owner.
+     * @return List<RequestWrapperEnrollmentGet> are wrappers for returning enrollment and its owner.
+     */
     @Transactional
     public List<RequestWrapperEnrollmentGet> findAllActiveEndedWithUser(){
         List<RequestWrapperEnrollmentGet> requestWrappers = new ArrayList<>();
@@ -82,6 +104,11 @@ public class EnrollmentService {
         return requestWrappers;
     }
 
+
+    /**
+     * Get all Enrollment to close. When they are active and expired.
+     * @return List<Enrollment>
+     */
     @Transactional
     public List<Enrollment> findAllActiveEnded(){
         List<Enrollment> enrollments = findAll();
@@ -105,16 +132,34 @@ public class EnrollmentService {
     }
 
 
+    /**
+     * Get Enrollment by id.
+     * @param id
+     * @return Enrollment
+     */
     private Enrollment find(Long id){
         return enrollmentDao.find(id);
     }
 
+
+    /**
+     * Get EnrollmentDto by id.
+     * @param id
+     * @return EnrollmentDto
+     */
     @Transactional
     public EnrollmentDto findDto(Long id){
 
        return translateService.translateEnrollment(enrollmentDao.find(id));
     }
 
+
+    /**
+     * Get all EnrollmentsDto of current logged in user.
+     * @param current_user
+     * @return List<EnrollmentDto>
+     * @throws NotAllowedException if nobody is logged in.
+     */
     @Transactional
     public List<EnrollmentDto> findAllOfUser(AbstractUser current_user) throws NotAllowedException {
 
@@ -132,6 +177,13 @@ public class EnrollmentService {
         return enrollmentDtos;
     }
 
+
+    /**
+     * Get all EnrollmentsDto of current logged in user which are finished.
+     * @param current_user
+     * @return  List<EnrollmentDto>
+     * @throws NotAllowedException  if nobody is logged in.
+     */
     @Transactional
     public List<EnrollmentDto> findAllOfUserFinished(AbstractUser current_user) throws NotAllowedException {
         List<EnrollmentDto> userEnrollments = findAllOfUser(current_user);
@@ -143,6 +195,13 @@ public class EnrollmentService {
         return finished;
     }
 
+
+    /**
+     * Get all EnrollmentsDto of current logged in user which are active or canceled.
+     * @param current_user
+     * @return List<EnrollmentDto>
+     * @throws NotAllowedException if nobody is logged in.
+     */
     @Transactional
     public List<EnrollmentDto> findAllOfUserActive(AbstractUser current_user) throws NotAllowedException {
         List<EnrollmentDto> userEnrollments = findAllOfUser(current_user);
@@ -154,6 +213,14 @@ public class EnrollmentService {
         return active_canceled;
     }
 
+
+    /**
+     *Get all EnrollmentsDto of user by id which are finished .
+     * @param id
+     * @return List<EnrollmentDto>
+     * @throws NotFoundException
+     * @throws NotAllowedException
+     */
     @Transactional
     public List<EnrollmentDto> findAllOfUserFinished(Long id) throws NotFoundException, NotAllowedException {
         AbstractUser user = userDao.find(id);
@@ -161,6 +228,14 @@ public class EnrollmentService {
         return findAllOfUserFinished(user);
     }
 
+
+    /**
+     * Get all EnrollmentsDto of user by id which are active and canceled.
+     * @param id
+     * @return List<EnrollmentDto>
+     * @throws NotFoundException
+     * @throws NotAllowedException
+     */
     @Transactional
     public List<EnrollmentDto> findAllOfUserActive(Long id) throws NotFoundException, NotAllowedException {
         AbstractUser user = userDao.find(id);
