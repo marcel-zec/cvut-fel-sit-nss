@@ -24,12 +24,25 @@ public class JobSessionController {
     }
 
 
+    /**
+     * method returns all session in offer
+     * @param trip_short_name
+     * @return response of list of JobSessionDto
+     */
     @GetMapping(value = "/{trip_short_name}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<JobSessionDto>> findAllInTrip(@PathVariable String trip_short_name) {
         return ResponseEntity.status(HttpStatus.OK).body(jobSessionService.findAllInTrip(trip_short_name));
 
     }
 
+
+    /**
+     * method add session to offer
+     * @param trip_short_name offer where I want to put session
+     * @param tripSession session which I want to create
+     * @return void response
+     * @throws Exception
+     */
     @PreAuthorize("hasAnyRole('ROLE_MANAGER', 'ROLE_ADMIN')")
     @PostMapping(value = "/{trip_short_name}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@PathVariable String trip_short_name, @RequestBody JobSession tripSession) throws Exception {

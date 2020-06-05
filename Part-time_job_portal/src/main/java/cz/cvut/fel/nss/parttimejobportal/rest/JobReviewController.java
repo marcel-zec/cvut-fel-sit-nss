@@ -25,16 +25,37 @@ public class JobReviewController {
         this.jobReviewService = jobReviewService;
     }
 
+
+    /**
+     * method returns 1 jobReview with identificator
+     * @param identificator
+     * @return response of JobReview
+     */
     @GetMapping(value = "/{identificator}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JobReview> get(Long identificator) {
         return ResponseEntity.status(HttpStatus.OK).body(jobReviewService.find(identificator));
     }
 
+
+    /**
+     * method returns all jobReviews
+     * @return response of list of JobReview
+     */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<JobReview>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(jobReviewService.findAll());
     }
 
+
+    /**
+     * method create new jobReview
+     * @param jobReview
+     * @param enrollmentId
+     * @return void response
+     * @throws UnauthorizedException
+     * @throws AlreadyExistsException
+     * @throws NotFoundException
+     */
     @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping(value = "/{enrollmentId}",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> create(@RequestBody JobReview jobReview, @PathVariable Long enrollmentId ) throws UnauthorizedException, AlreadyExistsException, NotFoundException {
