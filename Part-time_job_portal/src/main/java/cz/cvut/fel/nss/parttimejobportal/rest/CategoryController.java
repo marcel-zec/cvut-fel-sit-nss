@@ -28,17 +28,32 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    /**
+     * Method find all Categories.
+     * @return response with list of Categories
+     */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Category>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.findAll());
     }
 
+    /**
+     * Method find and return Category by id.
+     * @param id
+     * @return response with Category
+     * @throws NotFoundException - when Category was not found
+     */
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Category> get(@PathVariable Long id) throws NotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(categoryService.find(id));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    /**
+     * Create new Category. Available only for user with ADMIN role.
+     * @param category - JSON representation of Category
+     * @return response 201
+     */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Void> create(@RequestBody Category category){
@@ -47,7 +62,14 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_SUPERUSER', 'ROLE_ADMIN')")
+    /**
+     * Update of Category by id. Available only for user with ADMIN role.
+     * @param id
+     * @param category - JSON representation of updated Category
+     * @return response 204
+     * @throws NotFoundException - when category was not found
+     */
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody Category category) throws NotFoundException {
@@ -56,7 +78,4 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
     }
-
-
-
 }
